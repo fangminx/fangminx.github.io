@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="fangminx" />
+
+
+
+<meta name="description" content="搜索引擎-基本原理搜索的timeout机制 GET /_search返回123456789101112131415161718192021222324&amp;#123;  &amp;quot;took&amp;quot;: 6,  &amp;quot;timed_out&amp;quot;: false,  &amp;quot;_shards&amp;quot;: &amp;#123;    &amp;quot;total&amp;quot;: 6,    &amp;quot;su">
+<meta name="keywords" content="elasticsearch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="elasticsearch(二、搜索引擎)">
+<meta property="og:url" content="http://yoursite.com/2018/03/04/elasticsearch(二、搜索引擎)/index.html">
+<meta property="og:site_name" content="Just For Fun！">
+<meta property="og:description" content="搜索引擎-基本原理搜索的timeout机制 GET /_search返回123456789101112131415161718192021222324&amp;#123;  &amp;quot;took&amp;quot;: 6,  &amp;quot;timed_out&amp;quot;: false,  &amp;quot;_shards&amp;quot;: &amp;#123;    &amp;quot;total&amp;quot;: 6,    &amp;quot;su">
+<meta property="og:updated_time" content="2018-03-04T03:01:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="elasticsearch(二、搜索引擎)">
+<meta name="twitter:description" content="搜索引擎-基本原理搜索的timeout机制 GET /_search返回123456789101112131415161718192021222324&amp;#123;  &amp;quot;took&amp;quot;: 6,  &amp;quot;timed_out&amp;quot;: false,  &amp;quot;_shards&amp;quot;: &amp;#123;    &amp;quot;total&amp;quot;: 6,    &amp;quot;su">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="Just For Fun！" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>elasticsearch(二、搜索引擎) | Just For Fun！</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">fangminx</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">就是为了好玩！</p>
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="#" title="Email"></a>
+                            
+                                <a class="fa 新浪微博" href="#" title="新浪微博"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/fangminx" title="GitHub"></a>
+                            
+                                <a class="fa V2EX" href="#" title="V2EX"></a>
+                            
+                                <a class="fa 知乎" href="#" title="知乎"></a>
+                            
+                                <a class="fa Facebook" href="#" title="Facebook"></a>
+                            
+                                <a class="fa Google" href="#" title="Google"></a>
+                            
+                                <a class="fa Twitter" href="#" title="Twitter"></a>
+                            
+                                <a class="fa QQ" href="#" title="QQ"></a>
+                            
+                                <a class="fa 微信" href="#" title="微信"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java8/">Java8</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客重构/">博客重构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发/">并发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/牛客网/">牛客网</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/笔试题/">笔试题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/简单数据结构/">简单数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/简单算法/">简单算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">来源</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">就是为了好玩！</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">fangminx</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">fangminx</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">就是为了好玩！</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="#" title="Email"></a>
+                            
+                                <a class="fa 新浪微博" target="_blank" href="#" title="新浪微博"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/fangminx" title="GitHub"></a>
+                            
+                                <a class="fa V2EX" target="_blank" href="#" title="V2EX"></a>
+                            
+                                <a class="fa 知乎" target="_blank" href="#" title="知乎"></a>
+                            
+                                <a class="fa Facebook" target="_blank" href="#" title="Facebook"></a>
+                            
+                                <a class="fa Google" target="_blank" href="#" title="Google"></a>
+                            
+                                <a class="fa Twitter" target="_blank" href="#" title="Twitter"></a>
+                            
+                                <a class="fa QQ" target="_blank" href="#" title="QQ"></a>
+                            
+                                <a class="fa 微信" target="_blank" href="#" title="微信"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-elasticsearch(二、搜索引擎)" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/03/04/elasticsearch(二、搜索引擎)/" class="article-date">
+      <time datetime="2018-03-04T02:22:03.000Z" itemprop="datePublished">2018-03-04</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      elasticsearch(二、搜索引擎)
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h1 id="搜索引擎-基本原理"><a href="#搜索引擎-基本原理" class="headerlink" title="搜索引擎-基本原理"></a>搜索引擎-基本原理</h1><h2 id="搜索的timeout机制"><a href="#搜索的timeout机制" class="headerlink" title="搜索的timeout机制"></a>搜索的timeout机制</h2><ul>
+<li>GET /_search返回<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  &quot;took&quot;: 6,</div><div class="line">  &quot;timed_out&quot;: false,</div><div class="line">  &quot;_shards&quot;: &#123;</div><div class="line">    &quot;total&quot;: 6,</div><div class="line">    &quot;successful&quot;: 6,</div><div class="line">    &quot;failed&quot;: 0</div><div class="line">  &#125;,</div><div class="line">  &quot;hits&quot;: &#123;</div><div class="line">    &quot;total&quot;: 10,</div><div class="line">    &quot;max_score&quot;: 1,</div><div class="line">    &quot;hits&quot;: [</div><div class="line">      &#123;</div><div class="line">        &quot;_index&quot;: &quot;.kibana&quot;,</div><div class="line">        &quot;_type&quot;: &quot;config&quot;,</div><div class="line">        &quot;_id&quot;: &quot;5.2.0&quot;,</div><div class="line">        &quot;_score&quot;: 1,</div><div class="line">        &quot;_source&quot;: &#123;</div><div class="line">          &quot;buildNum&quot;: 14695</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    ]</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<a id="more"></a>
+<ul>
+<li>参数解释<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">took：整个搜索请求花费了多少毫秒</div><div class="line"> </div><div class="line">hits.total：返回结果数</div><div class="line">hits.max_score：最大的相关度分数</div><div class="line">hits.hits：默认查询前10条完整数据，按照_score降序排序</div><div class="line"> </div><div class="line">shards：一个搜索请求，会打到一个index的所有primary shard上去，也可以到primary shard的其中一个replica shard上去。</div><div class="line"> </div><div class="line">timeout：默认无timeout，手动指定timeout=10ms，timeout=1s，timeout=1m</div><div class="line">GET /_search?timeout=10m</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="multi-index和multi-type搜索模式"><a href="#multi-index和multi-type搜索模式" class="headerlink" title="multi-index和multi-type搜索模式"></a>multi-index和multi-type搜索模式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">/_search：所有索引，所有type下的所有数据都搜索出来</div><div class="line">/index1/_search：指定一个index，搜索其下所有type的数据</div><div class="line">/index1,index2/_search：同时搜索两个index下的数据</div><div class="line">/*1,*2/_search：按照通配符去匹配多个索引</div><div class="line">/index1/type1/_search：搜索一个index下指定的type的数据</div><div class="line">/index1/type1,type2/_search：可以搜索一个index下多个type的数据</div><div class="line">/index1,index2/type1,type2/_search：搜索多个index下的多个type的数据</div><div class="line">/_all/type1,type2/_search：_all，可以代表搜索所有index下的指定type的数据</div></pre></td></tr></table></figure>
+<h2 id="query-string基础语法"><a href="#query-string基础语法" class="headerlink" title="query string基础语法"></a>query string基础语法</h2><ul>
+<li>包含与不包含</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">上面两个等价：</div><div class="line">GET /test_index/test_type/_search?q=test_field:test</div><div class="line">GET /test_index/test_type/_search?q=+test_field:test</div><div class="line"> </div><div class="line">GET /test_index/test_type/_search?q=-test_field:test</div></pre></td></tr></table></figure>
+<ul>
+<li>_all metadata的原理和作用</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">GET /test_index/test_type/_search?q=test</div><div class="line"> </div><div class="line">1)插入一条document，它里面包含了多个field，此时，es会自动将多个field的值，</div><div class="line">全部用字符串的方式串联起来，变成一个长的字符串，作为_all field的值，同时建立索引</div><div class="line"> </div><div class="line">2)如果在搜索的时候，没有对某个field指定搜索，就默认搜索_all field，其中是包含了所有field的值的</div><div class="line"> </div><div class="line">3)生产环境不使用</div></pre></td></tr></table></figure>
+<h2 id="一个例子告诉你mapping是什么"><a href="#一个例子告诉你mapping是什么" class="headerlink" title="一个例子告诉你mapping是什么"></a>一个例子告诉你mapping是什么</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">插入几条数据，让es自动为我们建立一个索引</div><div class="line"> </div><div class="line">PUT /website/article/1</div><div class="line">&#123;</div><div class="line">  &quot;post_date&quot;: &quot;2017-01-01&quot;,</div><div class="line">  &quot;title&quot;: &quot;my first article&quot;,</div><div class="line">  &quot;content&quot;: &quot;this is my first article in this website&quot;,</div><div class="line">  &quot;author_id&quot;: 11400</div><div class="line">&#125;</div><div class="line"> </div><div class="line">PUT /website/article/2</div><div class="line">&#123;</div><div class="line">  &quot;post_date&quot;: &quot;2017-01-02&quot;,</div><div class="line">  &quot;title&quot;: &quot;my second article&quot;,</div><div class="line">  &quot;content&quot;: &quot;this is my second article in this website&quot;,</div><div class="line">  &quot;author_id&quot;: 11400</div><div class="line">&#125;</div><div class="line"> </div><div class="line">PUT /website/article/3</div><div class="line">&#123;</div><div class="line">  &quot;post_date&quot;: &quot;2017-01-03&quot;,</div><div class="line">  &quot;title&quot;: &quot;my third article&quot;,</div><div class="line">  &quot;content&quot;: &quot;this is my third article in this website&quot;,</div><div class="line">  &quot;author_id&quot;: 11400</div><div class="line">&#125;</div><div class="line"> </div><div class="line">尝试各种搜索</div><div class="line"> </div><div class="line">GET /website/article/_search?q=2017		      3条结果             </div><div class="line">GET /website/article/_search?q=2017-01-01        	3条结果</div><div class="line">GET /website/article/_search?q=post_date:2017-01-01   	1条结果</div><div class="line">GET /website/article/_search?q=post_date:2017         	1条结果</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1)index中的type建立的一种数据结构和相关配置，简称为mapping</div><div class="line">2)dynamic mapping:自动为我们建立index，type，以及type对应的mapping，</div><div class="line">mapping中包含了每个field对应的数据类型，以及如何分词等设置</div></pre></td></tr></table></figure>
+<ul>
+<li>揭密</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">date：<span class="function">exact <span class="title">value</span> <span class="params">(不分词)</span></span></div><div class="line">_all：full text（分词）</div><div class="line"> </div><div class="line">GET /_search?q=<span class="number">2017</span></div><div class="line">搜索的是_all field，document所有的field都会拼接成一个大串，进行分词</div><div class="line"> </div><div class="line">GET /_search?q=post_date:<span class="number">2017</span>-<span class="number">01</span>-<span class="number">01</span></div><div class="line">date类型会作为exact value去建立索引</div><div class="line"> </div><div class="line">GET /_search?q=post_date:<span class="number">2017</span> 内部优化</div></pre></td></tr></table></figure>
+<ul>
+<li>查看mapping：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">GET /website/_mapping/article</div></pre></td></tr></table></figure>
+<ul>
+<li>查看分词器</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">GET /_analyze</div><div class="line">&#123;</div><div class="line">  &quot;analyzer&quot;: &quot;standard&quot;,</div><div class="line">  &quot;text&quot;: &quot;Text to analyze&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="分词器"><a href="#分词器" class="headerlink" title="分词器"></a>分词器</h2><ul>
+<li>作用</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">切分词语,同时对每个单词进行normalization（时态转换，单复数转换）,提升recall召回率</div><div class="line"> </div><div class="line">召回率：搜索的时候，增加能够搜索到的结果的数量</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">character filter：一段文本分词前，先预处理，比如过滤html标签（&lt;span&gt;hello&lt;span&gt; --&gt; hello），&amp; --&gt; and（I&amp;you --&gt; I and you）</div><div class="line">tokenizer：分词，hello you and me --&gt; hello, you, and, me</div><div class="line">token filter：lowercase，stop word，synonymom，dogs --&gt; dog，liked --&gt; like，Tom --&gt; tom，a/the/an --&gt; 干掉，mother --&gt; mom，small --&gt; little</div></pre></td></tr></table></figure>
+<ul>
+<li>内置分词器的介绍</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Set the shape to semi-transparent by calling set_trans(5)</div><div class="line"> </div><div class="line">standard analyzer=&gt;set, the, shape, to, semi, transparent,by, calling, set_trans, 5（默认）</div><div class="line">simple analyzer=&gt;set, the, shape, to, semi, transparent, by, calling, set, trans</div><div class="line">whitespace analyzer=&gt;Set, the, shape, to, semi-transparent, by, calling, set_trans(5)</div><div class="line">language analyzer（特定的语言的分词器，english，英语分词器）=&gt;set, shape, semi, transpar, call, set_tran, 5</div></pre></td></tr></table></figure>
+<h2 id="核心的数据类型"><a href="#核心的数据类型" class="headerlink" title="核心的数据类型"></a>核心的数据类型</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">string</div><div class="line">byte，short，integer，long</div><div class="line">float，double</div><div class="line">boolean</div><div class="line">date</div></pre></td></tr></table></figure>
+<ul>
+<li>dynamic mapping</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">true or false	--&gt;	boolean</div><div class="line">123		--&gt;	long</div><div class="line">123.45		--&gt;	double</div><div class="line">2017-01-01	--&gt;	date</div><div class="line">&quot;hello world&quot;	--&gt;	string/text</div></pre></td></tr></table></figure>
+<ul>
+<li>查看mapping</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">GET /index/_mapping/type</div></pre></td></tr></table></figure>
+<h2 id="定制mapping"><a href="#定制mapping" class="headerlink" title="定制mapping"></a>定制mapping</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">只能创建index时手动建立mapping，或者新增field mapping，但是不能update field mapping</div></pre></td></tr></table></figure>
+<ul>
+<li>修改mapping</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">PUT /website</div><div class="line">&#123;</div><div class="line">  &quot;mappings&quot;: &#123;</div><div class="line">    &quot;article&quot;: &#123;</div><div class="line">      &quot;properties&quot;: &#123;</div><div class="line">        &quot;author_id&quot;: &#123;</div><div class="line">          &quot;type&quot;: &quot;long&quot;</div><div class="line">        &#125;,</div><div class="line">        &quot;title&quot;: &#123;</div><div class="line">          &quot;type&quot;: &quot;text&quot;,</div><div class="line">          &quot;analyzer&quot;: &quot;english&quot;</div><div class="line">        &#125;,</div><div class="line">        &quot;content&quot;: &#123;</div><div class="line">          &quot;type&quot;: &quot;text&quot;</div><div class="line">        &#125;,</div><div class="line">        &quot;post_date&quot;: &#123;</div><div class="line">          &quot;type&quot;: &quot;date&quot;</div><div class="line">        &#125;,</div><div class="line">        &quot;publisher_id&quot;: &#123;</div><div class="line">          &quot;type&quot;: &quot;text&quot;,</div><div class="line">          &quot;index&quot;: &quot;not_analyzed&quot;</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>测试mapping</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">新增mapping：</div><div class="line">PUT /website/_mapping/article</div><div class="line">&#123;</div><div class="line">  &quot;properties&quot; : &#123;</div><div class="line">    &quot;new_field&quot; : &#123;</div><div class="line">      &quot;type&quot; :    &quot;string&quot;,</div><div class="line">      &quot;index&quot;:    &quot;not_analyzed&quot;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"> </div><div class="line">测试mapping:</div><div class="line">GET /website/_analyze</div><div class="line">&#123;</div><div class="line">  &quot;field&quot;: &quot;content&quot;,</div><div class="line">  &quot;text&quot;: &quot;my-dogs&quot; </div><div class="line">&#125;</div><div class="line"> </div><div class="line">测试index属性为“not_analyzed”的mapping时会报错：</div><div class="line">GET website/_analyze</div><div class="line">&#123;</div><div class="line">  &quot;field&quot;: &quot;new_field&quot;,</div><div class="line">  &quot;text&quot;: &quot;my dogs&quot;</div><div class="line">&#125;</div><div class="line">  </div><div class="line">&#123;</div><div class="line">  &quot;error&quot;: &#123;</div><div class="line">    &quot;root_cause&quot;: [</div><div class="line">      &#123;</div><div class="line">        &quot;type&quot;: &quot;remote_transport_exception&quot;,</div><div class="line">        &quot;reason&quot;: &quot;[4onsTYV][127.0.0.1:9300][indices:admin/analyze[s]]&quot;</div><div class="line">      &#125;</div><div class="line">    ],</div><div class="line">    &quot;type&quot;: &quot;illegal_argument_exception&quot;,</div><div class="line">    &quot;reason&quot;: &quot;Can&apos;t process field [new_field], Analysis requests are only supported on tokenized fields&quot;</div><div class="line">  &#125;,</div><div class="line">  &quot;status&quot;: 400</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="复杂数据类型"><a href="#复杂数据类型" class="headerlink" title="复杂数据类型"></a>复杂数据类型</h2><ul>
+<li>multivalue field</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123; &quot;tags&quot;: [ &quot;tag1&quot;, &quot;tag2&quot; ]&#125;</div><div class="line"></div><div class="line">数据类型不能混</div></pre></td></tr></table></figure>
+<ul>
+<li>empty field</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">null，[]，[null]</div></pre></td></tr></table></figure>
+<ul>
+<li>object field</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">PUT /company/employee/1</div><div class="line">&#123;</div><div class="line">  &quot;address&quot;: &#123;</div><div class="line">    &quot;country&quot;: &quot;china&quot;,</div><div class="line">    &quot;province&quot;: &quot;guangdong&quot;,</div><div class="line">    &quot;city&quot;: &quot;guangzhou&quot;</div><div class="line">  &#125;,</div><div class="line">  &quot;name&quot;: &quot;jack&quot;,</div><div class="line">  &quot;age&quot;: 27,</div><div class="line">  &quot;join_date&quot;: &quot;2017-01-01&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">查看mapping</div><div class="line"></div><div class="line">GET /company/_mapping/employee</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">底层转换为：</div><div class="line"></div><div class="line">&#123;</div><div class="line">    &quot;name&quot;:            [jack],</div><div class="line">    &quot;age&quot;:          [27],</div><div class="line">    &quot;join_date&quot;:      [2017-01-01],</div><div class="line">    &quot;address.country&quot;:         [china],</div><div class="line">    &quot;address.province&quot;:   [guangdong],</div><div class="line">    &quot;address.city&quot;:  [guangzhou]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>object 数组底层转换：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;authors&quot;: [</div><div class="line">        &#123; &quot;age&quot;: 26, &quot;name&quot;: &quot;Jack White&quot;&#125;,</div><div class="line">        &#123; &quot;age&quot;: 55, &quot;name&quot;: &quot;Tom Jones&quot;&#125;,</div><div class="line">        &#123; &quot;age&quot;: 39, &quot;name&quot;: &quot;Kitty Smith&quot;&#125;</div><div class="line">    ]</div><div class="line">&#125;</div><div class="line"> </div><div class="line">=&gt;</div><div class="line"> </div><div class="line">&#123;</div><div class="line">    &quot;authors.age&quot;:    [26, 55, 39],</div><div class="line">    &quot;authors.name&quot;:   [jack, white, tom, jones, kitty, smith]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="搜索引擎-深入搜索"><a href="#搜索引擎-深入搜索" class="headerlink" title="搜索引擎-深入搜索"></a>搜索引擎-深入搜索</h1><h2 id="组合多个搜索条件"><a href="#组合多个搜索条件" class="headerlink" title="组合多个搜索条件"></a>组合多个搜索条件</h2><ul>
+<li>Query DSL的基本语法</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    QUERY_NAME: &#123;</div><div class="line">        ARGUMENT: VALUE,</div><div class="line">        ARGUMENT: VALUE,...</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">&#123;</div><div class="line">    QUERY_NAME: &#123;</div><div class="line">        FIELD_NAME: &#123;</div><div class="line">            ARGUMENT: VALUE,</div><div class="line">            ARGUMENT: VALUE,...</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>搜索需求</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">title必须包含elasticsearch，content可以包含elasticsearch也可以不包含，author_id必须不为111</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">GET /website/article/_search</div><div class="line">&#123;</div><div class="line">  &quot;query&quot;: &#123;</div><div class="line">    &quot;bool&quot;: &#123;</div><div class="line">      &quot;must&quot;: [</div><div class="line">        &#123;</div><div class="line">          &quot;match&quot;: &#123;</div><div class="line">            &quot;title&quot;: &quot;elasticsearch&quot;</div><div class="line">          &#125;</div><div class="line">        &#125;</div><div class="line">      ],</div><div class="line">      &quot;should&quot;: [</div><div class="line">        &#123;</div><div class="line">          &quot;match&quot;: &#123;</div><div class="line">            &quot;content&quot;: &quot;elasticsearch&quot;</div><div class="line">          &#125;</div><div class="line">        &#125;</div><div class="line">      ],</div><div class="line">      &quot;must_not&quot;: [</div><div class="line">        &#123;</div><div class="line">          &quot;match&quot;: &#123;</div><div class="line">            &quot;author_id&quot;: 111</div><div class="line">          &#125;</div><div class="line">        &#125;</div><div class="line">      ]</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>should中传多个值</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">minimum_should_match: should中至少满足一项</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">GET /test_index/_search</div><div class="line">&#123;</div><div class="line">    &quot;query&quot;: &#123;</div><div class="line">            &quot;bool&quot;: &#123;</div><div class="line">                &quot;must&quot;: &#123; &quot;match&quot;:   &#123; &quot;name&quot;: &quot;tom&quot; &#125;&#125;,</div><div class="line">                &quot;should&quot;: [</div><div class="line">                    &#123; &quot;match&quot;:       &#123; &quot;hired&quot;: true &#125;&#125;,</div><div class="line">                    &#123; &quot;bool&quot;: &#123;</div><div class="line">                        &quot;must&quot;:      &#123; &quot;match&quot;: &#123; &quot;personality&quot;: &quot;good&quot; &#125;&#125;,</div><div class="line">                        &quot;must_not&quot;:  &#123; &quot;match&quot;: &#123; &quot;rude&quot;: true &#125;&#125;</div><div class="line">                    &#125;&#125;</div><div class="line">                ],</div><div class="line">                &quot;minimum_should_match&quot;: 1</div><div class="line">            &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="filter"><a href="#filter" class="headerlink" title="filter"></a>filter</h2><ul>
+<li>搜索请求</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">年龄必须大于等于30，同时join_date必须是2016-01-01</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">GET /company/employee/_search</div><div class="line">&#123;</div><div class="line">  &quot;query&quot;: &#123;</div><div class="line">    &quot;bool&quot;: &#123;</div><div class="line">      &quot;must&quot;: [</div><div class="line">        &#123;</div><div class="line">          &quot;match&quot;: &#123;</div><div class="line">            &quot;join_date&quot;: &quot;2016-01-01&quot;</div><div class="line">          &#125;</div><div class="line">        &#125;</div><div class="line">      ],</div><div class="line">      &quot;filter&quot;: &#123;</div><div class="line">        &quot;range&quot;: &#123;</div><div class="line">          &quot;age&quot;: &#123;</div><div class="line">            &quot;gte&quot;: 30</div><div class="line">          &#125;</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>filter与query对比</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">filter，仅仅只是按照搜索条件过滤出需要的数据，不计算任何相关度分数，对相关度没有任何影响</div><div class="line">query，会去计算每个document相对于搜索条件的相关度，并按照相关度排序</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">你希望越符合这些搜索条件的document越排在前面，那么这些搜索条件要放在query中；</div><div class="line">如果你不希望一些搜索条件来影响你的document排序，那么就放在filter中</div></pre></td></tr></table></figure>
+<ul>
+<li>filter与query性能</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">filter，不需要计算相关度分数，不需要按照相关度分数进行排序，同时还有内置的自动cache最常使用filter的数据</div><div class="line">query，相反，要计算相关度分数，按照分数进行排序，而且无法cache结果</div></pre></td></tr></table></figure>
+<h2 id="常用query搜索语法"><a href="#常用query搜索语法" class="headerlink" title="常用query搜索语法"></a>常用query搜索语法</h2><ul>
+<li>match all</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">GET /_search</div><div class="line">&#123;</div><div class="line">    &quot;query&quot;: &#123;</div><div class="line">        &quot;match_all&quot;: &#123;&#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>match</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">GET /_search</div><div class="line">&#123;</div><div class="line">    &quot;query&quot;: &#123; &quot;match&quot;: &#123; &quot;title&quot;: &quot;my elasticsearch article&quot; &#125;&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>multi match</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">GET /test_index/test_type/_search</div><div class="line">&#123;</div><div class="line">  &quot;query&quot;: &#123;</div><div class="line">    &quot;multi_match&quot;: &#123;</div><div class="line">      &quot;query&quot;: &quot;test&quot;,</div><div class="line">      &quot;fields&quot;: [&quot;test_field&quot;, &quot;test_field1&quot;]</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>range query</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">GET /company/employee/_search </div><div class="line">&#123;</div><div class="line">  &quot;query&quot;: &#123;</div><div class="line">    &quot;range&quot;: &#123;</div><div class="line">      &quot;age&quot;: &#123;</div><div class="line">        &quot;gte&quot;: 30</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>term query</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">GET /test_index/test_type/_search </div><div class="line">&#123;</div><div class="line">  &quot;query&quot;: &#123;</div><div class="line">    &quot;term&quot;: &#123;</div><div class="line">      &quot;test_field&quot;: &quot;test hello&quot;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>terms query</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">GET /_search</div><div class="line">&#123;</div><div class="line">    &quot;query&quot;: &#123; &quot;terms&quot;: &#123; &quot;tag&quot;: [ &quot;search&quot;, &quot;full_text&quot;, &quot;nosql&quot; ] &#125;&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="多条件组合查询"><a href="#多条件组合查询" class="headerlink" title="多条件组合查询"></a>多条件组合查询</h2><ul>
+<li>层级说明</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">bool</div><div class="line">must，must_not，should，filter</div><div class="line"> </div><div class="line">-每个子查询都会计算一个document针对它的相关度分数，然后bool综合所有分数，合并为一个分数</div><div class="line">-当然filter是不会计算分数</div></pre></td></tr></table></figure>
+<ul>
+<li>查询案例</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;bool&quot;: &#123;</div><div class="line">        &quot;must&quot;:     &#123; &quot;match&quot;: &#123; &quot;title&quot;: &quot;how to make millions&quot; &#125;&#125;,</div><div class="line">        &quot;must_not&quot;: &#123; &quot;match&quot;: &#123; &quot;tag&quot;:   &quot;spam&quot; &#125;&#125;,</div><div class="line">        &quot;should&quot;: [</div><div class="line">            &#123; &quot;match&quot;: &#123; &quot;tag&quot;: &quot;starred&quot; &#125;&#125;</div><div class="line">        ],</div><div class="line">        &quot;filter&quot;: &#123;</div><div class="line">          &quot;bool&quot;: &#123; </div><div class="line">              &quot;must&quot;: [</div><div class="line">                  &#123; &quot;range&quot;: &#123; &quot;date&quot;: &#123; &quot;gte&quot;: &quot;2014-01-01&quot; &#125;&#125;&#125;,</div><div class="line">                  &#123; &quot;range&quot;: &#123; &quot;price&quot;: &#123; &quot;lte&quot;: 29.99 &#125;&#125;&#125;</div><div class="line">              ],</div><div class="line">              &quot;must_not&quot;: [</div><div class="line">                  &#123; &quot;term&quot;: &#123; &quot;category&quot;: &quot;ebooks&quot; &#125;&#125;</div><div class="line">              ]</div><div class="line">          &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>使filter结果带相关度分数（分数为1）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">GET /company/employee/_search </div><div class="line">&#123;</div><div class="line">  &quot;query&quot;: &#123;</div><div class="line">    &quot;constant_score&quot;: &#123;</div><div class="line">      &quot;filter&quot;: &#123;</div><div class="line">        &quot;range&quot;: &#123;</div><div class="line">          &quot;age&quot;: &#123;</div><div class="line">            &quot;gte&quot;: 30</div><div class="line">          &#125;</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="定位不合法搜索及其原因"><a href="#定位不合法搜索及其原因" class="headerlink" title="定位不合法搜索及其原因"></a>定位不合法搜索及其原因</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">GET /test_index/test_type/_validate/query?explain</div><div class="line">&#123;</div><div class="line">  &quot;query&quot;: &#123;</div><div class="line">    &quot;match-match&quot;: &#123;</div><div class="line">      &quot;test_field&quot;: &quot;test&quot;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"> </div><div class="line">&#123;</div><div class="line">    &quot;valid&quot;: false,</div><div class="line">    &quot;error&quot;: &quot;org.elasticsearch.common.ParsingException: no [query] registered for [match-match]&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="定制搜索结果的排序规则"><a href="#定制搜索结果的排序规则" class="headerlink" title="定制搜索结果的排序规则"></a>定制搜索结果的排序规则</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">默认情况下按照_score降序排序的</div><div class="line"></div><div class="line">然而，某些情况下，可能没有有用的_score，比如filter</div></pre></td></tr></table></figure>
+<ul>
+<li>自定义排序规则</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">GET /company/employee/_search </div><div class="line">&#123;</div><div class="line">  &quot;query&quot;: &#123;</div><div class="line">    &quot;constant_score&quot;: &#123;</div><div class="line">      &quot;filter&quot;: &#123;</div><div class="line">        &quot;range&quot;: &#123;</div><div class="line">          &quot;age&quot;: &#123;</div><div class="line">            &quot;gte&quot;: 30</div><div class="line">          &#125;</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;,</div><div class="line">  &quot;sort&quot;: [</div><div class="line">    &#123;</div><div class="line">      &quot;join_date&quot;: &#123;</div><div class="line">        &quot;order&quot;: &quot;asc&quot;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="field索引两次防止分词影响排序"><a href="#field索引两次防止分词影响排序" class="headerlink" title="field索引两次防止分词影响排序"></a>field索引两次防止分词影响排序</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">field建立两次索引，一个分词，用来搜索；一个不分词，用来排序</div></pre></td></tr></table></figure>
+<ul>
+<li>创建mapping</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">PUT /website </div><div class="line">&#123;</div><div class="line">  &quot;mappings&quot;: &#123;</div><div class="line">    &quot;article&quot;: &#123;</div><div class="line">      &quot;properties&quot;: &#123;</div><div class="line">        &quot;title&quot;: &#123;</div><div class="line">          &quot;type&quot;: &quot;text&quot;,</div><div class="line">          &quot;fields&quot;: &#123;</div><div class="line">            &quot;raw&quot;: &#123;</div><div class="line">              &quot;type&quot;: &quot;string&quot;,</div><div class="line">              &quot;index&quot;: &quot;not_analyzed&quot;</div><div class="line">            &#125;</div><div class="line">          &#125;,</div><div class="line">          &quot;fielddata&quot;: true</div><div class="line">        &#125;,</div><div class="line">        &quot;content&quot;: &#123;</div><div class="line">          &quot;type&quot;: &quot;text&quot;</div><div class="line">        &#125;,</div><div class="line">        &quot;post_date&quot;: &#123;</div><div class="line">          &quot;type&quot;: &quot;date&quot;</div><div class="line">        &#125;,</div><div class="line">        &quot;author_id&quot;: &#123;</div><div class="line">          &quot;type&quot;: &quot;long&quot;</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>创建索引</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">PUT /website/article/1</div><div class="line">&#123;</div><div class="line">  &quot;title&quot;: &quot;first article&quot;,</div><div class="line">  &quot;content&quot;: &quot;this is my second article&quot;,</div><div class="line">  &quot;post_date&quot;: &quot;2017-01-01&quot;,</div><div class="line">  &quot;author_id&quot;: 110</div><div class="line">&#125;</div><div class="line"> </div><div class="line">...</div></pre></td></tr></table></figure>
+<ul>
+<li>搜索排序方式</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">GET /website/article/_search</div><div class="line">&#123;</div><div class="line">  &quot;query&quot;: &#123;</div><div class="line">    &quot;match_all&quot;: &#123;&#125;</div><div class="line">  &#125;,</div><div class="line">  &quot;sort&quot;: [</div><div class="line">    &#123;</div><div class="line">      &quot;title.raw&quot;: &#123;</div><div class="line">        &quot;order&quot;: &quot;desc&quot;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="使用scoll技术滚动搜索大量数据"><a href="#使用scoll技术滚动搜索大量数据" class="headerlink" title="使用scoll技术滚动搜索大量数据"></a>使用scoll技术滚动搜索大量数据</h2><ul>
+<li>指定一个scoll参数，指定一个时间窗口(1分钟)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">GET /test_index/test_type/_search?scroll=1m</div><div class="line">&#123;</div><div class="line">  &quot;query&quot;: &#123;</div><div class="line">    &quot;match_all&quot;: &#123;&#125;</div><div class="line">  &#125;,</div><div class="line">  &quot;sort&quot;: [ &quot;_doc&quot; ],</div><div class="line">  &quot;size&quot;: 3</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>获得的结果会有一个scoll_id，下一次再发送scoll请求的时候，必须带scoll_id</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">GET /_search/scroll</div><div class="line">&#123;</div><div class="line">    &quot;scroll&quot;: &quot;1m&quot;, </div><div class="line">    &quot;scroll_id&quot; : &quot;DnF1ZXJ5VGhlbkZldGNoBQAAAAAAACxeFjRvbnNUWVZaVGpHdklqOV9zcFd6MncAAAAAAAAsYBY0b25zVFlWWlRqR3ZJajlfc3BXejJ3AAAAAAAALF8WNG9uc1RZVlpUakd2SWo5X3NwV3oydwAAAAAAACxhFjRvbnNUWVZaVGpHdklqOV9zcFd6MncAAAAAAAAsYhY0b25zVFlWWlRqR3ZJajlfc3BXejJ3&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">以此类推，看起来挺像分页，但使用场景不一样</div><div class="line"> </div><div class="line">分页主要是用来一页一页搜索，给用户看的；</div><div class="line">scoll主要是用来一批一批检索数据，让系统进行处理的</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2018/03/04/elasticsearch(二、搜索引擎)/">elasticsearch(二、搜索引擎)</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">fangminx</a></p>
+        <p><span>发布时间:</span>2018-03-04, 10:22:03</p>
+        <p><span>最后更新:</span>2018-03-04, 11:01:46</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2018/03/04/elasticsearch(二、搜索引擎)/" title="elasticsearch(二、搜索引擎)">http://yoursite.com/2018/03/04/elasticsearch(二、搜索引擎)/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2018/03/04/elasticsearch(二、搜索引擎)/　　作者: fangminx" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2018/03/04/elasticsearch(三、内核知识)/">
+                    elasticsearch(三、内核知识)
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2018/03/03/elasticsearch(一、核心概念和机制)/">
+                    elasticsearch(一、核心概念和机制)
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#搜索引擎-基本原理"><span class="toc-number">1.</span> <span class="toc-text">搜索引擎-基本原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#搜索的timeout机制"><span class="toc-number">1.1.</span> <span class="toc-text">搜索的timeout机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#multi-index和multi-type搜索模式"><span class="toc-number">1.2.</span> <span class="toc-text">multi-index和multi-type搜索模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#query-string基础语法"><span class="toc-number">1.3.</span> <span class="toc-text">query string基础语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一个例子告诉你mapping是什么"><span class="toc-number">1.4.</span> <span class="toc-text">一个例子告诉你mapping是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分词器"><span class="toc-number">1.5.</span> <span class="toc-text">分词器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#核心的数据类型"><span class="toc-number">1.6.</span> <span class="toc-text">核心的数据类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#定制mapping"><span class="toc-number">1.7.</span> <span class="toc-text">定制mapping</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#复杂数据类型"><span class="toc-number">1.8.</span> <span class="toc-text">复杂数据类型</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#搜索引擎-深入搜索"><span class="toc-number">2.</span> <span class="toc-text">搜索引擎-深入搜索</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#组合多个搜索条件"><span class="toc-number">2.1.</span> <span class="toc-text">组合多个搜索条件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#filter"><span class="toc-number">2.2.</span> <span class="toc-text">filter</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常用query搜索语法"><span class="toc-number">2.3.</span> <span class="toc-text">常用query搜索语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#多条件组合查询"><span class="toc-number">2.4.</span> <span class="toc-text">多条件组合查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#定位不合法搜索及其原因"><span class="toc-number">2.5.</span> <span class="toc-text">定位不合法搜索及其原因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#定制搜索结果的排序规则"><span class="toc-number">2.6.</span> <span class="toc-text">定制搜索结果的排序规则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#field索引两次防止分词影响排序"><span class="toc-number">2.7.</span> <span class="toc-text">field索引两次防止分词影响排序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用scoll技术滚动搜索大量数据"><span class="toc-number">2.8.</span> <span class="toc-text">使用scoll技术滚动搜索大量数据</span></a></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"elasticsearch(二、搜索引擎)　| Just For Fun！　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+        <section class="youyan" id="comments">
+    <script>
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = 'http://v2.uyan.cc/code/uyan.js?uid=2134263';
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+    <div id="uyan_frame"></div>
+</section>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2018/03/04/elasticsearch(三、内核知识)/" title="上一篇: elasticsearch(三、内核知识)">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2018/03/03/elasticsearch(一、核心概念和机制)/" title="下一篇: elasticsearch(一、核心概念和机制)">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/03/04/elasticsearch(四、索引管理)/">elasticsearch(四、索引管理)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/04/elasticsearch(三、内核知识)/">elasticsearch(三、内核知识)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/04/elasticsearch(二、搜索引擎)/">elasticsearch(二、搜索引擎)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/03/elasticsearch(一、核心概念和机制)/">elasticsearch(一、核心概念和机制)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/03/【Java8函数式编程】/">【Java8函数式编程】</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/03/Mysql存储引擎和事务/">Mysql存储引擎和事务</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/Java基础笔试题/">Java基础笔试题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/19/Java实现简单算法/">Java实现简单算法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/19/Java实现简单树/">Java实现简单树</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/18/Java实现简单栈和队列/">Java实现简单栈和队列</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/18/Java实现简单线性表/">Java实现简单线性表</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/12/【深入浅出MySQL】/">【深入浅出MySQL】</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/12/【Java高并发程序设计】/">【Java高并发程序设计】</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/11/Java简单IO流操作/">Java简单IO流操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/Java常用对象/">Java常见对象</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/Java基本概念/">Java基本概念</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2018 fangminx
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

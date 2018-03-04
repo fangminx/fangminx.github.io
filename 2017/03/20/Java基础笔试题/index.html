@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="fangminx" />
+
+
+
+<meta name="description" content="后台开发&amp;amp;系统工程师B1.下述解决死锁的方法中，属于死锁预防策略的是？  银行家算法 资源有序分配法 资源分配图化简法 撤销进程发">
+<meta name="keywords" content="博客重构,Java基础,牛客网,笔试题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java基础笔试题">
+<meta property="og:url" content="http://yoursite.com/2017/03/20/Java基础笔试题/index.html">
+<meta property="og:site_name" content="Just For Fun！">
+<meta property="og:description" content="后台开发&amp;amp;系统工程师B1.下述解决死锁的方法中，属于死锁预防策略的是？  银行家算法 资源有序分配法 资源分配图化简法 撤销进程发">
+<meta property="og:updated_time" content="2018-03-04T03:01:55.973Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java基础笔试题">
+<meta name="twitter:description" content="后台开发&amp;amp;系统工程师B1.下述解决死锁的方法中，属于死锁预防策略的是？  银行家算法 资源有序分配法 资源分配图化简法 撤销进程发">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="Just For Fun！" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>Java基础笔试题 | Just For Fun！</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">fangminx</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">就是为了好玩！</p>
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="#" title="Email"></a>
+                            
+                                <a class="fa 新浪微博" href="#" title="新浪微博"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/fangminx" title="GitHub"></a>
+                            
+                                <a class="fa V2EX" href="#" title="V2EX"></a>
+                            
+                                <a class="fa 知乎" href="#" title="知乎"></a>
+                            
+                                <a class="fa Facebook" href="#" title="Facebook"></a>
+                            
+                                <a class="fa Google" href="#" title="Google"></a>
+                            
+                                <a class="fa Twitter" href="#" title="Twitter"></a>
+                            
+                                <a class="fa QQ" href="#" title="QQ"></a>
+                            
+                                <a class="fa 微信" href="#" title="微信"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java8/">Java8</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客重构/">博客重构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发/">并发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/牛客网/">牛客网</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/笔试题/">笔试题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/简单数据结构/">简单数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/简单算法/">简单算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">来源</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">就是为了好玩！</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">fangminx</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">fangminx</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">就是为了好玩！</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="#" title="Email"></a>
+                            
+                                <a class="fa 新浪微博" target="_blank" href="#" title="新浪微博"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/fangminx" title="GitHub"></a>
+                            
+                                <a class="fa V2EX" target="_blank" href="#" title="V2EX"></a>
+                            
+                                <a class="fa 知乎" target="_blank" href="#" title="知乎"></a>
+                            
+                                <a class="fa Facebook" target="_blank" href="#" title="Facebook"></a>
+                            
+                                <a class="fa Google" target="_blank" href="#" title="Google"></a>
+                            
+                                <a class="fa Twitter" target="_blank" href="#" title="Twitter"></a>
+                            
+                                <a class="fa QQ" target="_blank" href="#" title="QQ"></a>
+                            
+                                <a class="fa 微信" target="_blank" href="#" title="微信"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-Java基础笔试题" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/03/20/Java基础笔试题/" class="article-date">
+      <time datetime="2017-03-20T08:22:42.000Z" itemprop="datePublished">2017-03-20</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Java基础笔试题
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java基础/">Java基础</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/博客重构/">博客重构</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/牛客网/">牛客网</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔试题/">笔试题</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="后台开发-amp-系统工程师B"><a href="#后台开发-amp-系统工程师B" class="headerlink" title="后台开发&amp;系统工程师B"></a>后台开发&amp;系统工程师B</h2><p>1.下述解决死锁的方法中，属于死锁预防策略的是？</p>
+<ul>
+<li>银行家算法</li>
+<li><strong>资源有序分配法</strong></li>
+<li>资源分配图化简法</li>
+<li>撤销进程发<a id="more"></a>   
+<strong>解析：</strong><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">银行家算法：避免死锁</div><div class="line">资源有序分配法：预防死锁</div><div class="line">资源分配图化简法：检测死锁</div><div class="line">撤销进程法：解决死锁</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<p>2.进程和线程是操作系统中最基本的概念,下列有关描述错误的是？</p>
+<ul>
+<li>进程是程序的一次执行,而线程可以理解为程序中运行的一个片段</li>
+<li><strong>由于线程没有独立的地址空间,因此同一个进程的一组线程可以访问该进程资源,这些线程之间的通信也很高效</strong></li>
+<li>线程之间的通信简单(共享内存即可,但须注意互斥访问的问题),而不同进程之间的通信更为复杂,通常需要调用内核实现</li>
+<li>线程有独立的虚拟地址空间,但是拥有的资源相对进程来说,只有运行所必须的堆栈,寄存器等<br><strong>解析：</strong><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">线程只是一个进程中的不同执行路径。</div><div class="line">线程和进程都有独立的地址空间。</div><div class="line">线程有自己的堆栈和局部变量，但线程之间没有单独的地址空间。</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<p>3.若一颗二叉树的前序遍历为a,b,c,d,e,后序遍历为c,e,d,b,a，则根节点的孩子节点是？</p>
+<ul>
+<li>只有a</li>
+<li><strong>只有b</strong></li>
+<li>只有e</li>
+<li>有e，c</li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">先看前序遍历，a,b,c,d,e。因为前序遍历是按照根节点，左子节点，右子节点的顺序递归遍历。</div><div class="line">a第一个出现说明a是根节点，第二个出现b说明b是a的左子节点，</div><div class="line">第三个出现c说明c可能是a的右子节点或者c是b的左子节点。</div><div class="line">   </div><div class="line">再看后续遍历，第一个出现c说明c是最左边的节点，所以可以确定c是b的左子节点，</div><div class="line">d,e在c,b之间，所以可以确定d,e属于b的子节点或者子节点的子节点。就可以确定a只有一个根节点b了</div></pre></td></tr></table></figure></p>
+<hr>
+<p>4.1024! 末尾有多少个0?</p>
+<ul>
+<li><strong>253</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">末尾0的个数取决于乘法中因子2和5的个数。显然乘法中因子2的个数大于5的个数，</div><div class="line">所以我们只需统计因子5的个数。 </div><div class="line">一定是5的倍数的数有： 1024 / 5 = 204个 </div><div class="line">一定是25的倍数的数有：1024 / 25 = 40个 </div><div class="line">一定是125的倍数的数有：1024 / 125 = 8个 </div><div class="line">一定是625的倍数的数有：1024 / 625 = 1个 </div><div class="line">所以1024! 中总共有204+40+8+1=253个因子5。 </div><div class="line">也就是说1024! 末尾有253个0。</div><div class="line">           </div><div class="line">问：5的倍数里面不是包含25,125,625的倍数吗?</div><div class="line">答：25包含2个5,125包含3个5,625包含4个5，刚算5的时候只算了一个，后面要累加。</div></pre></td></tr></table></figure></p>
+<hr>
+<p>5.从n个数中找出最小的k个数(n &gt;&gt; k)，最优平均时间复杂度是？</p>
+<ul>
+<li><strong>O(klogk)</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">1.先直接排序，再取排序后数据的前k个数。排序算法用最快的堆排序，复杂度也会达到O(N*logN)。</div><div class="line">当k接近于N时，可以用这种算法。</div><div class="line">     </div><div class="line">2.先排序前k个数，对于后面N-k个数，依次进行插入。时间复杂度为O(k*n)。当k很小时，可以用这种算法。</div><div class="line">    </div><div class="line">3.对前k个数，建立最大堆，对于后面N-k个数，依次和最大堆的最大数比较，如果小于最大数，则替换最大数，</div><div class="line">并重新建立最大堆。时间复杂度为O(N*logk)。当k和N都很大时，这种算法比前两种算法要快很多。</div></pre></td></tr></table></figure></p>
+<hr>
+<p>6.HTTP的会话有四个过程，请选出不是的一个？</p>
+<ul>
+<li><strong>传输数据</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Http会话的四个过程:</div><div class="line">建立连接，发送请求，返回响应，关闭连接。</div></pre></td></tr></table></figure></p>
+<hr>
+<p>7.关于TIME_WAIT状态的描述，下面说法错误的是？</p>
+<ul>
+<li><strong>TIME_WAIT出现在被动关闭一方，CLOSE_WAIT出现在被动关闭一方</strong></li>
+<li>从TIME_WAIT状态到CLOSED状态，有一个超时设置，这个超时设置是 2*MSL</li>
+<li>TIME_WAIT确保有足够的时间让对端收到了ACK，如果被动关闭的那方没有收到Ack，就会触发被动端重发Fin，一来一去正好2个MSL</li>
+<li>有足够的时间让这个连接不会跟后面的连接混在一起</li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">通信双方建立TCP连接后，主动关闭连接的一方就会进入TIME_WAIT状态。</div><div class="line">    </div><div class="line">客户端主动关闭连接时，会发送最后一个ack后，然后会进入TIME_WAIT状态，</div><div class="line">再停留2个MSL时间(后有MSL的解释)，进入CLOSED状态。</div></pre></td></tr></table></figure></p>
+<hr>
+<p>8.一台主机安装了1GB的内存，操作系统为支持MMU的32位Linux发行版，现在运行了abc三个进程，以下哪些使用内存的方式是可以实现的？</p>
+<ul>
+<li><strong>abc各申请1GB</strong></li>
+<li><strong>a申请500MB b申请500MB c申请25MB</strong></li>
+<li>abc一共申请256GB</li>
+<li><strong>abc各申请2.5GB</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">有虚拟内存，可以申请大于物理内存的内存空间，但是32位系统最多只能寻址4GB空间。</div></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="后台开发-amp-系统工程师A"><a href="#后台开发-amp-系统工程师A" class="headerlink" title="后台开发&amp;系统工程师A"></a>后台开发&amp;系统工程师A</h2><p>1.关于实模式和保护模式的描述正确的是？</p>
+<ul>
+<li>实模式下的地址是计算公式是：段值＊16+偏移，其中段值16位，偏移16位，访问的地址范围1MB，如果程序访问超过1MB的地址，系统会发生异常</li>
+<li>决定实模式与保护模式的关键是CR1寄存器中的PE位，当为0时为实模式，为1位保护模式</li>
+<li><strong>在保护模式下，通过调用门，可以实现不同特权级之间的代码转移</strong></li>
+<li>保护模式下，共有4个特权级别，0特权级的任务访问3特权级的段时会触发常规保护错误(#GP)</li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">组成原理知识：现在不会，以后再更新</div></pre></td></tr></table></figure></p>
+<hr>
+<p>2.关于数据库索引，以下说法正确的是？</p>
+<ul>
+<li>针对某些字段建立索引，能够有效的减少相关数据库表的磁盘空间占用</li>
+<li>针对某些字段建立索引，能够有效的提升相关字段的读与写的效率</li>
+<li>常见数据库管理系统，通常使用hash表来存储索引</li>
+<li><strong>数据库索引的存在，可能导致相关字段删除的效率降低</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">A：增加索引会增加磁盘占用</div><div class="line">B：建立索引可以提升查询速度，即读速度；但在一定程度上降低写速度</div><div class="line">C：数据库一般使用B*树作为索引</div><div class="line">D：删除数据需要调整索引，所以会降低效率</div></pre></td></tr></table></figure></p>
+<hr>
+<p>3.把60个糖果分给5个小朋友，每个小朋友至少分到10个糖果，请问有几种分法？</p>
+<ul>
+<li><strong>1001</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">先给每个人分10个，然后把10个糖果分给5个人。使用排列组合中的隔板法。</div><div class="line">              </div><div class="line">相当于在14个元素里选择4个作为隔板：C（14,4）</div><div class="line">       </div><div class="line">结果：14*13*12*11/4*3*2*1 (分母乘多少个看上标)</div></pre></td></tr></table></figure></p>
+<hr>
+<p>4.下列算法的时间复杂度是<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span>  <span class="title">fun</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123; </div><div class="line">    <span class="keyword">if</span>(n&lt;<span class="number">2</span>)&#123; </div><div class="line">    <span class="keyword">return</span> <span class="number">1</span>; </div><div class="line">    &#125; </div><div class="line">    <span class="keyword">return</span> n*fun(n-<span class="number">2</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<ul>
+<li><strong>0(n)</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">待更新。。。</div></pre></td></tr></table></figure></p>
+<hr>
+<p>5.以下不属于tcp连接断开的状态是？</p>
+<ul>
+<li>TIME_WAIT</li>
+<li>FIN_WAIT_1</li>
+<li><strong>SYNC_SENT</strong></li>
+<li>FIN_WAIT_2</li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">待更新。。。</div></pre></td></tr></table></figure></p>
+<hr>
+<p>6.下面哪个不是进程间的通信方式？</p>
+<ul>
+<li><strong>回调</strong></li>
+<li>共享内存</li>
+<li>消息传递</li>
+<li>信号量</li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">进程间的通信方式</div><div class="line">1.管道</div><div class="line">2.信号量</div><div class="line">3.消息队列</div><div class="line">4.信号</div><div class="line">5.共享内存</div><div class="line">6.套接字</div></pre></td></tr></table></figure></p>
+<hr>
+<p>7.下面java concurrent包下的4个类中差别最大的一个是？</p>
+<ul>
+<li>CountDownLatch</li>
+<li><strong>Future</strong></li>
+<li>Semaphore</li>
+<li>ReentrantLock</li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">A、Semaphore：类，控制某个资源可被同时访问的个数;</div><div class="line">B、ReentrantLock：类，具有与使用synchronized方法和语句所访问的隐式监视器锁相同的一些基本</div><div class="line">行为和语义，但功能更强大；</div><div class="line">C、 Future：接口，表示异步计算的结果；</div><div class="line">D、 CountDownLatch： 类，可以用来在一个线程中等待多个线程完成任务的类。</div></pre></td></tr></table></figure></p>
+<hr>
+<p>8.哪些设计模式能够提高系统扩展性？</p>
+<ul>
+<li>singleton</li>
+<li><strong>abstract factory</strong></li>
+<li><strong>adapter</strong></li>
+<li><strong>Decorator</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">A单例模式没有提高扩展性</div><div class="line">B工厂方法实现松耦合，可以提高扩展性</div><div class="line">C适配器模式可以将一个接口转换成另一个接口，方便引入外部接口</div><div class="line">D装饰者模式可以扩展接口功能</div></pre></td></tr></table></figure></p>
+<hr>
+<p>9.下面对多线程和多进程编程描述正确的是？</p>
+<ul>
+<li><strong>线程的数据交换更快，因为他们在同一地址空间内</strong></li>
+<li>线程因为有自己的独立栈空间且共享数据，不利于资源管理和保护</li>
+<li><strong>多进程里，子进程可获得父进程的所有堆和栈的数据；</strong></li>
+<li><strong>进程比线程更健壮，但是进程比线程更容易杀掉。</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">待系统学习后，再更新</div></pre></td></tr></table></figure></p>
+<hr>
+<p>10.有四个整数，用8位补码分别表示为r1=FEH, r2=F2H, r3=90H, r4=F8H。运算结构存入8位寄存器中，不会溢出的是？</p>
+<ul>
+<li><strong>r1*r2</strong></li>
+<li>r2*r3</li>
+<li><strong>r1*r4</strong></li>
+<li><strong>r4*r2</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">待更新。。。</div></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="研发工程师模拟笔试题"><a href="#研发工程师模拟笔试题" class="headerlink" title="研发工程师模拟笔试题"></a>研发工程师模拟笔试题</h2><p>1.浏览器和服务器在基于https进行请求链接到数据传输过程中，用到了如下哪些技术：</p>
+<ul>
+<li><strong>非对称加密技术</strong></li>
+<li><strong>对称加密技术</strong></li>
+<li><strong>散列（哈希）算法</strong></li>
+<li><strong>数字证书</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">HTTPS在传输数据之前需要客户端（浏览器）与服务端（网站）之间进行一次握手，在握手过程中将确立双方</div><div class="line">加密传输数据的密码信息。TLS/SSL协议不仅仅是一套加密传输的协议，更是一件经过艺术家精心设计的艺术品，</div><div class="line">TLS/SSL中使用了非对称加密，对称加密以及HASH算法。握手过程的简单描述如下： </div><div class="line">    </div><div class="line">1.浏览器将自己支持的一套加密规则发送给网站。 </div><div class="line"></div><div class="line">2.网站从中选出一组加密算法与HASH算法，并将自己的身份信息以证书的形式发回给浏览器。</div><div class="line">证书里面包含了网站地址，加密公钥，以及证书的颁发机构等信息。 </div><div class="line"></div><div class="line">3.获得网站证书之后浏览器要做以下工作： </div><div class="line"></div><div class="line">a) 验证证书的合法性（颁发证书的机构是否合法，证书中包含的网站地址是否与正在访问的地址一致等），</div><div class="line">如果证书受信任，则浏览器栏里面会显示一个小锁头，否则会给出证书不受信的提示。</div><div class="line">b) 如果证书受信任，或者是用户接受了不受信的证书，浏览器会生成一串随机数的密码，并用证书中提供的公钥加密。 </div><div class="line">c) 使用约定好的HASH计算握手消息，并使用生成的随机数对消息进行加密，最后将之前生成的所有信息发送给网站。 </div><div class="line"></div><div class="line">4.网站接收浏览器发来的数据之后要做以下的操作： </div><div class="line"></div><div class="line">a) 使用自己的私钥将信息解密取出密码，使用密码解密浏览器发来的握手消息，并验证HASH是否与浏览器发来的一致。 </div><div class="line">b) 使用密码加密一段握手消息，发送给浏览器。 </div><div class="line"></div><div class="line">5.浏览器解密并计算握手消息的HASH，如果与服务端发来的HASH一致，此时握手过程结束，之后所有的通信数据</div><div class="line">将由之前浏览器生成的随机密码并利用对称加密算法进行加密。 </div><div class="line">这里浏览器与网站互相发送加密的握手消息并验证，目的是为了保证双方都获得了一致的密码，</div><div class="line">并且可以正常的加密解密数据，为后续真正数据的传输做一次测试。另外，HTTPS一般使用的加密与HASH算法如下： </div><div class="line">非对称加密算法：RSA，DSA/DSS </div><div class="line">对称加密算法：AES，RC4，3DES </div><div class="line">HASH算法：MD5，SHA1，SHA256</div></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="研发工程师笔试题（一）"><a href="#研发工程师笔试题（一）" class="headerlink" title="研发工程师笔试题（一）"></a>研发工程师笔试题（一）</h2><p>1.下面哪些机制可以用于进程间通信？</p>
+<ul>
+<li><strong>Socket</strong></li>
+<li><strong>Named pipe</strong></li>
+<li>Named event</li>
+<li>Critical Section</li>
+<li><strong>Shared memory</strong></li>
+<li>Virtual memory</li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">进程间通信：</div><div class="line">    1.管道（pipe）及有名管道（named pipe）</div><div class="line">    2.信号（signal）</div><div class="line">    3.消息队列（message queue）</div><div class="line">    4.共享内存（shared memory）</div><div class="line">    5.信号量（semaphore）</div><div class="line">    6.套接字（socket）</div></pre></td></tr></table></figure></p>
+<hr>
+<p>2.下面的程序执行输出几个hello？</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">( )</span> </span>&#123;</div><div class="line">    fork( );</div><div class="line">    fork( );</div><div class="line">    fork( );</div><div class="line">    <span class="built_in">printf</span>(“hello\n”);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li><strong>8</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">fork（）函数通过系统调用创建一个与原来进程几乎完全相同的进程，也就是两个进程可以做完全相同的事，</div><div class="line">但如果初始参数或者传入的变量不同，两个进程也可以做不同的事。</div><div class="line">fork调用的一个奇妙之处就是它仅仅被调用一次，却能够返回两次，它可能有三种不同的返回值： </div><div class="line">    1）在父进程中，fork返回新创建子进程的进程ID；</div><div class="line">    2）在子进程中，fork返回0；</div><div class="line">    3）如果出现错误，fork返回一个负值；</div></pre></td></tr></table></figure></p>
+<hr>
+<p>3.我们用a^b 来表示a的b次幂，那么下列算是判断正确的是？</p>
+<ul>
+<li>2.1^3.1 &gt; 3.1^2.1</li>
+<li><strong>2.1^3.1 &lt; 3.1^2.1</strong></li>
+<li><strong>2.1^4.1 &gt; 4.1^2.1</strong></li>
+<li>2.1^4.1 &lt; 4.1^2.1</li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">比较a^b 与b^a的大小，可变为比较ln(a^b) = blna 与ln(b^a)=alnb的大小</div><div class="line">这种题还是蒙吧。。。</div></pre></td></tr></table></figure></p>
+<hr>
+<p>4.以下设计模式中，哪一项不属于结构性模式？</p>
+<ul>
+<li>适配器模式</li>
+<li>代理模式</li>
+<li><strong>命令模式</strong></li>
+<li>装饰模式</li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">结构型设计模式是从程序的结构上解决模块之间的耦合问题。包括以下七种模式：</div><div class="line">适配器模式、 桥接模式、 组合模式、 装饰模式、 外观模式、 享元模式、 代理模式。</div></pre></td></tr></table></figure></p>
+<hr>
+<p>5.对于一个分布式计算系统来说，以下哪三个指标不能同时完成？</p>
+<ul>
+<li><strong>一致性</strong></li>
+<li><strong>可用性</strong></li>
+<li>安全性</li>
+<li><strong>分区容错性</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">分布式领域CAP理论，</div><div class="line">Consistency(一致性), 数据一致更新，所有数据变动都是同步的</div><div class="line">Availability(可用性), 好的响应性能</div><div class="line">Partition tolerance(分区容错性) 可靠性</div><div class="line">                  </div><div class="line">定理：任何分布式 系统只可同时满足二点，没法三者兼顾。</div><div class="line">忠告：架构师不要将精力浪费在如何设计能满足三者的完美分布式 系统，而是应该进行取舍</div></pre></td></tr></table></figure></p>
+<hr>
+<p>6.在网络应用测试中，网络延迟是一个重要指标。以下关于网络延迟的理解，正确的是？</p>
+<ul>
+<li>指响应时间</li>
+<li>指报文从客户端发出到客户端接收到服务器响应的间隔时间</li>
+<li>指报文在网络上的传输时间</li>
+<li><strong>指从报文开始进入网络到它开始离开网络之间的时间</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">要注意区分相关的概念</div><div class="line">B选项只能说是往返时延，即RTT，而网络延迟是数据进入网络到离开网络所花费的总时间。</div></pre></td></tr></table></figure></p>
+<hr>
+<p>7.书架一排有5个格子。现在有20本书，编号从1到20。要求20本书要摆放在同一排里，并且从左到右编号依次递减；每个格子至少有一本书；并且编号7，8，9的书籍必须在同一个格子里面。问，一共有多少种可能的摆放方法？</p>
+<ul>
+<li><strong>2380</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">把7，8,9看成一本书因此共有18本书，要保证每个格子中都有书，因此可以在1到18之间的空隙中选择四个位置</div><div class="line">组合数：</div><div class="line"> c(4,17)=2380</div></pre></td></tr></table></figure></p>
+<hr>
+<p>8.下列方法中，可以用于特征降维的方法包括（）</p>
+<ul>
+<li><strong>主成分分析PCA</strong></li>
+<li><strong>线性判别分析LDA</strong></li>
+<li><strong>深度学习SparseAutoEncoder</strong></li>
+<li><strong>矩阵奇异值分解SVD</strong></li>
+<li>最小二乘法LeastSquares</li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">待更新。。。</div></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="2016研发工程师笔试题（二）"><a href="#2016研发工程师笔试题（二）" class="headerlink" title="2016研发工程师笔试题（二）"></a>2016研发工程师笔试题（二）</h2><p>1.已知有30匹马，5个跑道，每个跑道只能容一匹马，没有计时器，至少需要比赛多少次，可以找出最快的前三匹马</p>
+<ul>
+<li><strong>9</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1、选出六个组各组的排名    6次</div><div class="line">2、六组的第一比选出123名   2次</div><div class="line">3、第一名的那组的23名和第二名那组的12名和第三名那组的第1名比较 选出一二名  1次</div></pre></td></tr></table></figure></p>
+<hr>
+<p>2.当前目录下有a和b两个文件，执行命令“ls&gt;c”，请问文件c里面的内容是什么？</p>
+<ul>
+<li><strong>abc</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">用ls命令产生的输出为当前路径下的所有文件名。&gt;c即代表将结果输出至c中，</div><div class="line">若没有c则先产生c文件，即内容里含有abc</div></pre></td></tr></table></figure></p>
+<hr>
+<p>3.设无向图的顶点个数为n，则该图最多有多少条边？</p>
+<ul>
+<li><strong>n（n-1）/2</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">c(2,n)=n*(n-1)/(2*1)</div></pre></td></tr></table></figure></p>
+<hr>
+<p>4.在Unix系统中，若一个进程退出时，其子进程还在运行（没有被杀死），则这些子进程会变成孤儿进程（Orphan Process），请问孤儿进程会被以下哪一个系统进程接管？</p>
+<ul>
+<li><strong>init</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">待学后更新。。。</div></pre></td></tr></table></figure></p>
+<hr>
+<p>5.求函数返回值，输入x=9999</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> count=<span class="number">0</span>;</div><div class="line">    <span class="keyword">while</span> (x)</div><div class="line">    &#123;</div><div class="line">        count++;</div><div class="line">        x=x&amp;(x<span class="number">-1</span>);<span class="comment">//与运算</span></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> count;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">此题可转为求十进制9999，转为二进制后，二进制中1的个数，别突然间忘了怎样把十进制转成二进制了。</div></pre></td></tr></table></figure></p>
+<hr>
+<p>6.某次买可乐集瓶盖活动中有5种不同的瓶盖以等概率出现，每买一瓶汽水可得到一个瓶盖，集齐所有瓶盖所买汽水瓶数的期望，与以下哪个结果最为接近？</p>
+<ul>
+<li>9</li>
+<li><strong>11</strong></li>
+<li>13</li>
+<li>15</li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">在已经取到一种瓶盖的情况下，再取到一种不同的瓶盖的期望次数是1/（4/5）=5/4；</div><div class="line">在已经取到两种瓶盖的情况下，再取到一种不同的瓶盖的期望次数是1/（3/5）=5/3；</div><div class="line">。。。 因此，取到五种瓶盖的期望次数为1+5/4+5/3+5/2+5/1=11+5/12。</div></pre></td></tr></table></figure></p>
+<hr>
+<p>7.JAVA语言的下面几种数组复制方法中，哪个效率最高？</p>
+<ul>
+<li>for循环逐一复制</li>
+<li><strong>System.arraycopy</strong></li>
+<li>Arrays.copyof</li>
+<li>使用clone方法</li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">A.<span class="keyword">for</span>循环的话，很灵活，但是代码不够简洁.</div><div class="line">                            </div><div class="line">B.System.arraycopy()源码。可以看到是<span class="keyword">native</span>方法：<span class="keyword">native</span>关键字说明其修饰的方法是一个原生态方法，</div><div class="line">方法对应的实现不是在当前文件，而是在用其他语言（如C和C++）实现的文件中。</div><div class="line">可以将<span class="keyword">native</span>方法比作Java程序同Ｃ程序的接口。</div><div class="line">                            </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title">arraycopy</span><span class="params">(Object src,  <span class="keyword">int</span>  srcPos,</span></span></div><div class="line">               Object dest, <span class="keyword">int</span> destPos,<span class="keyword">int</span> length); </div><div class="line">              </div><div class="line">C.下面是源码，可以看到本质上是调用的arraycopy方法。那么其效率必然是比不上 arraycopy的</div><div class="line">                             </div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] copyOf(<span class="keyword">int</span>[] original, <span class="keyword">int</span> newLength) &#123;</div><div class="line">       <span class="keyword">int</span>[] copy = <span class="keyword">new</span> <span class="keyword">int</span>[newLength];</div><div class="line">       System.arraycopy(original, <span class="number">0</span>, copy, <span class="number">0</span>,</div><div class="line">       Math.min(original.length, newLength));</div><div class="line">       <span class="keyword">return</span> copy;</div><div class="line">    &#125;</div><div class="line">                    </div><div class="line"> D.clone返回的是Object，需要强制转换，一般用clone效率是最差的</div></pre></td></tr></table></figure></p>
+<hr>
+<p>8.0，1，2，3，⋯，499，500共501个数按升序排列，每次取奇数序位的数丢掉，然后取剩下的数的奇数序位的数丢掉，重复这个过程，那么最后剩下的数是多少？</p>
+<ul>
+<li><strong>255</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">注意：0算第一位</div><div class="line">规律：</div><div class="line">2^n中n最大的数会被保留下来，500以内的数是256，从0开始数就是255</div></pre></td></tr></table></figure></p>
+<hr>
+<p>9.一个不透明的箱子里共有红，黄，蓝，绿，白五种颜色的小球，各个小球的数量非常多而且接近相等，每种颜色的小球大小相同，质量相等，每个人从篮子里抽出两个小球，请问至少需要多少个人抽，才能保证有两个人抽到的小球颜色全部相同？</p>
+<ul>
+<li><strong>16</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">题意就是球量充足，近似相等，所以不用担心放回不放回的概率问题。五种颜色的球组合：</div><div class="line">c(2,5)（5颜色选2不同颜色）+（5颜色选2相同颜色）5=15。而且这15种组合是等概率出现。</div><div class="line">所以重复的话，就是发生在第16个人身上。</div></pre></td></tr></table></figure></p>
+<hr>
+<p>10.有订单表orders，包含字段用户信息userid，字段产品信息productid，以下语句能够返回至少被订购过两会的productid？</p>
+<ul>
+<li>select productid from orders where count（productid）&gt;1</li>
+<li>select productid from orders where max（productid）&gt;1</li>
+<li>select productid from orders where having count（productid）&gt;1 group by productid</li>
+<li><strong>select productid from orders group by productid having count（productid）&gt;1</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Where语句中不能出现聚合函数，且不能和having共用。</div><div class="line">Having是出现在groupby语句中，用来对分组的结果集进行限定的。</div></pre></td></tr></table></figure></p>
+<hr>
+<p>11.一架飞机在满油的情况下可绕地球飞0.5圈，假设飞机与飞机之间可以互相加油，且地球只有一个基地。请问在确保所有飞机够油飞回起点的情况下，最少需要几架飞机才可以让其中一架飞机成功绕地球飞行一圈？（提示1：地球是圆的！提升2：飞机可以重复使用！）</p>
+<ul>
+<li><strong>3</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"> 只需要ABC共3架飞机。</div><div class="line">3架共同出航，A1/8圈后返航，1/4圈油分给BC；B继续1/8圈至1/4圈处后返航，1/8圈油给C；</div><div class="line">C继续飞行1/2圈至3/4圈处空油。C飞行至1/2圈时，AB反向共同出航，A1/8圈后至7/8圈处返航，</div><div class="line">1/8圈给B(加满)；B继续飞行1/8圈后至3/4圈处恰遇C，B给C1/8圈油共同返航；</div><div class="line">于此同时A重新反向出发再次至7/8圈处恰遇C，给C1/8圈油后，3机共同返航。</div></pre></td></tr></table></figure></p>
+<hr>
+<p>12.关于volatile关键字，下列描述不正确的是？</p>
+<ul>
+<li>用volatile修饰的变量，每次更新对其他线程都是立即可见的。</li>
+<li><strong>对volatile变量的操作是原子性的。</strong></li>
+<li>对volatile变量的操作不会造成阻塞。</li>
+<li><strong>不依赖其他锁机制，多线程环境下的计数器可用volatile实现。</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"> 所谓 volatile的措施，就是</div><div class="line">1. 每次从内存中取值，不从缓存中什么的拿值。这就保证了用 volatile修饰的共享变量，</div><div class="line">每次的更新对于其他线程都是可见的。</div><div class="line">2. volatile保证了其他线程的立即可见性，就没有保证原子性。</div><div class="line">3.由于有些时候对 volatile的操作，不会被保存，说明不会造成阻塞。不可用与多线程环境下的计数器。</div></pre></td></tr></table></figure></p>
+<hr>
+<p>13.SNMP所采用的传输层协议是什么？</p>
+<ul>
+<li><strong>UDP</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">SMTP：简单邮件传输协议，使用TCP连接，端口号为25，</div><div class="line">SNMP：简单网络管理协议，使用UDP 161端口，</div><div class="line">                 </div><div class="line">网络层协议包括： IP协议、ICMP协议、ARP协议、RARP协议；</div><div class="line">传输层协议包括：TCP协议、UDP协议</div><div class="line">                    </div><div class="line">更多：</div><div class="line">物理层：RJ45、CLOCK、IEEE802.3 </div><div class="line">数据链路：PPP、FR、HDLC、VLAN、MAC </div><div class="line">网络层：IP、ICMP、ARP、RARP、OSPF、IPX、RIP、IGRP</div><div class="line">传输层：TCP、UDP、SPX</div><div class="line">会话层：NFS、SQL、NETBIOS、RPC</div><div class="line">表示层：JPEG、MPEG、ASII</div><div class="line">应用层：FTP、DNS、Telnet、SMTP、HTTP、WWW、NFS</div></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="2016研发工程师笔试题（三）"><a href="#2016研发工程师笔试题（三）" class="headerlink" title="2016研发工程师笔试题（三）"></a>2016研发工程师笔试题（三）</h2><p>1.在网络7层协议中，如果想使用UDP协议达到TCP协议的效果,可以在哪层做文章?</p>
+<ul>
+<li><strong>会话层</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"> 因为UDP要达到TCP的功能就必须实现拥塞控制的功能,而且是在路由之间实现,这个在底层明显是做不到拥塞控制的,</div><div class="line">在应用层也是做不到的,因为应用层之间和应用程序挂钩,一般只能操控主机的程序,而表示层是处理所有与数据表示</div><div class="line">及运输有关的问题，包括转换、加密和压缩,在传输层是不可能的,因为你已经使用了UDP协议,无法在本层转换它,</div><div class="line">只有在会话层.</div><div class="line">       会话层（SESSION LAYER）允许不同机器上的用户之间建立会话关系。</div><div class="line">       会话层循序进行类似传输层 的普通数据的传送，在某些场合还提供了一些有用的增强型服务。</div><div class="line">       允许用户利用一次会话在远端的分时系统上登陆，或者在两台机器间传递文件。</div><div class="line">       会话层提供的服务之一是管理对话控制。会话层允许信息同时双向传输，或任一时刻只能单向传输。</div><div class="line">       如果属于后者，类似于物理信道上的半双工模式，会话层将记录此时该轮到哪一方</div></pre></td></tr></table></figure></p>
+<hr>
+<p>2.两个线程并发执行以下代码,假设a是全局变量,那么以下输出___哪个是可能的?</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> a=<span class="number">1</span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span></span>&#123;</div><div class="line">    ++a;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"%d"</span>,a);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li><strong>3 2</strong></li>
+<li><strong>2 3</strong></li>
+<li><strong>3 3</strong></li>
+<li><strong>2 2</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"> A：3, 2 </div><div class="line">y先执行++a，a为2; </div><div class="line">y再执行printf，a入栈，在打印到终端之前切换到x </div><div class="line">x执行＋＋a，a为3; </div><div class="line">x执行printf，输出3;再切换到y </div><div class="line">y执行打印，输出2 </div><div class="line"></div><div class="line">B：2 3 </div><div class="line">x先执行＋＋a，a为2; </div><div class="line">x再执行printf，输出2;切换到y </div><div class="line">y执行＋＋a，a为3; </div><div class="line">y执行printf，输出3; </div><div class="line"></div><div class="line">C：3 3 </div><div class="line">x先执行＋＋a，a为2;切换到y </div><div class="line">y执行＋＋a，a为3; </div><div class="line">y执行printf，输出3;切换到x </div><div class="line">x执行printf，输出3 </div><div class="line"></div><div class="line">D：2 2 </div><div class="line">假设线程A先执行++a操作但没有写回到内存，这时线程B执行++a操作写回内存并printf，输出2_，</div><div class="line">线程A继续执行，++a操作写回内存，a的值保持2，再printf</div></pre></td></tr></table></figure></p>
+<hr>
+<p>3.下列关于线程调度的叙述中,错误的是()</p>
+<ul>
+<li>调用线程的sleep()方法,可以使比当前线程优先级低的线程获得运行机会</li>
+<li><strong>调用线程的yeild()方法,只会使与当前线程相同优先级的线程获得运行机会</strong></li>
+<li><strong>具有相同优先级的多个线程的调度一定是分时的</strong></li>
+<li>分时调度模型是让所有线程轮流获得CPU使用权</li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">A选项，sleep()方法强制使当前线程休眠，释放CPU资源，以便使得其他所有线程有机会运行。</div><div class="line">           </div><div class="line">B选项，yield()方法使得当前的线程让出CPU的使用权，以使得比该线程优先级相同或更高的线程有机会运行。</div><div class="line">该线程在让出CPU使用权之后可能再次被选中，因此yield()方法可能会不起作用</div><div class="line">(这也说明了yield()方法不会使得比当前线程优先级低的线程运行)。</div><div class="line">            </div><div class="line">C选项，java虚拟机中如果多个线程优先级相同，则会随机选择一个线程占用CPU，处于运行状态的线程会一直运行，</div><div class="line">直至它不得不放弃CPU为止，因此不一定是分时调度。</div><div class="line">            </div><div class="line">D正确</div></pre></td></tr></table></figure></p>
+<hr>
+<p>4.在linux系统中,有一个文件夹里面有若干文件,通常用哪个命令可以获取这个文件夹的大小:</p>
+<ul>
+<li>ls -h</li>
+<li><strong>du -sh</strong></li>
+<li>df -h</li>
+<li>fdish -h</li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">A不正确，ls的-h选项只有在有-l时候才会起作用，即ls -lh</div><div class="line">             </div><div class="line">B正确，du可以显示当前目录及子目录的磁盘占用情况，-d选项可以指明递归目录的深度，</div><div class="line">-s等价于-d 0，-h表示以可读的形式显示，比如B, KB, GB等</div><div class="line">     </div><div class="line">C不正确，df是显示整个文件系统的使用情况，不能得到当前文件夹的情况</div><div class="line">        </div><div class="line">D不正确，命令都写错了。。。就算是fdisk，是用来分区的，没关系。</div></pre></td></tr></table></figure></p>
+<hr>
+<p>5.我们用一个等臂天平来称物体的质量,如果我们要称的物体质量范围在1到40克(整数),请问我们最少需要几块砝码可以完成这项物体质量的称量?</p>
+<ul>
+<li><strong>4</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">一个砝码可以放在要称量的物品的同侧，也可以放在对侧，当然也可以不放。砝码的三种状态可以表示为：</div><div class="line">不放　（0）、放在物品对侧（+1）、放在物品同侧 （-1）</div><div class="line">                     </div><div class="line">因此各个砝码碎片的重量就是各个平衡三进制数位的权重（ 3^0 ， 3^1 ， 3^2 ， 3^3 ），</div><div class="line">即 1 ， 3 ， 9 ， 27 。</div><div class="line">                                        </div><div class="line">40可以用1111来表示，所以最多只用四个砝码，就可以表示1-40之间所有数。</div></pre></td></tr></table></figure></p>
+<hr>
+<p>6.HTTP中的POST和GET在下列哪些方面有区别?()</p>
+<ul>
+<li><strong>数据位置</strong></li>
+<li><strong>明文密文</strong></li>
+<li><strong>数据安全</strong></li>
+<li><strong>长度限度</strong></li>
+<li><strong>应用场景</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Http定义了与服务器交互的不同方法，最基本的方法有4种，分别是GET，POST，PUT，DELETE。</div><div class="line">URL全称是资源描述符，我们可以这样认为：一个URL地址，它用于描述一个网络上的资源，</div><div class="line">而HTTP中的GET，POST，PUT，DELETE就对应着对这个资源的 查 ， 改 ， 增 ， 删 4个操作。</div><div class="line">到这里，大家应该有个大概的了解了，GET一般用于 获取/查询 资源信息，而POST一般用于 更新 资源信息。</div></pre></td></tr></table></figure></p>
+<hr>
+<p>7.以下哪些jvm的垃圾回收方式采用的是复制算法回收</p>
+<ul>
+<li><strong>新生代串行收集器</strong></li>
+<li>老年代串行收集器</li>
+<li>并行收集器</li>
+<li><strong>新生代并行回收收集器</strong></li>
+<li>老年代并行回收收集器</li>
+<li>cms收集器</li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">两个最基本的java回收算法：复制算法和标记清理算法</div><div class="line">复制算法：两个区域A和B，初始对象在A，继续存活的对象被转移到B。此为新生代最常用的算法</div><div class="line">标记清理：一块区域，标记要回收的对象，然后回收，一定会出现碎片，那么引出</div><div class="line">标记-整理算法：多了碎片整理，整理出更大的内存放更大的对象</div><div class="line">两个概念：新生代和年老代</div><div class="line">新生代：初始对象，生命周期短的</div><div class="line">永久代：长时间存在的对象</div><div class="line">整个java的垃圾回收是新生代和年老代的协作，这种叫做分代回收。</div><div class="line">P.S：Serial New收集器是针对新生代的收集器，采用的是复制算法</div><div class="line">Parallel New（并行）收集器，新生代采用复制算法，老年代采用标记整理</div><div class="line">Parallel Scavenge（并行）收集器，针对新生代，采用复制收集算法</div><div class="line">Serial Old（串行）收集器，新生代采用复制，老年代采用标记整理</div><div class="line">Parallel Old（并行）收集器，针对老年代，标记整理</div><div class="line">CMS收集器，基于标记清理</div><div class="line">G1收集器：整体上是基于标记 整理 ，局部采用复制</div><div class="line">                </div><div class="line">综上：新生代基本采用复制算法，老年代采用标记整理算法。cms采用标记清理。</div></pre></td></tr></table></figure></p>
+<hr>
+<p>8.将7723810的各位数字打乱排序,可组成的不同的7位自然数的个数是?</p>
+<ul>
+<li><strong>2160</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(7! / 2) - (6! /2 ) = 2160</div><div class="line">7！代表7个数的全排列数，除以2是因为有一个数重复了，“减”是因为要排除0在首位的排列数。</div></pre></td></tr></table></figure></p>
+<hr>
+<p>9.以下关于linux操作系统中硬链接和软链接的描述,正确的是?</p>
+<ul>
+<li>硬链接和软链接指向的inode的编号是一样的</li>
+<li><strong>可以建立一个空文件的软链接</strong></li>
+<li>linux操作系统可以对目录进行硬链接</li>
+<li>硬链接指向inode节点</li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">由于硬链接是有着相同 inode 号仅文件名不同的文件，因此硬链接存在以下几点特性：</div><div class="line">- 文件有相同的 inode 及 data block；</div><div class="line">- 只能对已存在的文件进行创建；</div><div class="line">- 不能交叉文件系统进行硬链接的创建；</div><div class="line">- 不能对目录进行创建，只可对文件创建；</div><div class="line">- 删除一个硬链接文件并不影响其他有相同 inode 号的文件。</div><div class="line">                </div><div class="line">软链接与硬链接不同，若文件用户数据块中存放的内容是另一文件的路径名的指向，则该文件就是软连接</div><div class="line">软链接就是一个普通文件，只是数据块内容有点特殊。软链接有着自己的 inode 号以及用户数据块。</div><div class="line">因此软链接的创建与使用没有类似硬链接的诸多限制：</div><div class="line">- 软链接有自己的文件属性及权限等；</div><div class="line">- 可对不存在的文件或目录创建软链接；</div><div class="line">- 软链接可交叉文件系统；</div><div class="line">- 软链接可对文件或目录创建；</div><div class="line">- 创建软链接时，链接计数 i_nlink 不会增加；</div><div class="line">- 删除软链接并不影响被指向的文件，但若被指向的原文件被删除，则相关软连接被称为死链接</div><div class="line">（即 dangling link，若被指向路径文件被重新创建，死链接可恢复为正常的软链接）。</div></pre></td></tr></table></figure></p>
+<hr>
+<p>10.mysql数据库中一张user表中,其中包含字段A,B,C,字段类型如下:A:int,B:int,C:int根据字段A,B,C按照ABC顺序建立复合索引idx_A_B_C,以下查询语句中使用到索引idx_A_B_C的语句有哪些？</p>
+<ul>
+<li><strong>select *from user where A=1 and B=1</strong></li>
+<li><strong>select *from user where 1=1 and A=1 and B=1</strong></li>
+<li>select *from user where B=1 and C=1</li>
+<li><strong>select *from user where A=1 and C=1</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">复合索引可以只使用复合索引中的一部分，但必须是由最左部分开始，且可以存在常量</div><div class="line">因复合索引为idx_A_B_C，所以查询条件只能是在a,ab,abc,ac才算 使用到索引idx_A_B_C</div></pre></td></tr></table></figure></p>
+<hr>
+<p>11.HTTPS是使用()来保证信息安全的.</p>
+<ul>
+<li>SET</li>
+<li>IPSEC</li>
+<li><strong>SSL</strong></li>
+<li>SSH</li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Internet 协议安全性 (IPSec)是一种开放标准的框架结构，通过使用加密的 安全服务 以确保在 </div><div class="line">Internet 协议 (IP) 网络上进行保密而安全的通讯。</div><div class="line">     </div><div class="line">HTTP协议通常承载于TCP协议之上，有时也承载 于TLS（ 安全传输层协议 ）或 SSL</div><div class="line">（ 安全套接层协议Secure Sockets Layer  ）协议层之上，这个时候，就成了我们常说的HTTPS。</div></pre></td></tr></table></figure></p>
+<hr>
+<p>12.具有7个顶点的有向图至少应有多少条边才可能成为一个强连通图?</p>
+<ul>
+<li><strong>7</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">强连通图必须从任何一点出发都可以回到原处，每个节点至少要一条出路(单节点除外)至少有n条边，</div><div class="line">正好可以组成一个环,若为无向图，则是6条边</div></pre></td></tr></table></figure></p>
+<hr>
+<p>13.假设在x86平台上,有一个int型变量,在内存中的内部由低到高分别是:0x12,0x34,0x56,0x78当通过网络发送该数据时,正确的发送顺序是()</p>
+<ul>
+<li><strong>0x78,0x56,0x34,0x12</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">待学后更新。。。</div></pre></td></tr></table></figure></p>
+<hr>
+<p>14.以下哪个ip不和10.11.12.91/28处于同一个子网</p>
+<ul>
+<li>10.11.12.85/28</li>
+<li>10.11.12.88/28</li>
+<li>10.11.12.94/28</li>
+<li>10.11.12.97/28</li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">28是指子网掩码是28个1  FF.FF.FF.F0  计算ip时需与上掩码</div><div class="line"></div><div class="line">故子网掩码为11111111.11111111. 11111111. 11110000（255.255.255.240）</div><div class="line">256-240=16，有16个子网，每一个子网段大小范围是16。</div><div class="line">10.11.12.91/28中91可以表示为：01011011，前四位为网络号，后四位为主机号，</div><div class="line">故包含10.11.12.91的子网范围是：01010000~01011111（80~95）。</div><div class="line">去掉第一个和最后一个，和 10.11.12.91/28在一个网段的范围为：10.11.12.81/28~10.11.12.94/28。</div></pre></td></tr></table></figure></p>
+<hr>
+<p>15.有9个球,其中一个的质量与其他的不同,有一个天平,通过最多几次可以找出那个质量不一样的球?</p>
+<ul>
+<li><strong>3</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">任取2组比较，若重量相等，则目标小球在另一组；</div><div class="line">                   </div><div class="line">若重量不等，则任意替换一组再进行比较，可以知晓目标小球所在组，以及目标小球重量比一般小球是重还是轻。</div><div class="line">                     </div><div class="line">对目标小球所在小组任取2个，若重量相等，则目标小球为另一个；若重量不等则可以根据之前获取的目标小球</div><div class="line">重量特征（比一般重或轻），找出目标小球。</div><div class="line">                      </div><div class="line">共称3次。</div></pre></td></tr></table></figure></p>
+<hr>
+<p>16.具有相同类型的指针类型变量p与数组a,不能进行的操作是:</p>
+<ul>
+<li>p=a;</li>
+<li>*p=a[0];</li>
+<li>p=&amp;a[0];</li>
+<li><strong>p=&a;</strong></li>
+</ul>
+<p><strong>解析：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">a表示数组a的地址指针，a和p类型相同，所以p=a操作正确；</div><div class="line">*p表示p指向的值，a[0]表示数组的第一个值，两者类型相同，可赋值，正确；</div><div class="line">&amp;a[0]是数组第一个元素的地址，与a相同，也是指针，可赋值，正确；</div><div class="line">a本身是一个指针，而&amp;a表示a的地址，地址是int型，但p不一定是int型的，错误。</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/03/20/Java基础笔试题/">Java基础笔试题</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">fangminx</a></p>
+        <p><span>发布时间:</span>2017-03-20, 16:22:42</p>
+        <p><span>最后更新:</span>2018-03-04, 11:01:55</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/20/Java基础笔试题/" title="Java基础笔试题">http://yoursite.com/2017/03/20/Java基础笔试题/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/03/20/Java基础笔试题/　　作者: fangminx" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2018/03/03/Mysql存储引擎和事务/">
+                    Mysql存储引擎和事务
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/03/19/Java实现简单算法/">
+                    Java实现简单算法
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#后台开发-amp-系统工程师B"><span class="toc-number">1.</span> <span class="toc-text">后台开发&系统工程师B</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后台开发-amp-系统工程师A"><span class="toc-number">2.</span> <span class="toc-text">后台开发&系统工程师A</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#研发工程师模拟笔试题"><span class="toc-number">3.</span> <span class="toc-text">研发工程师模拟笔试题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#研发工程师笔试题（一）"><span class="toc-number">4.</span> <span class="toc-text">研发工程师笔试题（一）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2016研发工程师笔试题（二）"><span class="toc-number">5.</span> <span class="toc-text">2016研发工程师笔试题（二）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2016研发工程师笔试题（三）"><span class="toc-number">6.</span> <span class="toc-text">2016研发工程师笔试题（三）</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"Java基础笔试题　| Just For Fun！　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+        <section class="youyan" id="comments">
+    <script>
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = 'http://v2.uyan.cc/code/uyan.js?uid=2134263';
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+    <div id="uyan_frame"></div>
+</section>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2018/03/03/Mysql存储引擎和事务/" title="上一篇: Mysql存储引擎和事务">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/03/19/Java实现简单算法/" title="下一篇: Java实现简单算法">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/03/04/elasticsearch(四、索引管理)/">elasticsearch(四、索引管理)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/04/elasticsearch(三、内核知识)/">elasticsearch(三、内核知识)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/04/elasticsearch(二、搜索引擎)/">elasticsearch(二、搜索引擎)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/03/elasticsearch(一、核心概念和机制)/">elasticsearch(一、核心概念和机制)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/03/【Java8函数式编程】/">【Java8函数式编程】</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/03/Mysql存储引擎和事务/">Mysql存储引擎和事务</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/Java基础笔试题/">Java基础笔试题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/19/Java实现简单算法/">Java实现简单算法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/19/Java实现简单树/">Java实现简单树</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/18/Java实现简单栈和队列/">Java实现简单栈和队列</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/18/Java实现简单线性表/">Java实现简单线性表</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/12/【深入浅出MySQL】/">【深入浅出MySQL】</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/12/【Java高并发程序设计】/">【Java高并发程序设计】</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/11/Java简单IO流操作/">Java简单IO流操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/Java常用对象/">Java常见对象</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/Java基本概念/">Java基本概念</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2018 fangminx
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

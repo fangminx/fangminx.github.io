@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="fangminx" />
+
+
+
+<meta name="description" content="相关度评分算法12345Elasticsearch使用的是 term frequency/inverse document frequency算法，简称为TF/IDF算法 -Term frequency：搜索文本中的各个词条在field出现次数越多，越相关-Inverse document frequency：搜索文本中的各个词条在整个索引的所有文档中出现的次数越多，越不相关-Field-leng">
+<meta name="keywords" content="elasticsearch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="elasticsearch(三、内核知识)">
+<meta property="og:url" content="http://yoursite.com/2018/03/04/elasticsearch(三、内核知识)/index.html">
+<meta property="og:site_name" content="Just For Fun！">
+<meta property="og:description" content="相关度评分算法12345Elasticsearch使用的是 term frequency/inverse document frequency算法，简称为TF/IDF算法 -Term frequency：搜索文本中的各个词条在field出现次数越多，越相关-Inverse document frequency：搜索文本中的各个词条在整个索引的所有文档中出现的次数越多，越不相关-Field-leng">
+<meta property="og:updated_time" content="2018-03-04T03:01:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="elasticsearch(三、内核知识)">
+<meta name="twitter:description" content="相关度评分算法12345Elasticsearch使用的是 term frequency/inverse document frequency算法，简称为TF/IDF算法 -Term frequency：搜索文本中的各个词条在field出现次数越多，越相关-Inverse document frequency：搜索文本中的各个词条在整个索引的所有文档中出现的次数越多，越不相关-Field-leng">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="Just For Fun！" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>elasticsearch(三、内核知识) | Just For Fun！</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">fangminx</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">就是为了好玩！</p>
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="#" title="Email"></a>
+                            
+                                <a class="fa 新浪微博" href="#" title="新浪微博"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/fangminx" title="GitHub"></a>
+                            
+                                <a class="fa V2EX" href="#" title="V2EX"></a>
+                            
+                                <a class="fa 知乎" href="#" title="知乎"></a>
+                            
+                                <a class="fa Facebook" href="#" title="Facebook"></a>
+                            
+                                <a class="fa Google" href="#" title="Google"></a>
+                            
+                                <a class="fa Twitter" href="#" title="Twitter"></a>
+                            
+                                <a class="fa QQ" href="#" title="QQ"></a>
+                            
+                                <a class="fa 微信" href="#" title="微信"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java8/">Java8</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客重构/">博客重构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发/">并发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/牛客网/">牛客网</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/笔试题/">笔试题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/简单数据结构/">简单数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/简单算法/">简单算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">来源</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">就是为了好玩！</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">fangminx</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">fangminx</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">就是为了好玩！</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="#" title="Email"></a>
+                            
+                                <a class="fa 新浪微博" target="_blank" href="#" title="新浪微博"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/fangminx" title="GitHub"></a>
+                            
+                                <a class="fa V2EX" target="_blank" href="#" title="V2EX"></a>
+                            
+                                <a class="fa 知乎" target="_blank" href="#" title="知乎"></a>
+                            
+                                <a class="fa Facebook" target="_blank" href="#" title="Facebook"></a>
+                            
+                                <a class="fa Google" target="_blank" href="#" title="Google"></a>
+                            
+                                <a class="fa Twitter" target="_blank" href="#" title="Twitter"></a>
+                            
+                                <a class="fa QQ" target="_blank" href="#" title="QQ"></a>
+                            
+                                <a class="fa 微信" target="_blank" href="#" title="微信"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-elasticsearch(三、内核知识)" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/03/04/elasticsearch(三、内核知识)/" class="article-date">
+      <time datetime="2018-03-04T02:23:03.000Z" itemprop="datePublished">2018-03-04</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      elasticsearch(三、内核知识)
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="相关度评分算法"><a href="#相关度评分算法" class="headerlink" title="相关度评分算法"></a>相关度评分算法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Elasticsearch使用的是 term frequency/inverse document frequency算法，简称为TF/IDF算法</div><div class="line"> </div><div class="line">-Term frequency：搜索文本中的各个词条在field出现次数越多，越相关</div><div class="line">-Inverse document frequency：搜索文本中的各个词条在整个索引的所有文档中出现的次数越多，越不相关</div><div class="line">-Field-length norm：field长度，field越长，相关度越弱</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<ul>
+<li>查看_score是如何被计算出来的</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">GET /test_index/test_type/_search?explain</div><div class="line">&#123;</div><div class="line">  &quot;query&quot;: &#123;</div><div class="line">    &quot;match&quot;: &#123;</div><div class="line">      &quot;test_field&quot;: &quot;test hello&quot;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>分析一个document是如何被匹配上的</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">GET /test_index/test_type/6/_explain</div><div class="line">&#123;</div><div class="line">  &quot;query&quot;: &#123;</div><div class="line">    &quot;match&quot;: &#123;</div><div class="line">      &quot;test_field&quot;: &quot;test hello&quot;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="doc-values"><a href="#doc-values" class="headerlink" title="doc values"></a>doc values</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">搜索的时候，要依靠倒排索引；排序的时候，需要依靠正排索引,所谓的正排索引，就是doc values</div><div class="line"> </div><div class="line">在建立索引的时候，一方面会建立倒排索引，以供搜索使用；</div><div class="line">一方面会建立正排索引，也就是doc values，以供排序，聚合，过滤等操作使用</div><div class="line"> </div><div class="line">doc values是被保存在磁盘上的，如果内存足够，os会自动将其缓存在内存中</div></pre></td></tr></table></figure>
+<h2 id="query-phase"><a href="#query-phase" class="headerlink" title="query phase"></a>query phase</h2><ul>
+<li>deep paging问题</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">（<span class="number">1</span>）搜索请求发送到某一个coordinate node，构建一个priority queue，长度(from+size)，默认为<span class="number">10</span></div><div class="line">（<span class="number">2</span>）coordinate node将请求转发到所有shard，每个shard本地搜索，并构建一个本地的priority queue,长度(from+size)</div><div class="line">（<span class="number">3</span>）各个shard将自己的priority queue返回给coordinate node，并构建一个全局的priority queue</div></pre></td></tr></table></figure>
+<ul>
+<li>replica如何承载并发</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">一次请求要打到所有shard其中一个replica/primary上去，如果每个shard都有多个replica，那么并发搜索请求可以同时打到其他的replica上去</div></pre></td></tr></table></figure>
+<ul>
+<li>fetch phbase工作流程</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">（1）coordinate node构建完priority queue之后，就发送mget请求去所有shard上获取对应的document</div><div class="line">（2）各个shard将document返回给coordinate node</div><div class="line">（3）coordinate node将合并后的document结果返回给client客户端</div></pre></td></tr></table></figure>
+<h2 id="bouncing-results问题及解决方案"><a href="#bouncing-results问题及解决方案" class="headerlink" title="bouncing results问题及解决方案"></a>bouncing results问题及解决方案</h2><ul>
+<li>问题描述</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">两个document排序，field值相同；不同的shard上，可能排序不同,因为每次请求轮询打到不同的replica shard上；</div><div class="line">导致每次页面上看到的搜索结果的排序都不一样。这就是bouncing result，也就是跳跃的结果。</div></pre></td></tr></table></figure>
+<ul>
+<li>解决方案</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">让每个user每次搜索的时候，都使用同一个replica shard去执行</div><div class="line">比如使用：routing，document文档路由，_id路由</div></pre></td></tr></table></figure>
+<ul>
+<li>search_type参数</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">default：query_then_fetch</div><div class="line">dfs_query_then_fetch (可以提升revelance sort精准度)</div></pre></td></tr></table></figure>
+<h2 id="倒排索引"><a href="#倒排索引" class="headerlink" title="倒排索引"></a>倒排索引</h2><ul>
+<li>倒排索引的结构</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">（1）包含这个关键词的document list</div><div class="line">（2）包含这个关键词的所有document的数量：IDF（inverse document frequency）</div><div class="line">（3）这个关键词在每个document中出现的次数：TF（term frequency）</div><div class="line">（4）这个关键词在这个document中的次序</div><div class="line">（5）每个document的长度：length norm</div><div class="line">（6）包含这个关键词的所有document的平均长度</div></pre></td></tr></table></figure>
+<ul>
+<li>倒排索引不可变的好处与坏处</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">（1）不需要锁，提升并发能力，</div><div class="line">（2）数据不变，一直保存在os cache中，只要cache内存足够</div><div class="line">（3）可以压缩，节省cpu和io开销</div><div class="line">（4）但是每次都要重新构建整个索引</div></pre></td></tr></table></figure>
+<h2 id="写入流程"><a href="#写入流程" class="headerlink" title="写入流程"></a>写入流程</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">（1）数据写入buffer缓冲和translog日志文件</div><div class="line">（2）每隔一秒钟，buffer中的数据被写入新的segment file，并进入os cache，此时segment被打开并供search使用</div><div class="line">（3）buffer被清空</div><div class="line">（4）重复1~3，新的segment不断添加，buffer不断被清空，而translog中的数据不断累加</div><div class="line">（5）当translog长度达到一定程度的时候，commit操作发生</div><div class="line">  （5-1）buffer中的所有数据写入一个新的segment，并写入os cache，打开供使用</div><div class="line">  （5-2）buffer被清空</div><div class="line">  （5-3）一个commit ponit被写入磁盘，标明了所有的index segment</div><div class="line">  （5-4）filesystem cache中的所有index segment file缓存数据，被fsync强行刷到磁盘上</div><div class="line">  （5-5）现有的translog被清空，创建一个新的translog</div></pre></td></tr></table></figure>
+<h2 id="基于translog和commit-point数据持久化和恢复"><a href="#基于translog和commit-point数据持久化和恢复" class="headerlink" title="基于translog和commit point数据持久化和恢复"></a>基于translog和commit point数据持久化和恢复</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">fsync后清空translog，就是flush操作</div><div class="line">默认每隔30分钟，或者当translog过大时flush</div><div class="line"> </div><div class="line">POST /my_index/_flush，手动flush，但让它自动执行就可以了</div><div class="line"> </div><div class="line">translog，每隔5秒被fsync一次到磁盘上。</div><div class="line">在一次增删改操作之后，当fsync在primary shard和replica shard都成功之后，增删改操作才会成功</div><div class="line">但是这种在一次增删改时强行fsync translog可能会导致部分操作比较耗时</div><div class="line"> </div><div class="line">如果可以允许部分数据丢失，设置异步fsync： </div><div class="line">PUT /my_index/_settings</div><div class="line">&#123;</div><div class="line">    &quot;index.translog.durability&quot;: &quot;async&quot;,</div><div class="line">    &quot;index.translog.sync_interval&quot;: &quot;5s&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="海量磁盘文件合并"><a href="#海量磁盘文件合并" class="headerlink" title="海量磁盘文件合并"></a>海量磁盘文件合并</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">-合并原因：</div><div class="line">每秒生成一个segment file，文件过多，而且每次search都要搜索所有的segment，很耗时</div><div class="line"> </div><div class="line">-默认会在后台执行segment merge操作，在merge的时候，</div><div class="line">被标记为deleted的document也会被彻底物理删除</div><div class="line"> </div><div class="line">-每次merge操作的执行流程：</div><div class="line">（1）选择一些有相似大小的segment，merge成一个大的segment</div><div class="line">（2）将新的segment flush到磁盘上去</div><div class="line">（3）写一个新的commit point，包括了新的segment，并且排除旧的那些segment</div><div class="line">（4）将新的segment打开供搜索</div><div class="line">（5）将旧的segment删除</div><div class="line"> </div><div class="line">POST /my_index/_optimize?max_num_segments=1，尽量不要手动执行，让它自动默认执行就可以了</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2018/03/04/elasticsearch(三、内核知识)/">elasticsearch(三、内核知识)</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">fangminx</a></p>
+        <p><span>发布时间:</span>2018-03-04, 10:23:03</p>
+        <p><span>最后更新:</span>2018-03-04, 11:01:46</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2018/03/04/elasticsearch(三、内核知识)/" title="elasticsearch(三、内核知识)">http://yoursite.com/2018/03/04/elasticsearch(三、内核知识)/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2018/03/04/elasticsearch(三、内核知识)/　　作者: fangminx" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2018/03/04/elasticsearch(四、索引管理)/">
+                    elasticsearch(四、索引管理)
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2018/03/04/elasticsearch(二、搜索引擎)/">
+                    elasticsearch(二、搜索引擎)
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#相关度评分算法"><span class="toc-number">1.</span> <span class="toc-text">相关度评分算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#doc-values"><span class="toc-number">2.</span> <span class="toc-text">doc values</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#query-phase"><span class="toc-number">3.</span> <span class="toc-text">query phase</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bouncing-results问题及解决方案"><span class="toc-number">4.</span> <span class="toc-text">bouncing results问题及解决方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#倒排索引"><span class="toc-number">5.</span> <span class="toc-text">倒排索引</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#写入流程"><span class="toc-number">6.</span> <span class="toc-text">写入流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基于translog和commit-point数据持久化和恢复"><span class="toc-number">7.</span> <span class="toc-text">基于translog和commit point数据持久化和恢复</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#海量磁盘文件合并"><span class="toc-number">8.</span> <span class="toc-text">海量磁盘文件合并</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"elasticsearch(三、内核知识)　| Just For Fun！　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+        <section class="youyan" id="comments">
+    <script>
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = 'http://v2.uyan.cc/code/uyan.js?uid=2134263';
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+    <div id="uyan_frame"></div>
+</section>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2018/03/04/elasticsearch(四、索引管理)/" title="上一篇: elasticsearch(四、索引管理)">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2018/03/04/elasticsearch(二、搜索引擎)/" title="下一篇: elasticsearch(二、搜索引擎)">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/03/04/elasticsearch(四、索引管理)/">elasticsearch(四、索引管理)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/04/elasticsearch(三、内核知识)/">elasticsearch(三、内核知识)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/04/elasticsearch(二、搜索引擎)/">elasticsearch(二、搜索引擎)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/03/elasticsearch(一、核心概念和机制)/">elasticsearch(一、核心概念和机制)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/03/【Java8函数式编程】/">【Java8函数式编程】</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/03/Mysql存储引擎和事务/">Mysql存储引擎和事务</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/Java基础笔试题/">Java基础笔试题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/19/Java实现简单算法/">Java实现简单算法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/19/Java实现简单树/">Java实现简单树</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/18/Java实现简单栈和队列/">Java实现简单栈和队列</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/18/Java实现简单线性表/">Java实现简单线性表</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/12/【深入浅出MySQL】/">【深入浅出MySQL】</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/12/【Java高并发程序设计】/">【Java高并发程序设计】</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/11/Java简单IO流操作/">Java简单IO流操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/Java常用对象/">Java常见对象</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/Java基本概念/">Java基本概念</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2018 fangminx
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

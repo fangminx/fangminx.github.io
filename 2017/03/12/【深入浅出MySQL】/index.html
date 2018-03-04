@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="fangminx" />
+
+
+
+<meta name="description" content="SQL基础SQL分类1.DDL(Data Definition Languages)：数据库定义语言">
+<meta name="keywords" content="博客重构,mysql,读书笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【深入浅出MySQL】">
+<meta property="og:url" content="http://yoursite.com/2017/03/12/【深入浅出MySQL】/index.html">
+<meta property="og:site_name" content="Just For Fun！">
+<meta property="og:description" content="SQL基础SQL分类1.DDL(Data Definition Languages)：数据库定义语言">
+<meta property="og:updated_time" content="2017-05-23T09:43:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【深入浅出MySQL】">
+<meta name="twitter:description" content="SQL基础SQL分类1.DDL(Data Definition Languages)：数据库定义语言">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="Just For Fun！" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>【深入浅出MySQL】 | Just For Fun！</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">fangminx</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">就是为了好玩！</p>
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="#" title="Email"></a>
+                            
+                                <a class="fa 新浪微博" href="#" title="新浪微博"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/fangminx" title="GitHub"></a>
+                            
+                                <a class="fa V2EX" href="#" title="V2EX"></a>
+                            
+                                <a class="fa 知乎" href="#" title="知乎"></a>
+                            
+                                <a class="fa Facebook" href="#" title="Facebook"></a>
+                            
+                                <a class="fa Google" href="#" title="Google"></a>
+                            
+                                <a class="fa Twitter" href="#" title="Twitter"></a>
+                            
+                                <a class="fa QQ" href="#" title="QQ"></a>
+                            
+                                <a class="fa 微信" href="#" title="微信"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java8/">Java8</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客重构/">博客重构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发/">并发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/牛客网/">牛客网</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/笔试题/">笔试题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/简单数据结构/">简单数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/简单算法/">简单算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">来源</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">就是为了好玩！</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">fangminx</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">fangminx</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">就是为了好玩！</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="#" title="Email"></a>
+                            
+                                <a class="fa 新浪微博" target="_blank" href="#" title="新浪微博"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/fangminx" title="GitHub"></a>
+                            
+                                <a class="fa V2EX" target="_blank" href="#" title="V2EX"></a>
+                            
+                                <a class="fa 知乎" target="_blank" href="#" title="知乎"></a>
+                            
+                                <a class="fa Facebook" target="_blank" href="#" title="Facebook"></a>
+                            
+                                <a class="fa Google" target="_blank" href="#" title="Google"></a>
+                            
+                                <a class="fa Twitter" target="_blank" href="#" title="Twitter"></a>
+                            
+                                <a class="fa QQ" target="_blank" href="#" title="QQ"></a>
+                            
+                                <a class="fa 微信" target="_blank" href="#" title="微信"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-【深入浅出MySQL】" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/03/12/【深入浅出MySQL】/" class="article-date">
+      <time datetime="2017-03-12T09:21:31.000Z" itemprop="datePublished">2017-03-12</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【深入浅出MySQL】
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/博客重构/">博客重构</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h1 id="SQL基础"><a href="#SQL基础" class="headerlink" title="SQL基础"></a>SQL基础</h1><h2 id="SQL分类"><a href="#SQL分类" class="headerlink" title="SQL分类"></a>SQL分类</h2><h3 id="1-DDL-Data-Definition-Languages-：数据库定义语言"><a href="#1-DDL-Data-Definition-Languages-：数据库定义语言" class="headerlink" title="1.DDL(Data Definition Languages)：数据库定义语言"></a>1.DDL(Data Definition Languages)：数据库定义语言</h3><a id="more"></a>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">1.创建数据库：<span class="keyword">create</span> <span class="keyword">database</span> test1;//不能创建已有的数据库</div><div class="line">    		</div><div class="line">2.查看数据库：<span class="keyword">use</span> test1;</div><div class="line">    </div><div class="line">3.查看所有表：<span class="keyword">show</span> <span class="keyword">tables</span>;</div><div class="line">    			</div><div class="line">4.删除数据库：<span class="keyword">drop</span> <span class="keyword">database</span> test1;</div><div class="line">    					</div><div class="line">5.创建表：<span class="keyword">create</span> <span class="keyword">table</span> emp(ename <span class="built_in">varchar</span>(<span class="number">10</span>),hiredate <span class="built_in">date</span>,sal <span class="built_in">decimal</span>(<span class="number">10</span>,<span class="number">2</span>),deptno <span class="built_in">int</span>(<span class="number">2</span>));</div><div class="line">    			</div><div class="line">6.查看表的定义：desc emp;</div><div class="line">    				</div><div class="line">7.删除表：<span class="keyword">drop</span> <span class="keyword">table</span> emp;</div><div class="line">    </div><div class="line">8.修改表：</div><div class="line">   </div><div class="line">- 修改字段定义：<span class="keyword">alter</span> <span class="keyword">table</span> emp <span class="keyword">modify</span> ename <span class="built_in">varchar</span>(<span class="number">20</span>);</div><div class="line">   					</div><div class="line">- 增加表字段：<span class="keyword">alter</span> <span class="keyword">table</span> emp <span class="keyword">add</span> <span class="keyword">column</span> age <span class="built_in">int</span>(<span class="number">3</span>);</div><div class="line">   </div><div class="line">- 删除表字段：<span class="keyword">alter</span> <span class="keyword">table</span> emp <span class="keyword">drop</span> <span class="keyword">column</span> age;</div><div class="line">   </div><div class="line">- 字段改名：<span class="keyword">alter</span> <span class="keyword">table</span> emp <span class="keyword">change</span> age age1 <span class="built_in">int</span>(<span class="number">4</span>);</div><div class="line">   </div><div class="line">//<span class="keyword">change</span>可以修改列名称，<span class="keyword">modify</span>不能，<span class="keyword">change</span>后面需要写两次列名</div></pre></td></tr></table></figure>
+<h3 id="2-DML-Data-Manipulation-Language-数据操纵语句"><a href="#2-DML-Data-Manipulation-Language-数据操纵语句" class="headerlink" title="2.DML(Data Manipulation Language)数据操纵语句"></a>2.DML(Data Manipulation Language)数据操纵语句</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">- 插入记录：</div><div class="line"><span class="keyword">insert</span> <span class="keyword">into</span> emp(ename,hiredate,sal,deptno) <span class="keyword">values</span>(<span class="string">'zzx1'</span>,<span class="string">'2000-01-01'</span>,<span class="string">'2000'</span>,<span class="number">1</span>);</div><div class="line">     </div><div class="line">- 或不指定名称：</div><div class="line"><span class="keyword">insert</span> <span class="keyword">into</span> emp <span class="keyword">values</span>(<span class="string">'lisa'</span>,<span class="string">'2003-02-01'</span>,<span class="string">'3000'</span>,<span class="number">2</span>);</div><div class="line">     </div><div class="line">- 只对表中的ename和sal字段插入值：</div><div class="line"><span class="keyword">insert</span> <span class="keyword">into</span> emp (ename,sal) <span class="keyword">values</span>(<span class="string">'dony'</span>,<span class="number">1000</span>);</div><div class="line">      </div><div class="line">- 更新记录：</div><div class="line"><span class="keyword">update</span> emp <span class="keyword">set</span> sal=<span class="number">4000</span> <span class="keyword">where</span> ename=<span class="string">'lisa'</span>;</div><div class="line">      </div><div class="line">- 删除记录：</div><div class="line"><span class="keyword">delete</span> <span class="keyword">from</span> emp <span class="keyword">where</span> ename = <span class="string">'dony'</span>;</div><div class="line">   </div><div class="line">- 查询记录：</div><div class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp;</div><div class="line">   </div><div class="line">- 查询不重复的记录：</div><div class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> deptno <span class="keyword">from</span> emp;</div><div class="line">   </div><div class="line">- 条件查询：</div><div class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp <span class="keyword">where</span> deptno=<span class="number">1</span> <span class="keyword">and</span> sal&lt;<span class="number">3000</span>;</div><div class="line">   </div><div class="line">- 把emp表中的记录按照工资从低到高进行排序：</div><div class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp <span class="keyword">order</span> <span class="keyword">by</span> sal;(相同则无序)</div><div class="line">   </div><div class="line">- 对于deptno相同的前两条记录，按照工资由高到低排序：</div><div class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp <span class="keyword">order</span> <span class="keyword">by</span> deptno,sal <span class="keyword">desc</span>;</div><div class="line">   </div><div class="line">- 对于排序后的记录，显示从第二条记录开始的3条记录：</div><div class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp <span class="keyword">order</span> <span class="keyword">by</span> sal <span class="keyword">limit</span> <span class="number">1</span>,<span class="number">3</span>;</div></pre></td></tr></table></figure>
+<h2 id="MySQL支持的数据类型"><a href="#MySQL支持的数据类型" class="headerlink" title="MySQL支持的数据类型"></a>MySQL支持的数据类型</h2><h3 id="1-数值类型"><a href="#1-数值类型" class="headerlink" title="1.数值类型"></a>1.数值类型</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">- 整数类型：</div><div class="line">    TINYINT，1字节</div><div class="line">    SMALLINT,2字节</div><div class="line">    MEDIUMINT，3字节</div><div class="line">    INT、INTEGER，4字节</div><div class="line">    BIGINT，8字节</div><div class="line">//对于整型数据，在类型名称后面的小括号内指定显示宽度，默认int（11），配合zerofill，</div><div class="line">//位数不够的空间用字符“0”填满</div><div class="line">       		</div><div class="line">- 浮点数类型：</div><div class="line">    FLOAT，4字节</div><div class="line">    DOUBLE，8字节</div><div class="line">       					</div><div class="line">- 定点数类型</div><div class="line">    DEC（M,D）</div><div class="line">    DECIMAL（M,D）</div><div class="line">//浮点数和定点数都可以用类型名称后加（M，D）（精度，标度）（一共显示多少位数字，小数点后面多少位）</div><div class="line">//浮点数如果不写精度和标度，则会按照精度值显示，如果有精度和标度，则会自动四舍五入后的结果插入，</div><div class="line">//系统不会报错,定点数如果不写精度和标度，则按照默认decimal（10,0），如果数据超越了精度和标度，</div><div class="line">//系统会报错</div><div class="line">      </div><div class="line">- 位类型</div><div class="line">    BIT（M）</div><div class="line">//位类型用<span class="keyword">SELECT</span>命令将不会看到结果，可以用<span class="keyword">bin</span>()(显示为二进制格式)，</div><div class="line">//或<span class="keyword">hex</span>()(显示为十六进制格式)函数进行读取</div></pre></td></tr></table></figure>
+<h3 id="2-日期时间类型"><a href="#2-日期时间类型" class="headerlink" title="2.日期时间类型"></a>2.日期时间类型</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">- DATE类型：4字节，表示年月日</div><div class="line">    		</div><div class="line">- DATETIME类型：8字节，表示年月日时分秒</div><div class="line">    		</div><div class="line">- TIMESTAMP类型：4字节，返回显示为YYYY-MM-DD HH:MM-DD:SS格式，显示宽度固定为19个字符</div><div class="line">    		</div><div class="line">- TIME类型：3字节，只用来表示时分秒</div><div class="line">     		</div><div class="line">- YEAR类型：1字节，只表示年份</div></pre></td></tr></table></figure>
+<h3 id="3-字符串类型"><a href="#3-字符串类型" class="headerlink" title="3.字符串类型"></a>3.字符串类型</h3><ul>
+<li>CHAR和VARCHAR类型</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">1.CHAR列的长度固定为创建表时声明的长度，0~255</div><div class="line">2.VARCHAR列中的值为可变长字符串，0~255</div><div class="line">3.在检索时，CHAR列删除了尾部的空格，VARCHAR保留这些空格</div><div class="line">    </div><div class="line"><span class="keyword">CREATE</span>　<span class="keyword">TABLE</span> VC(v <span class="built_in">VARCHAR</span>(<span class="number">4</span>),c <span class="built_in">CHAR</span>(<span class="number">4</span>));</div><div class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> VC <span class="keyword">VALUES</span>(<span class="string">'ab  '</span>,<span class="string">'ab  '</span>);</div><div class="line"><span class="keyword">select</span> <span class="keyword">length</span>(v),<span class="keyword">length</span>(c) <span class="keyword">from</span> vc;</div><div class="line">    </div><div class="line">//结果，length(v):4,length(c):2</div></pre></td></tr></table></figure>
+<ul>
+<li>BINARY和VARBINARY类型</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">1.类似上面</div><div class="line">   </div><div class="line">2.都包含二进制字符串而不包含非二进制字符串</div><div class="line">   </div><div class="line">3.对于一个BINARY(3)列，当插入“a”变为“a\0\0”(填充零字节0x00)</div></pre></td></tr></table></figure>
+<ul>
+<li>ENUM类型</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">1.忽略大小写，存储时都转换成大写</div><div class="line">    </div><div class="line">2.对于插入不在ENUM指定范围内的值时，没有返回警告，而是插入第一个值</div><div class="line">    </div><div class="line"><span class="keyword">create</span> <span class="keyword">table</span> t(gender enum(<span class="string">'M'</span>,<span class="string">'F'</span>));</div><div class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> t <span class="keyword">VALUES</span>(<span class="string">'M'</span>),(<span class="string">'l'</span>),(<span class="string">'f'</span>),(<span class="literal">NULL</span>);</div><div class="line"><span class="keyword">select</span> * <span class="keyword">from</span> t;</div><div class="line">    </div><div class="line">//结果：M M F NULL</div></pre></td></tr></table></figure>
+<ul>
+<li>SET类型</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">1.类似ENUM</div><div class="line">     </div><div class="line">2.SET类型一次可以选取多个成员，而ENUM只能选一个</div><div class="line">      </div><div class="line"><span class="keyword">create</span> <span class="keyword">table</span> t (<span class="keyword">col</span> <span class="keyword">set</span>(<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'d'</span>));</div><div class="line"><span class="keyword">insert</span> <span class="built_in">int</span> t <span class="keyword">values</span>(<span class="string">'a,b'</span>),(<span class="string">'a,d,a'</span>),(<span class="string">'a,b'</span>),(<span class="string">'a,c'</span>),(<span class="string">'a'</span>);</div><div class="line"><span class="keyword">select</span> * <span class="keyword">from</span> t;</div><div class="line">    </div><div class="line">//结果 a,b a,d a,b a,c a</div><div class="line">	 	</div><div class="line">3.对于('a,d,a')这样包含重复成员的集合将只取一次，写入后的结果为"a,d"</div></pre></td></tr></table></figure>
+<h2 id="MySQL中的运算符"><a href="#MySQL中的运算符" class="headerlink" title="MySQL中的运算符"></a>MySQL中的运算符</h2><h3 id="1-算术运算符"><a href="#1-算术运算符" class="headerlink" title="1.算术运算符"></a>1.算术运算符</h3><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">1.select 0.1+0.3333,0.1-0.3333,0.1*0.3333,1/2,1%2;</div><div class="line">   </div><div class="line">//结果</div><div class="line">0.1+0.3333	0.1-0.3333	0.1*0.3333	1/2         1%2</div><div class="line">    0.4333	   -0.2333	   0.03333	0.5000      1</div><div class="line">   				</div><div class="line">2.使用MOD(a,b)函数与a%b效果一样</div></pre></td></tr></table></figure>
+<h3 id="2-比较运算符"><a href="#2-比较运算符" class="headerlink" title="2.比较运算符"></a>2.比较运算符</h3><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">1.比较结果为真，返回1，为假，返回0，比较结果不确定，返回NULL</div><div class="line">    		</div><div class="line">2.NULL不能用于"="、"&lt;&gt;"(和!=等价)</div><div class="line">   </div><div class="line">3.NULl可以用于"&lt;=&gt;"(类似"=")比较</div><div class="line">    </div><div class="line">4."BETWEEN"运算符格式"a BETWEEN min AND max" 等价于 （a&gt;=min and a&lt;=max）</div><div class="line">   </div><div class="line">5."IN"运算符格式"a IN (value1,value2,...)"当a的值存在于列表中时，则整个表达是返回1，否则返回0</div><div class="line">    </div><div class="line">6."IS NULL"格式 "a IS NULL",a为NULL，返回1，否则返回0，"IS NOT NULL"类似</div><div class="line">    </div><div class="line">7."LIKE"运算符格式"a LIKE %123%",a中含有字符串"123"时，返回1，否则返回0</div><div class="line">     </div><div class="line">8."REGEXP"运算符格式"str REGEXP str_pat",当str字符串部分含有str_pat字符串时，返回1，否则返回0</div></pre></td></tr></table></figure>
+<h3 id="3-逻辑运算符"><a href="#3-逻辑运算符" class="headerlink" title="3.逻辑运算符"></a>3.逻辑运算符</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">1.NOT或! 表示逻辑非，但NOT NULL 返回 NULL</div><div class="line">    </div><div class="line">2.AND或&amp;&amp;,操作数中有任何一个为NULL则返回NULL</div><div class="line">   </div><div class="line">3.OR或|| ,当一个操作数为NULL，另一个操作数非0，则返回1，否则返回NULL。两个都为NULL，返回NULL</div><div class="line">    </div><div class="line">4.XOR表示逻辑异或，任意一个操作数为NULL，返回NULL，如果两个操作数真假相异，返回1，否则返回0</div></pre></td></tr></table></figure>
+<h3 id="4-位运算符"><a href="#4-位运算符" class="headerlink" title="4.位运算符"></a>4.位运算符</h3><p>略</p>
+<h3 id="5-运算符的优先级"><a href="#5-运算符的优先级" class="headerlink" title="5.运算符的优先级"></a>5.运算符的优先级</h3><p>略</p>
+<h1 id="常用函数"><a href="#常用函数" class="headerlink" title="常用函数"></a>常用函数</h1><h2 id="字符串函数"><a href="#字符串函数" class="headerlink" title="字符串函数"></a>字符串函数</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">1.CONCAT(S1,S2,...Sn)函数：</div><div class="line">    把传入的参数连接成为一个字符串任何字符串与NULL进行连接的结果都是NULL</div><div class="line">    				</div><div class="line">2.INSERT(str,x,y,instr)函数：</div><div class="line">    将字符串str从第x位置开始，y个字符长的子串替换为字符串instr(第一个位置记x为1)</div><div class="line">   </div><div class="line">3.LOWER(str)和UPPER(str)函数：</div><div class="line">    把字符串全部转换为大写或者小写</div><div class="line">   </div><div class="line">4.LEFT(str,x)和RIGHT(str,x):</div><div class="line">    分别返回字符串最左边x个字符和最右边x个字符，如果第二个参数为NULL，不返回任何字符串</div><div class="line">   </div><div class="line">5.LPAD(str,n,pad)和RPAD(str,n,pad)函数：</div><div class="line">    用字符串pad对str最左边或最右边进行填充，直到总长度为n</div><div class="line">   </div><div class="line">6.LTRIM(str)和RTRIM(str)函数：</div><div class="line">    去掉字符串str左侧和右侧空格</div><div class="line">   </div><div class="line">7.REPEAT(str,x):</div><div class="line">    返回str重复x次的结果</div><div class="line">   </div><div class="line">8.REPLACE(str,a,b)函数：</div><div class="line">    用字符串b替换str中所有出现的字符串a</div><div class="line">   </div><div class="line">9.STRCMP(s1,s2)函数：</div><div class="line">    比较字符串s1和s2的ASCII码值的大小，相等返回0，s1大，返回1，s2大，返回-1，s2大，返回-1</div><div class="line">   </div><div class="line">10.TRIM(str)函数：</div><div class="line">    去掉目标字符串的开头和结尾的空格</div><div class="line">   </div><div class="line">11.SUBSTRING(str,x,y)函数：</div><div class="line">    返回str中第x位置起y个字符长度的子串(索引从1开始)</div></pre></td></tr></table></figure>
+<h2 id="数值函数"><a href="#数值函数" class="headerlink" title="数值函数"></a>数值函数</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">1.ABS(x)函数：返回x的绝对值</div><div class="line">		 </div><div class="line">2.CEIL(x)函数：返回大于x的最小整数</div><div class="line">    </div><div class="line">3.FLOOR(x)函数：返回小于x的最大整数</div><div class="line">   </div><div class="line">4.MOD(x,y)函数：返回x/y的摸，和x%y的结果相同，任何一个数为NULL结果都为NULL</div><div class="line">    </div><div class="line">5.RAND()函数：返回0~1内的随机值,</div><div class="line">    产生0~100内的任意随机整数：<span class="keyword">select</span> <span class="keyword">ceil</span>(<span class="number">100</span>*<span class="keyword">rand</span>())</div><div class="line">   		</div><div class="line"><span class="number">6.</span><span class="keyword">ROUND</span>(x,y)函数：返回参数x的四舍五入的有y为小数的值</div><div class="line">   </div><div class="line"><span class="number">7.</span><span class="keyword">TRUNCATE</span>(x,y)函数：返回数字x截断为y为小数的结果，不进行四舍五入，类似<span class="keyword">ROUND</span>(x,y)</div></pre></td></tr></table></figure>
+<h2 id="日期和时间函数"><a href="#日期和时间函数" class="headerlink" title="日期和时间函数"></a>日期和时间函数</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">1.CURDATE()函数：返回当前日期，只包含年月日</div><div class="line">   		</div><div class="line">2.CURTIME()函数：返回当前时间，只包含时分秒</div><div class="line">   </div><div class="line">3.NOW()函数：返回当前的日期和时间，年月日时分秒全都包含</div><div class="line">   </div><div class="line">4.UNIX_TIMESTAMP(date)函数：返回日期date的UNIX时间戳(日期的12位数字表示)</div><div class="line">   </div><div class="line">5.FROM_UNIXTIME(unixtime)函数：返回UNIXTIME时间戳的日期值，和上面互为逆操作</div><div class="line">   </div><div class="line">6.WEEK(DATE)和YEAR(DATE)函数：前者返回所给日期是一年中的第几周，后者返回所给的日期是哪一年</div><div class="line">   </div><div class="line">7.HOUR(time)和MINUTE(time)函数：返回所给时间的小时部分，分钟部分</div><div class="line">   </div><div class="line">8.MONTHNAME(date)函数：返回date的英文月份名称</div><div class="line">   </div><div class="line">9.DATE_FORMAT(date,fmt)函数：按字符串fmt格式化日期date值，fmt表自行去查</div><div class="line">   </div><div class="line">10.DATE_ADD(date,INTERVAL expr type)函数：返回与所给日期date相差INTERVAL时间段的日期，</div><div class="line">    其中INTERVAL是间隔类型关键字，expr可以是一个表达式（匹配间隔类型表），type是间隔类型（自行查看）</div><div class="line">   </div><div class="line">11.DATEDIFF(date1,date2)函数：计算两个日期之间相差的天数</div></pre></td></tr></table></figure>
+<h2 id="流程函数"><a href="#流程函数" class="headerlink" title="流程函数"></a>流程函数</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">1.IF(value,t,f)函数：</div><div class="line">    月薪在2000以上，用“high”表示，2000以下，用“low”表示:</div><div class="line">    <span class="keyword">select</span> <span class="keyword">if</span>(salary&gt;<span class="number">2000</span>, <span class="string">'high'</span>,<span class="string">'low'</span>) <span class="keyword">from</span> salary;</div><div class="line">    			</div><div class="line">2.IFNULL(value1,value2)函数：</div><div class="line">    一般用来替换NULL值，value1代表字段:</div><div class="line">    <span class="keyword">select</span> <span class="keyword">ifnull</span>(salary,<span class="number">0</span>)<span class="keyword">from</span> salary;</div><div class="line">    	</div><div class="line">3.CASE WHEN[value1] THEN[result1]...ELSE[default]<span class="keyword">END</span>函数：</div><div class="line">    <span class="keyword">select</span> <span class="keyword">case</span> <span class="keyword">when</span> salary&lt;=<span class="number">2000</span> <span class="keyword">then</span> <span class="string">'low'</span> <span class="keyword">else</span> <span class="string">'high'</span> <span class="keyword">end</span> <span class="keyword">from</span> salary;</div><div class="line">    	</div><div class="line">4.CASE [expr] WHEN [value1] THEN[result1]...ELSE[default]<span class="keyword">END</span>函数：</div><div class="line">    分多个档次:</div><div class="line">    <span class="keyword">select</span> <span class="keyword">case</span> salary <span class="keyword">when</span> <span class="number">1000</span> <span class="keyword">then</span> <span class="string">'low'</span> <span class="keyword">when</span> <span class="number">2000</span> <span class="keyword">then</span> <span class="string">'mid'</span> <span class="keyword">else</span> <span class="string">'high'</span> <span class="keyword">end</span> <span class="keyword">from</span> salary;</div></pre></td></tr></table></figure>
+<h2 id="其他常用函数"><a href="#其他常用函数" class="headerlink" title="其他常用函数"></a>其他常用函数</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">1.DATABASE()函数：返回当前数据库名</div><div class="line">   		</div><div class="line">2.VERSION()函数：返回当前数据库版本</div><div class="line">   </div><div class="line">3.USER()函数：返回当前登录用户名</div><div class="line">   </div><div class="line">4.INET_ATON(IP)函数：返回IP地址的网络字节序表示</div><div class="line">   </div><div class="line">5.INET_NTOA(num)函数：返回网络字节序代表的IP地址</div><div class="line">   </div><div class="line">6.PASSWORD(str)函数：返回字符串str的加密版本，一个41位长的字符串</div><div class="line">   </div><div class="line">7.MD5(str)函数：返回字符串str的MD5值，常用来对应用中的数据进行加密</div></pre></td></tr></table></figure>
+<h1 id="存储过程和函数"><a href="#存储过程和函数" class="headerlink" title="存储过程和函数"></a>存储过程和函数</h1><h2 id="存储过程和函数简介"><a href="#存储过程和函数简介" class="headerlink" title="存储过程和函数简介"></a>存储过程和函数简介</h2><ul>
+<li>存储过程和函数是经过编译并存储在数据库中的一段SQL语句的集合</li>
+<li>调用它们可以减少数据在数据库和应用服务器之间的传输，提高数据处理效率</li>
+<li>函数必须有返回值，存储过程不必须有返回值</li>
+<li>存储过程的参数可以是IN、OUT、INOUT类型，函数的参数只能是IN类型</li>
+</ul>
+<h2 id="存储过程和函数的相关操作"><a href="#存储过程和函数的相关操作" class="headerlink" title="存储过程和函数的相关操作"></a>存储过程和函数的相关操作</h2><h3 id="0-在对存储过程和函数进行操作时，需要确定用户是否具有权限"><a href="#0-在对存储过程和函数进行操作时，需要确定用户是否具有权限" class="headerlink" title="0.在对存储过程和函数进行操作时，需要确定用户是否具有权限"></a>0.在对存储过程和函数进行操作时，需要确定用户是否具有权限</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">创建需要：CREATE ROUTINE权限</div><div class="line">修改删除：ALTER ROUTINE权限</div><div class="line">执行需要：EXECUTE权限</div></pre></td></tr></table></figure>
+<h3 id="1-创建、修改存储过程或者函数"><a href="#1-创建、修改存储过程或者函数" class="headerlink" title="1.创建、修改存储过程或者函数"></a>1.创建、修改存储过程或者函数</h3><ul>
+<li>MySQL的存储过程和函数中允许包含DDL语句，允许执行提交（Commit），或者回滚（Rollback）</li>
+<li>存储过程和函数中可以调用其他的过程或者函数</li>
+<li>下面创建了一个新的过程film_in_stock：</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">DELIMITER $$</div><div class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> film_in_stock(<span class="keyword">IN</span> p_film_id <span class="built_in">INT</span>,<span class="keyword">IN</span> p_store_id <span class="built_in">INT</span>,<span class="keyword">OUT</span> p_film_count <span class="built_in">INT</span>)</div><div class="line"><span class="keyword">READS</span> <span class="keyword">SQL</span> <span class="keyword">DATA</span> //表示只包含读<span class="keyword">sql</span>的语句</div><div class="line"><span class="keyword">BEGIN</span></div><div class="line">	<span class="keyword">SELECT</span> inventory_id</div><div class="line">	<span class="keyword">FROM</span> inventory</div><div class="line">	<span class="keyword">WHERE</span> film_id = p_film_id</div><div class="line">	<span class="keyword">AND</span> store_id = p_store_id</div><div class="line">	<span class="keyword">AND</span> inventory_in_stock(inventory_id);</div><div class="line">     	 </div><div class="line">	<span class="keyword">SELECT</span> <span class="keyword">FOUND_ROWS</span>() <span class="keyword">INTO</span> p_film_count;</div><div class="line"><span class="keyword">END</span> $$</div><div class="line">DELIMITER;</div><div class="line">      </div><div class="line">1.使用$$符号，在过程和函数中的分号就不会被MySQL解释成语句的结束而提示错误</div><div class="line">        </div><div class="line">2.存储过程或函数创建完毕，通过DELIMITER;命令再将结束符改回分号</div><div class="line">      </div><div class="line">3.手工执行：<span class="keyword">select</span> inventory_id <span class="keyword">from</span> inventory <span class="keyword">where</span> film_id=<span class="number">2</span> <span class="keyword">and</span> store_id = <span class="number">2</span> <span class="keyword">and</span> </div><div class="line">inventory_in_stock(inventory_id);</div><div class="line">    结果为：inventory_id 10  11</div><div class="line">           </div><div class="line">4.调用过程等同于手工执行的代码：<span class="keyword">CALL</span> film_in_stock(<span class="number">2</span>,<span class="number">2</span>,@a);</div><div class="line">      </div><div class="line">5.select @a:显示：@a 2（2条结果，）</div></pre></td></tr></table></figure>
+<h3 id="2-删除存储过程或者函数"><a href="#2-删除存储过程或者函数" class="headerlink" title="2.删除存储过程或者函数"></a>2.删除存储过程或者函数</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">DROP</span> <span class="keyword">PROCEDURE</span> film_in_stock;</div></pre></td></tr></table></figure>
+<h3 id="3-查看存储过程或者函数"><a href="#3-查看存储过程或者函数" class="headerlink" title="3.查看存储过程或者函数"></a>3.查看存储过程或者函数</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">- 查看存储过程或者函数的状态：</div><div class="line">    <span class="keyword">show</span> <span class="keyword">procedure</span> <span class="keyword">status</span> <span class="keyword">like</span> <span class="string">'film_in_stock'</span>\G</div><div class="line">	      	</div><div class="line">- 查看存储过程或者函数的定义：</div><div class="line">    <span class="keyword">show</span> <span class="keyword">create</span> <span class="keyword">procedure</span> film_in_stock \G</div><div class="line">     		</div><div class="line">- 详细：</div><div class="line">    <span class="keyword">select</span> * <span class="keyword">from</span> routines <span class="keyword">where</span> ROUTINE_NAME = <span class="string">'film_in_stock'</span> \G</div></pre></td></tr></table></figure>
+<h3 id="4-变量的使用"><a href="#4-变量的使用" class="headerlink" title="4.变量的使用"></a>4.变量的使用</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">- 变量的定义</div><div class="line">    1.通过<span class="keyword">DECLARE</span>定义一个局部变量，作用范围只能在BEGIN...END块中</div><div class="line">    <span class="number">2.</span>定义必须写在复合语句的开头，并且在任何其他语句的前面</div><div class="line">    <span class="number">3.</span>可以使用<span class="keyword">DEFAULT</span>赋默认值</div><div class="line">    <span class="number">4.</span>例定义一个<span class="built_in">DATE</span>类型变量：<span class="keyword">DECLARE</span> last_month_start <span class="built_in">DATE</span>;</div><div class="line">       	</div><div class="line">- 变量的赋值</div><div class="line">    1.直接使用<span class="keyword">SET</span>赋值：<span class="keyword">SET</span> var_name = expr [,var_name = expr]...,可以赋常量或者表达式</div><div class="line">          </div><div class="line">    <span class="number">2.</span>通过查询将结果赋值给变量：<span class="keyword">SELECT</span> col_name[,...]<span class="keyword">INTO</span> var_name[,...] </div><div class="line">      <span class="keyword">from</span> tavle_expr(var_name是被赋值的变量)</div></pre></td></tr></table></figure>
+<h3 id="5-定义条件和处理"><a href="#5-定义条件和处理" class="headerlink" title="5.定义条件和处理"></a>5.定义条件和处理</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">- 定义：<span class="keyword">DECLARE</span> condition_name CONDITION <span class="keyword">FOR</span> condition_value</div><div class="line">        </div><div class="line">- 处理：<span class="keyword">DECLARE</span> handler_type <span class="keyword">HANDLER</span> <span class="keyword">FOR</span> condition_value[,...] sp_statement</div><div class="line">    <span class="number">1.</span>handler_type,支持CONTINUE和<span class="keyword">EXIT</span></div><div class="line">    <span class="number">2.</span>condition_value，可以是通过<span class="keyword">DECLARE</span>定义的condition_name,可以是<span class="keyword">SQLSTATE</span>的值，</div><div class="line">      或mysql-<span class="keyword">error</span>-code或SQLWARNING，<span class="keyword">NOT</span> <span class="keyword">FOUND</span>，SQLEXCEPTION</div><div class="line">     		</div><div class="line">- 例子：</div><div class="line">    <span class="number">1.</span>捕获mysql-<span class="keyword">error</span>-code</div><div class="line">    	<span class="keyword">DECLARE</span> CONTINUE <span class="keyword">HANDLER</span> <span class="keyword">FOR</span> <span class="number">1062</span> <span class="keyword">SET</span> @x2 =<span class="number">1</span>;</div><div class="line">         </div><div class="line">    2.事先定义condition_name</div><div class="line">    	<span class="keyword">DECLARE</span> DuplicateKey CONDITION <span class="keyword">FOR</span> <span class="keyword">SQLSTATE</span> <span class="string">'23000'</span>;</div><div class="line">    	<span class="keyword">DECLARE</span> CONTINUE <span class="keyword">HANDLER</span> <span class="keyword">FOR</span> DuplicateKey <span class="keyword">SET</span> @x2 = <span class="number">1</span>;</div><div class="line">        	</div><div class="line">    3.捕获SQLEXCEPTION</div><div class="line">    	<span class="keyword">DECLARE</span> CONTINUE <span class="keyword">HANDLER</span> <span class="keyword">FOR</span> SQLEXCEPTION <span class="keyword">SET</span> @x2 = <span class="number">1</span>；</div></pre></td></tr></table></figure>
+<h3 id="6-光标的使用"><a href="#6-光标的使用" class="headerlink" title="6.光标的使用"></a>6.光标的使用</h3><ul>
+<li>使用光标对结果集进行循环处理</li>
+<li>声明光标：DECLARE cursor_name CURSOR FOR select_statement</li>
+<li>OPEN光标：OPEN cursor_name</li>
+<li>FETCH光标：FETCH cursor_name INTO var_name [,var_name]…</li>
+<li>CLOSE光标：CLOSE cursor_name</li>
+<li>例：对payment表按照staff_id值的不同累加amount的值，结束条件：捕获NOT FOUNT</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">delimiter $$</div><div class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> payment_stat()</div><div class="line"><span class="keyword">BEGIN</span></div><div class="line">    <span class="keyword">DECLARE</span> i_staff_id <span class="built_in">int</span>;</div><div class="line">    <span class="keyword">DECLARE</span> d_amount <span class="built_in">decimal</span>(<span class="number">5</span>,<span class="number">2</span>);</div><div class="line">    <span class="keyword">DECLARE</span> cur_payment <span class="keyword">cursor</span> <span class="keyword">for</span> <span class="keyword">select</span> staff_id,amount <span class="keyword">from</span> payment;</div><div class="line">    <span class="keyword">DECLARE</span> <span class="keyword">EXIT</span> <span class="keyword">HANDLER</span> <span class="keyword">FOR</span> <span class="keyword">NOT</span> <span class="keyword">FOUND</span> <span class="keyword">CLOSE</span> cur_payment;</div><div class="line">         </div><div class="line">    <span class="keyword">set</span> @x1 = <span class="number">0</span>;</div><div class="line">    <span class="keyword">set</span> @x2 = <span class="number">0</span>;</div><div class="line">        </div><div class="line">    OPEN cur_payment;</div><div class="line">         </div><div class="line">    REPEAT</div><div class="line">    	FETCH cur_payment INTO i_staff_id,d_amount;</div><div class="line">    		if i_staff_id = 2 then </div><div class="line">    			<span class="keyword">set</span> @x1 = @x1 + d_amount;</div><div class="line">    		else</div><div class="line">    			<span class="keyword">set</span> @x2 = @x2 + d_amount;</div><div class="line">    		<span class="keyword">end</span> <span class="keyword">if</span>;</div><div class="line">    UNTIL 0 <span class="keyword">END</span> <span class="keyword">REPEAT</span>;</div><div class="line">        </div><div class="line">    CLOSE cur_payment;</div><div class="line"><span class="keyword">END</span>;</div><div class="line">$$</div></pre></td></tr></table></figure>
+<ul>
+<li>变量和条件必须在最前面声明，然后才能是光标的声明，最后才可以是处理程序的声明</li>
+</ul>
+<h3 id="7-流程控制"><a href="#7-流程控制" class="headerlink" title="7.流程控制"></a>7.流程控制</h3><ul>
+<li>IF语句</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">IF search_condition THEN statement_list</div><div class="line">	[ELSEIF search_condition THEN statement_list]...</div><div class="line">	[ELSE statement_list]</div><div class="line"><span class="keyword">END</span> <span class="keyword">IF</span></div></pre></td></tr></table></figure>
+<ul>
+<li>CASE语句</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">CASE case_value</div><div class="line">	WHEN when_value THEN statement_list</div><div class="line">	[WHEN when_value THEN statement_list]...</div><div class="line">	[ELSE statement_list]</div><div class="line"><span class="keyword">END</span> <span class="keyword">CASE</span></div><div class="line">//或者：</div><div class="line"><span class="keyword">CASE</span> </div><div class="line">	<span class="keyword">WHEN</span> search_condition <span class="keyword">THEN</span> statement_list</div><div class="line">	[<span class="keyword">WHEN</span> search_condition <span class="keyword">THEN</span> statement_list]...</div><div class="line">	[<span class="keyword">ELSE</span> statement_list]</div><div class="line"><span class="keyword">END</span> <span class="keyword">CASE</span></div></pre></td></tr></table></figure>
+<ul>
+<li>LOOP语句</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[begin_label:]LOOP</div><div class="line">	statement_list	//如果不在这里增加退出循环的语句，会实现死循环</div><div class="line"><span class="keyword">END</span> <span class="keyword">LOOP</span> [end_lable]</div></pre></td></tr></table></figure>
+<ul>
+<li>LEAVE语句</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">//下面是使用LOOP和LEAVE的例子，循环100次向actor表插入记录，然后退出循环</div><div class="line">CREATE PROCEDURE actor_insert()</div><div class="line">BEGIN</div><div class="line">	set @x = 0;</div><div class="line">	ins:LOOP</div><div class="line">		set @x = @x + 1;</div><div class="line">		IF @x = 100 then</div><div class="line">		leave ins;</div><div class="line">		END IF;</div><div class="line">		INSERT INTO actor(first_name,last_name) VALUES ('Test','201');</div><div class="line">	END LOOP ins;</div><div class="line">END;</div><div class="line">$$</div><div class="line">call actor_insert();</div><div class="line">select count(*) from actor where first_name='Test';</div><div class="line">   </div><div class="line">//结果显示：count(*) 100</div></pre></td></tr></table></figure>
+<ul>
+<li>ITERATE语句</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">//必须用在循环中，跳过当前循环剩下的语句，直接进入下一轮循环</div><div class="line">//例子：当@x变量是偶数的时候，不再执行循环中剩下的语句</div><div class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> actor_insert()</div><div class="line"><span class="keyword">BEGIN</span></div><div class="line">	<span class="keyword">set</span> @x = <span class="number">0</span>;</div><div class="line">	ins: LOOP</div><div class="line">		<span class="keyword">set</span> @x=@x+<span class="number">1</span>;</div><div class="line">		IF @x = 10 then</div><div class="line">		leave ins;</div><div class="line">		ELSEIF mod(@x,2) = 0 then</div><div class="line">		ITERATE ins;</div><div class="line">		<span class="keyword">END</span> <span class="keyword">IF</span>;</div><div class="line">		<span class="keyword">INSERT</span> <span class="keyword">INTO</span> actor(actor_id,first_name,last_name)<span class="keyword">VALUES</span>(@x+<span class="number">200</span>,<span class="string">'Test'</span>,@x);</div><div class="line">	<span class="keyword">END</span> <span class="keyword">LOOP</span> ins;</div><div class="line"><span class="keyword">END</span>;</div><div class="line">$$</div><div class="line">     </div><div class="line"><span class="keyword">call</span> actor_insert();</div><div class="line"><span class="keyword">select</span> actor_id,first_name,last_name <span class="keyword">from</span> actor <span class="keyword">where</span> first_name = <span class="string">'Test'</span>;</div></pre></td></tr></table></figure>
+<ul>
+<li>REPEAT语句</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">//有条件的循环控制语句，当满足条件的时候退出循环</div><div class="line">[begin_label:]REPEAT</div><div class="line">	statement_list</div><div class="line">UNTIL search_condition</div><div class="line"><span class="keyword">END</span> <span class="keyword">REPEAT</span>[end_label]</div></pre></td></tr></table></figure>
+<ul>
+<li>WHILE语句</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">//有条件的循环控制语句，当满足条件是执行循环内容</div><div class="line">[begin_label:]WHILE search_condition <span class="keyword">DO</span></div><div class="line">	statement_list</div><div class="line"><span class="keyword">END</span> <span class="keyword">WHILE</span>[end_label]</div><div class="line">    </div><div class="line">注：<span class="keyword">WHILE</span>在首次循环执行之前就判断条件，<span class="keyword">REPEAT</span>是首次执行循环之后才判断条件，循环至少执行一次</div></pre></td></tr></table></figure>
+<h3 id="8-事件调度器"><a href="#8-事件调度器" class="headerlink" title="8.事件调度器"></a>8.事件调度器</h3><ul>
+<li>可以将数据库按照自定义时间周期触发某种操作</li>
+<li>下面通过一个完整的实例来熟悉事件调度器的使用：</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">1.创建测试表test：<span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">test</span>(id1 vachar(<span class="number">10</span>),create_time datetime);</div><div class="line">         </div><div class="line">2.创建事件调度器，每隔5秒向test表插入一条记录</div><div class="line">    <span class="keyword">CREATE</span> <span class="keyword">EVENT</span> test_event_1</div><div class="line">    <span class="keyword">ON</span> SCHEDULE</div><div class="line">    EVERY <span class="number">5</span> <span class="keyword">SECOND</span></div><div class="line">    <span class="keyword">DO</span></div><div class="line">    <span class="keyword">INSERT</span> <span class="keyword">INTO</span> test.test(id1,create_time)</div><div class="line">    <span class="keyword">VALUES</span>(<span class="string">'test'</span>,<span class="keyword">now</span>())</div><div class="line">          </div><div class="line"><span class="number">3.</span>查看调度器状态：<span class="keyword">show</span> <span class="keyword">events</span> \G;</div><div class="line">       </div><div class="line">4.隔几秒后，查看test表，发现没有数据插入：<span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">test</span>;</div><div class="line">      </div><div class="line">5.查看事件调度器状态，发现默认是关闭的：<span class="keyword">show</span> <span class="keyword">variables</span> <span class="keyword">like</span> <span class="string">'%scheduler%'</span>;</div><div class="line">       </div><div class="line">6.打开调度器：<span class="keyword">SET</span> <span class="keyword">GLOBAL</span> event_scheduler = <span class="number">1</span>;	<span class="keyword">show</span> <span class="keyword">variables</span> <span class="keyword">like</span> <span class="string">'%scheduler%'</span>;</div><div class="line">        </div><div class="line">7.查看后台进程，发现新增一个：<span class="keyword">show</span> <span class="keyword">processlist</span> \G;</div><div class="line">        </div><div class="line">8.为防止表变大，创建新调度器，每隔1分钟清空一次test表：</div><div class="line">    <span class="keyword">CREATE</span> <span class="keyword">EVENT</span>　trunc_test</div><div class="line">    <span class="keyword">ON</span> SCHEDULE every <span class="number">1</span> <span class="keyword">MINUTE</span></div><div class="line">    <span class="keyword">DO</span> <span class="keyword">TRUNCATE</span> <span class="keyword">TABLE</span> <span class="keyword">test</span>;</div><div class="line">         	</div><div class="line">9.禁用和删除</div><div class="line">     禁用event：<span class="keyword">alter</span> <span class="keyword">event</span> test_event_1 <span class="keyword">disable</span>;</div><div class="line">     删除event：<span class="keyword">drop</span> <span class="keyword">event</span> test_event_1;</div></pre></td></tr></table></figure>
+<h1 id="存储引擎和索引"><a href="#存储引擎和索引" class="headerlink" title="存储引擎和索引"></a>存储引擎和索引</h1><h2 id="MySQL存储引擎概述"><a href="#MySQL存储引擎概述" class="headerlink" title="MySQL存储引擎概述"></a>MySQL存储引擎概述</h2><ul>
+<li>用户可以根据应用的需要选择如何存储和索引数据，是否使用事务等</li>
+<li>InnoDB和BDB存储引擎提供事务安全表，其他存储引擎都是非事务安全表</li>
+<li>MySQL5.5之后默认引擎为InnoDB</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">1.查看当前的默认存储引擎：</div><div class="line">    <span class="keyword">show</span> <span class="keyword">variables</span> <span class="keyword">like</span> <span class="string">'table_type'</span>;</div><div class="line">      </div><div class="line">2.查询当前数据库支持的存储引擎：</div><div class="line">    <span class="keyword">show</span> <span class="keyword">ENGINES</span> \G 或</div><div class="line">    <span class="keyword">show</span> <span class="keyword">variables</span> <span class="keyword">like</span> <span class="string">'have%'</span>;</div></pre></td></tr></table></figure>
+<ul>
+<li>设置存储引擎</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">在创建新表的时候，可以通过增加ENGINE关键字设置新建表的存储引擎也可以使用<span class="keyword">ALTER</span> <span class="keyword">TABLE</span>语句，</div><div class="line">将一个已经存在的表修改成其他的存储引擎：</div><div class="line">    <span class="keyword">alter</span> <span class="keyword">table</span> ai <span class="keyword">engine</span> = <span class="keyword">innodb</span>;</div><div class="line">    <span class="keyword">show</span> <span class="keyword">create</span> <span class="keyword">table</span> ai \G</div></pre></td></tr></table></figure>
+<h2 id="各种存储引擎的特性"><a href="#各种存储引擎的特性" class="headerlink" title="各种存储引擎的特性"></a>各种存储引擎的特性</h2><h3 id="1-MyISAM"><a href="#1-MyISAM" class="headerlink" title="1.MyISAM"></a>1.MyISAM</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1.MySQL5.5之前的默认存储引擎，不支持事务，不支持外键，访问速度快</div><div class="line">    </div><div class="line">2.默认使用静态表，插入记录保留前面的空格，但后面的空格被去掉</div></pre></td></tr></table></figure>
+<h3 id="2-InnoDB"><a href="#2-InnoDB" class="headerlink" title="2.InnoDB"></a>2.InnoDB</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">- 提供了具有提交、回滚和崩溃恢复能力的事务安全，写的处理效率差一些</div><div class="line">				</div><div class="line">- 自动增长列：</div><div class="line">    1.可以手工插入，但插入的值如果是空或者0，则实际插入的将是自动增长后的值</div><div class="line">        </div><div class="line">    2.可以使用<span class="keyword">ALTER</span> <span class="keyword">TABLE</span> *** AUTO_INCREMENT = n;强制设置自动增长列的初始值（默认1开始），</div><div class="line">    强制设置的值保留在内存中，重启数据库要重新设置</div><div class="line">         </div><div class="line">    3.可以使用LAST_INSERT_ID()查询当前线程最后插入记录使用的值：<span class="keyword">select</span> <span class="keyword">LAST_INSERT_ID</span>();</div><div class="line">     		</div><div class="line">- 外键约束：</div><div class="line">    1.只有InnoDB引擎支持外键</div><div class="line">       </div><div class="line">    2.主键声明：PRIMARY KEY(主键名)</div><div class="line">        </div><div class="line">    3.外键声明：(在子表，带外键的表中)CONSTRAINT '自定义一个名称' FOREIGN KEY(外键名) </div><div class="line">      REFERENCES 父表名(父表主键) ON <span class="keyword">DELETE</span> RESTRICT <span class="keyword">ON</span> <span class="keyword">UPDATE</span> <span class="keyword">CASCADE</span>可以指定在删除、</div><div class="line">      更新父表时，对字表进行相应操作：</div><div class="line">         </div><div class="line">            <span class="number">1.</span>RESTRICT和<span class="keyword">NO</span> <span class="keyword">ACTION</span>:限制在子表有关联记录的情况下父表不能更新</div><div class="line">            <span class="number">2.</span><span class="keyword">CASCADE</span>:父表在更新或者删除时，更新或删除子表对应记录</div><div class="line">            <span class="number">3.</span><span class="keyword">SET</span> <span class="literal">NULL</span>：父表在更新或删除时，子表的对应字段被<span class="keyword">SET</span> <span class="literal">NULL</span>			    </div><div class="line">    <span class="number">4.</span>当某个表被其他表创建了外键参照，那么该表的对应索引或者主键禁止被删除</div><div class="line">         </div><div class="line">    <span class="number">5.</span>在导入多个表的数据时，如果需要忽略导入顺序，可以暂时关闭外键检查来加快处理速度</div><div class="line">        关闭：<span class="keyword">SET</span> FOREIGN_KEY_CHECKS=<span class="number">0</span>;</div><div class="line">        改回：<span class="keyword">SET</span> FOREIGN_KEY_CHECKS=<span class="number">1</span>;</div><div class="line">                 </div><div class="line">    6.对应InnoDB类型表，外键信息可以使用<span class="keyword">show</span> <span class="keyword">create</span> <span class="keyword">table</span> 或 <span class="keyword">show</span> <span class="keyword">table</span> <span class="keyword">status</span>命令</div><div class="line">     		</div><div class="line">- 存储方式:略</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="索引概述"><a href="#索引概述" class="headerlink" title="索引概述"></a>索引概述</h2><ul>
+<li>所有Mysql列类型都可以被索引，对相关列使用索引是提高SELECT操作性能的最佳途径</li>
+<li>MyISAM和InnoDB存储引擎的表默认创建的都是BTREE索引</li>
+<li>MySQL不支持函数索引，支持前缀索引（对索引字段的前N个字符创建索引）</li>
+<li>索引在创建表的时候可以同时创建，也可以随时增加新的索引，创建新索引的语法：</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">CREATE</span> [<span class="keyword">UNIQUE</span>|FULLTEXT|SPATIAL]<span class="keyword">INDEX</span> index_name <span class="keyword">ON</span> tb_name(index_col_name...)</div><div class="line">      </div><div class="line">例：要为city表创建<span class="number">10</span>个字节的前缀索引：</div><div class="line">    <span class="keyword">create</span> <span class="keyword">index</span> cityname <span class="keyword">on</span> city(city(<span class="number">10</span>));</div></pre></td></tr></table></figure>
+<ul>
+<li>删除索引：</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">drop</span> <span class="keyword">index</span> cityname <span class="keyword">on</span> city</div></pre></td></tr></table></figure>
+<h2 id="BTREE索引与HASH索引"><a href="#BTREE索引与HASH索引" class="headerlink" title="BTREE索引与HASH索引"></a>BTREE索引与HASH索引</h2><ul>
+<li>MEMORY引擎可以选择使用BTREE索引或HASH索引</li>
+<li>对于HASH索引：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">1.只使用=或&lt;=&gt;操作符的等式比较</div><div class="line">2.只能使用整个关键字来搜索一行</div></pre></td></tr></table></figure>
+<ul>
+<li>对于BTREE索引：</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">可以使用&gt;、 &lt;、 &gt;=、 &lt;=、 BETWEEN、 !=、 &lt;&gt;、 LIKE'pattern'(pattern不以通配符开始)</div></pre></td></tr></table></figure>
+<ul>
+<li>下列范围查询适用于BTREE索引和HASH索引：</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span> * <span class="keyword">from</span> t1 <span class="keyword">where</span> key_col = <span class="number">1</span> <span class="keyword">or</span> key_col <span class="keyword">in</span> (<span class="number">15</span>,<span class="number">18</span>,<span class="number">20</span>)</div></pre></td></tr></table></figure>
+<ul>
+<li>下列范围查询只使用于BTREE索引：</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span> * <span class="keyword">from</span> t1 <span class="keyword">where</span> key_col &gt; <span class="number">1</span> <span class="keyword">and</span> key_col &lt; <span class="number">10</span>;</div><div class="line">    </div><div class="line"><span class="keyword">select</span> * <span class="keyword">from</span> t1 <span class="keyword">where</span> key_col <span class="keyword">LIKE</span> <span class="string">'ab%'</span> <span class="keyword">or</span> key_col <span class="keyword">BETWEEN</span> <span class="string">'kisa'</span> <span class="keyword">AND</span> <span class="string">'simon'</span>;</div></pre></td></tr></table></figure>
+<ul>
+<li>如果不使用索引，MySQL必须从第一条记录开始然后读完整个表知道找出相关的行，表越大，花费的时间越多</li>
+</ul>
+<h1 id="SQL优化"><a href="#SQL优化" class="headerlink" title="SQL优化"></a>SQL优化</h1><h2 id="优化SQL语句的一般步骤"><a href="#优化SQL语句的一般步骤" class="headerlink" title="优化SQL语句的一般步骤"></a>优化SQL语句的一般步骤</h2><h3 id="1-通过show-session-global-status命令，默认session-当前连接-，global-自数据库上次启动至今-的统计结果"><a href="#1-通过show-session-global-status命令，默认session-当前连接-，global-自数据库上次启动至今-的统计结果" class="headerlink" title="1.通过show [session|global]status命令，默认session(当前连接)，global(自数据库上次启动至今)的统计结果"></a>1.通过show [session|global]status命令，默认session(当前连接)，global(自数据库上次启动至今)的统计结果</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">0.例：<span class="keyword">show</span> <span class="keyword">status</span> <span class="keyword">like</span> <span class="string">'Com_%'</span>;</div><div class="line">    				</div><div class="line">1.Com_XXX表示每个XXX语句执行的次数</div><div class="line">    Com_select:执行<span class="keyword">SELECT</span>操作的次数，一次查询只累加<span class="number">1</span>次</div><div class="line">    Com_insert:执行<span class="keyword">INSERT</span>操作的次数，对于批量插入的<span class="keyword">INSERT</span>操作，只累加<span class="number">1</span>次</div><div class="line">    Com_update:执行<span class="keyword">UPDATE</span>操作的次数</div><div class="line">    Com_delete:执行<span class="keyword">DELETE</span>操作的次数</div><div class="line">    </div><div class="line"><span class="number">2.</span>上述参数对所有存储引擎的表操作都会进行累计，下面参数只针对<span class="keyword">InnoDB</span>引擎</div><div class="line">    Innodb_rows_read:<span class="keyword">SELECT</span>查询返回的行数</div><div class="line">    Innodb_rows_inserted:执行<span class="keyword">INSERT</span>操作插入的行数</div><div class="line">    Innodb_rows_updated:执行<span class="keyword">UPDATE</span>操作更新的行数</div><div class="line">    Innodb_rows_deleted:执行<span class="keyword">DELETE</span>操作删除的行数</div><div class="line">    		</div><div class="line"><span class="number">3.</span>通过上述参数，可以了解各种类型<span class="keyword">SQL</span>大致执行比例，是以插入更新为主还是以查询操作为主</div><div class="line">    </div><div class="line"><span class="number">4.</span>对于事务型应用：</div><div class="line">    Com_commit 事务提交情况</div><div class="line">    Com_rollback 事务回滚情况</div><div class="line">    		</div><div class="line"><span class="number">5.</span>其他基本情况</div><div class="line">    Connections:试图连接MySQL服务器的次数</div><div class="line">    Uptime：服务器工作时间</div><div class="line">    Slow_queries:慢查询次数</div></pre></td></tr></table></figure>
+<h3 id="2-定位执行效率较低的SQL语句"><a href="#2-定位执行效率较低的SQL语句" class="headerlink" title="2.定位执行效率较低的SQL语句"></a>2.定位执行效率较低的SQL语句</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- 通过慢查询日志定位那些执行效率较低的SQL语句（日志管理）</div><div class="line">     				</div><div class="line">- 使用show processlist命令查看当前MySQL在进行的线程</div></pre></td></tr></table></figure>
+<h3 id="3-通过EXPLAIN分析低效SQL的执行计划"><a href="#3-通过EXPLAIN分析低效SQL的执行计划" class="headerlink" title="3.通过EXPLAIN分析低效SQL的执行计划"></a>3.通过EXPLAIN分析低效SQL的执行计划</h3><p>0.可以通过EXPLAIN或者DESC命令获取MySQL如何执行SELECT语句的信息</p>
+<p>1.例：统计某个email账号为租电影所支付的总金额，需要关联客户表customer和付款表payment，并对付款金额amount字段做求和操作<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">explain</span> <span class="keyword">select</span> <span class="keyword">sum</span>(amount) <span class="keyword">from</span> customer a,payment b <span class="keyword">where</span> <span class="number">1</span>=<span class="number">1</span> <span class="keyword">and</span> </div><div class="line">a.customer_id = b.customer_id <span class="keyword">and</span> email = <span class="string">'JANE.BENNETT@sakilacustomer.org'</span>\G</div></pre></td></tr></table></figure></p>
+<p>2.上例显示结果列：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">- select_type:表示<span class="keyword">SELECT</span>类型，有SIMPLE(简单表，不使用表连接或子查询)、PRIMARY(主查询，外层的查询)、</div><div class="line">               <span class="keyword">UNION</span>(<span class="keyword">UNION</span>中的第二个或后面的查询语句)、SUBQUERY(子查询的第一个<span class="keyword">SELECT</span>)</div><div class="line">         </div><div class="line">- <span class="keyword">table</span>：输出结果集的表</div><div class="line">        </div><div class="line">- <span class="keyword">type</span>：表示MySQL在表中找到所需行的方式(访问类型)，越往下，性能越好</div><div class="line">       </div><div class="line">    <span class="number">1.</span><span class="keyword">type</span>=ALL,全表扫描，遍历全表找到匹配的内容行</div><div class="line">    	      							</div><div class="line">    <span class="number">2.</span><span class="keyword">type</span>=<span class="keyword">index</span>，索引全扫描，遍历整个索引来查询匹配的行</div><div class="line">            </div><div class="line">    <span class="number">3.</span><span class="keyword">type</span>=<span class="keyword">range</span>，索引范围扫描，常用&lt;，&lt;=，&gt;，&gt;=，<span class="keyword">between</span>等操作符</div><div class="line">           </div><div class="line">    <span class="number">4.</span><span class="keyword">type</span>=<span class="keyword">ref</span>，使用非唯一索引或唯一索引前缀扫描，</div><div class="line">           </div><div class="line">    <span class="number">5.</span><span class="keyword">type</span>=eq_ref,同上，但使用唯一索引(多表连接使用primary <span class="keyword">key</span>或<span class="keyword">unique</span> <span class="keyword">index</span>)</div><div class="line">              </div><div class="line">    <span class="number">6.</span><span class="keyword">type</span>=const/<span class="keyword">system</span>,单表最多有一个匹配行，这个匹配行中的其他列的值可以被优化器在当前查询中</div><div class="line">                        当作常量处理，例：</div><div class="line">        <span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> (<span class="keyword">select</span> * <span class="keyword">from</span> customer <span class="keyword">where</span> email=<span class="string">''</span>) a \G</div><div class="line">    	       	</div><div class="line">    <span class="number">7.</span><span class="keyword">type</span>=<span class="literal">null</span>,不用访问表或者索引，例：</div><div class="line">        <span class="keyword">explain</span> <span class="keyword">select</span> <span class="number">1</span> <span class="keyword">from</span> dual <span class="keyword">where</span> <span class="number">1</span> /G</div><div class="line">            </div><div class="line">- possible_keys:查询时可能使用的索引</div><div class="line">    						</div><div class="line">- <span class="keyword">key</span>:实际使用的索引</div><div class="line">    </div><div class="line">- key_len:使用到索引字段的长度</div><div class="line">   </div><div class="line">- <span class="keyword">rows</span>：扫描行的数量</div><div class="line">   </div><div class="line">- Extra:执行情况</div></pre></td></tr></table></figure>
+<p>3.使用<code>explain extended</code>命令，之后再用<code>show warnings</code>可以看到SQL真正被执行前优化亲做了哪些改写：比如去除1=1恒等条件</p>
+<h3 id="4-通过show-profile分析SQL"><a href="#4-通过show-profile分析SQL" class="headerlink" title="4.通过show profile分析SQL"></a>4.通过show profile分析SQL</h3><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">1.select @@have_profiling;命令，查看是否支持profile</div><div class="line">	        			</div><div class="line">2.默认profiling是关闭的，select @@profiling;,结果为0，set profiling=1;</div><div class="line">  在Session级别开启profiling</div><div class="line">       </div><div class="line">3.在innodb引擎执行COUNT(*)查询：select count(*) from payment;</div><div class="line">- 通过show profiles；可以看到SQL的Query ID为4</div><div class="line">- 通过show profile for query 4；能够看到执行过程中线程每个状态的消耗时间</div><div class="line">- InnoDB执行COUNT(*)比MyISAM慢，因为没有元数据缓存</div></pre></td></tr></table></figure>
+<h3 id="5-确定问题并优化"><a href="#5-确定问题并优化" class="headerlink" title="5.确定问题并优化"></a>5.确定问题并优化</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">确定对客户表customer的全表扫描效率不理想，对客户表customer的email字段创建索引：</div><div class="line"></div><div class="line">    <span class="keyword">create</span> <span class="keyword">index</span> idx_email <span class="keyword">on</span> customer(email)；</div></pre></td></tr></table></figure>
+<h2 id="索引问题"><a href="#索引问题" class="headerlink" title="索引问题"></a>索引问题</h2><h3 id="1-索引的存储分类"><a href="#1-索引的存储分类" class="headerlink" title="1.索引的存储分类"></a>1.索引的存储分类</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">- B-Tree索引：大部分引擎都支持，适用于范围查找</div><div class="line">     </div><div class="line">- HASH索引：只有Memory/Heap引擎支持，适用于Key-Value查询，不适用范围查找</div><div class="line">    </div><div class="line">- R-Tree索引：主要用于地理空间数据类型</div><div class="line">    </div><div class="line">- Full-text:全文索引</div></pre></td></tr></table></figure>
+<h3 id="2-使用索引"><a href="#2-使用索引" class="headerlink" title="2.使用索引"></a>2.使用索引</h3><ul>
+<li>例，重命名rental表上的索引rental_date为idx_rental_date</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">alter</span> <span class="keyword">table</span> rental <span class="keyword">drop</span> <span class="keyword">index</span> rental_date;</div><div class="line">    </div><div class="line"><span class="keyword">alter</span> <span class="keyword">table</span> rental <span class="keyword">add</span> <span class="keyword">index</span> idx_rental_date (rental_date,inventory_id,customer_id);</div></pre></td></tr></table></figure>
+<ul>
+<li>能够使用索引的典型场景</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line">1.匹配全值：</div><div class="line">    上例通过指定出租日期rental_date,库存编号inventory_id,客户编号customer_id的组合条件进行查询</div><div class="line">            </div><div class="line">    <span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> rental <span class="keyword">where</span> rental_date=<span class="string">'2005-05-25 17:22:10'</span> <span class="keyword">and</span> inventory_id</div><div class="line">    =<span class="number">373</span> <span class="keyword">and</span> customer_id=<span class="number">343</span>\G</div><div class="line">        </div><div class="line">    输出结果为<span class="keyword">type</span>为const，表示常量，<span class="keyword">key</span>为idx_rental_date,表示优化器选择索引idx_rental_date进行扫描</div><div class="line">        </div><div class="line"><span class="number">2.</span>匹配值的范围查询：</div><div class="line">    <span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> rental <span class="keyword">where</span> customer_id&gt;=<span class="number">373</span> <span class="keyword">and</span> customer_id&lt;<span class="number">400</span>\G</div><div class="line">        </div><div class="line">    输出结果：<span class="keyword">type</span>为<span class="keyword">range</span>，说明优化器选择范围查询，<span class="keyword">key</span>为idx_fk_customer_id</div><div class="line">	    </div><div class="line"><span class="number">3.</span>匹配最左前缀：</div><div class="line">    <span class="keyword">alter</span> <span class="keyword">table</span> payment <span class="keyword">add</span> <span class="keyword">index</span> idx_payment_date(payment_date,amount,last_update);</div><div class="line">        </div><div class="line">    <span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> payment <span class="keyword">where</span> payment_date = <span class="string">'2006-02-14 15:16:03'</span> <span class="keyword">and</span> </div><div class="line">    last_update=<span class="string">'2006-02-15 22:12:32'</span>\G</div><div class="line">        </div><div class="line">    但如果选择复合索引idx_payment_date的第二列和第三列amount,last_update执行计划不会利用</div><div class="line">    索引idx_payment_date</div><div class="line">        </div><div class="line">    <span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> payment <span class="keyword">where</span> amount = <span class="number">3.98</span> <span class="keyword">and</span> last_update</div><div class="line">    =<span class="string">'2006-02-15 22:12:32'</span>\G</div><div class="line">     	</div><div class="line"><span class="number">4.</span>仅仅对索引进行查询：</div><div class="line">	<span class="keyword">explain</span> <span class="keyword">select</span> last_update <span class="keyword">from</span> payment <span class="keyword">where</span> payment_date=<span class="string">'2006-02-14 15:16:03'</span> </div><div class="line">	<span class="keyword">and</span> amount = <span class="number">3.98</span>\G</div><div class="line">	    </div><div class="line">	输出结果，Extra部分变成了<span class="keyword">Using</span> <span class="keyword">index</span>，只访问必须访问的数据，不需要通过索引回表</div><div class="line">	    </div><div class="line"><span class="number">5.</span>匹配列前缀（只使用索引的第一列）：</div><div class="line">	<span class="keyword">create</span> <span class="keyword">index</span> idx_title_desc_part <span class="keyword">on</span> film_text(title(<span class="number">10</span>),description(<span class="number">20</span>));</div><div class="line">	    </div><div class="line">	<span class="keyword">explain</span> <span class="keyword">select</span> title <span class="keyword">from</span> film_text <span class="keyword">where</span> title <span class="keyword">like</span> <span class="string">'AFRICAN%'</span>\G</div><div class="line">	   </div><div class="line">	输出结果：Extra为<span class="keyword">Using</span> <span class="keyword">where</span> 表示优化器需要通过索引回表查询数据</div><div class="line">	   </div><div class="line"><span class="number">6.</span>能够实现索引匹配部分精确而其他部分进行范围匹配：</div><div class="line">	<span class="keyword">explain</span> <span class="keyword">select</span> inventory_id <span class="keyword">from</span> rental <span class="keyword">where</span> rental_date=<span class="string">'2006-02-14 15:16:03'</span> </div><div class="line">	<span class="keyword">and</span> customer_id&gt;=<span class="number">300</span> <span class="keyword">and</span> customer_id &lt;= <span class="number">400</span>\G</div><div class="line">	    </div><div class="line">	输出结果：<span class="keyword">type</span>：<span class="keyword">range</span>，<span class="keyword">key</span>：idx_rental_date,Extra:<span class="keyword">Using</span> indx</div><div class="line">	    </div><div class="line"><span class="number">7.</span>如果列名是索引，使用column_name <span class="keyword">is</span> <span class="literal">null</span>就会使用索引：</div><div class="line">	<span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> payment <span class="keyword">where</span> rental_id <span class="keyword">is</span> <span class="literal">null</span>\G</div></pre></td></tr></table></figure>
+<ul>
+<li>存在索引但不能使用的典型场景</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">1.以%开头的LIKE查询不能利用B-Tree索引</div><div class="line">    <span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> actor <span class="keyword">where</span> last_name <span class="keyword">like</span> <span class="string">'%NI%'</span>\G</div><div class="line">    	</div><div class="line"><span class="number">2.</span>数据类型出现隐式转换的时候也不会使用索引</div><div class="line">    <span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> actor <span class="keyword">where</span> last_name = <span class="number">1</span>\G</div><div class="line">    这样会全表扫描，应改为</div><div class="line">    <span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> actor <span class="keyword">where</span> last_name=<span class="string">'1'</span>\G</div><div class="line">    	</div><div class="line"><span class="number">3.</span>复合索引的情况下，查询条件不包含索引列最左边部分，不满足最左原则，不会使用复合索引</div><div class="line">    <span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> payment <span class="keyword">where</span> amount = <span class="number">3.98</span> <span class="keyword">and</span> last_update=</div><div class="line">    <span class="string">'2006-02-15 22:12:32'</span>\G</div><div class="line">    	</div><div class="line"><span class="number">4.</span>如果MySQL估计使用索引比全表扫描更慢，则不使用索引</div><div class="line">    <span class="keyword">update</span> film_text <span class="keyword">set</span> title = <span class="keyword">concat</span>(<span class="string">'S'</span>,title);</div><div class="line">    <span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> film_text <span class="keyword">where</span> title <span class="keyword">like</span> <span class="string">'S%'</span>\G</div><div class="line">    更换查询的值为一个选择率更高的值，发现优化器更倾向于选择索引扫描</div><div class="line">    <span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> film_text <span class="keyword">where</span> title <span class="keyword">like</span> <span class="string">'SW%'</span>\G</div><div class="line">    	</div><div class="line"><span class="number">5.</span>用<span class="keyword">or</span>分割开的条件，如果<span class="keyword">or</span>前的条件中的列有索引，而后面的列中没有索引，那么涉及的索引都不会被用到</div><div class="line">    <span class="keyword">explain</span> <span class="keyword">select</span> * <span class="keyword">from</span> payment <span class="keyword">where</span> customer_id = <span class="number">203</span> <span class="keyword">or</span> amount = <span class="number">3.96</span>\G</div></pre></td></tr></table></figure>
+<h2 id="常用SQL的优化"><a href="#常用SQL的优化" class="headerlink" title="常用SQL的优化"></a>常用SQL的优化</h2><h3 id="1-大批量插入数据"><a href="#1-大批量插入数据" class="headerlink" title="1.大批量插入数据"></a>1.大批量插入数据</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">1.对于MyISAM存储引擎表，通过</div><div class="line">- <span class="keyword">ALTER</span> <span class="keyword">TABLE</span> tb1_name <span class="keyword">DISABLE</span> <span class="keyword">KEYS</span>; loading the data...</div><div class="line">    </div><div class="line">- <span class="keyword">ALTER</span> <span class="keyword">TABLE</span> tb1_name <span class="keyword">ENABLE</span> <span class="keyword">KEYS</span>; 打开或关闭MyISAM表非唯一索引的更新</div><div class="line">         </div><div class="line">在非空的MyISAM表中导入大量数据，通过设置这两个命令，提高导入效率</div><div class="line">         </div><div class="line">在空MyISAM表中导入大量数据，默认是先导入再创建索引</div><div class="line">       </div><div class="line">2.对于InnoDB表，是按照主键的顺序保存的，</div><div class="line">- 将导入的数据按照主键的顺序排列，可以提高导入效率</div><div class="line">    </div><div class="line">- 导入数据前执行<span class="keyword">SET</span> UNIQUE_CHECKS=<span class="number">0</span>,关闭唯一性校验，导入结束后执行<span class="keyword">SET</span> UNIQUE_CHECKS=<span class="number">1</span>,</div><div class="line">  恢复唯一性校验，可以提高导入效率</div><div class="line">      </div><div class="line">- 如果应用使用自动提交方式，在导入前执行<span class="keyword">SET</span> AUTOCOMMIT=<span class="number">0</span>,关闭自动提交，导入之后再开启，</div><div class="line">  可以提高导入效率</div></pre></td></tr></table></figure>
+<h3 id="2-优化INSERT语句"><a href="#2-优化INSERT语句" class="headerlink" title="2.优化INSERT语句"></a>2.优化INSERT语句</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">如果同时从同一客户端插入很多行，应尽量使用多个值表的<span class="keyword">INSERT</span>语句，比单个<span class="keyword">INSERT</span>语句块：</div><div class="line">     </div><div class="line">    例：<span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">test</span> <span class="keyword">values</span>(<span class="number">1</span>,<span class="number">2</span>),(<span class="number">1</span>,<span class="number">3</span>),(<span class="number">1</span>,<span class="number">4</span>)...</div></pre></td></tr></table></figure>
+<h3 id="3-优化ORDER-BY语句"><a href="#3-优化ORDER-BY语句" class="headerlink" title="3.优化ORDER BY语句"></a>3.优化ORDER BY语句</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">1.MySQL有两种排序方式，</div><div class="line">    第一种，通过有序索引顺序扫描直接返回有序数据，在explain分析显示为Using Index，不需要额外排序</div><div class="line">        </div><div class="line">    第二种，对返回数据进行排序，Filesort排序</div><div class="line">	     							   </div><div class="line">2.优化目标：</div><div class="line">- 尽量减少额外的排序，通过索引直接返回有序数据</div><div class="line">        </div><div class="line">- WHERE条件和ORDER BY使用相同的索引，ORDER BY的顺序和索引顺序相同，ORDER BY 的字段</div><div class="line">  都是升序或降序（否则出现Filesort排序）</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/03/12/【深入浅出MySQL】/">【深入浅出MySQL】</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">fangminx</a></p>
+        <p><span>发布时间:</span>2017-03-12, 17:21:31</p>
+        <p><span>最后更新:</span>2017-05-23, 17:43:56</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/12/【深入浅出MySQL】/" title="【深入浅出MySQL】">http://yoursite.com/2017/03/12/【深入浅出MySQL】/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/03/12/【深入浅出MySQL】/　　作者: fangminx" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/03/18/Java实现简单线性表/">
+                    Java实现简单线性表
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/03/12/【Java高并发程序设计】/">
+                    【Java高并发程序设计】
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SQL基础"><span class="toc-number">1.</span> <span class="toc-text">SQL基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL分类"><span class="toc-number">1.1.</span> <span class="toc-text">SQL分类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-DDL-Data-Definition-Languages-：数据库定义语言"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.DDL(Data Definition Languages)：数据库定义语言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-DML-Data-Manipulation-Language-数据操纵语句"><span class="toc-number">1.1.2.</span> <span class="toc-text">2.DML(Data Manipulation Language)数据操纵语句</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL支持的数据类型"><span class="toc-number">1.2.</span> <span class="toc-text">MySQL支持的数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-数值类型"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.数值类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-日期时间类型"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.日期时间类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-字符串类型"><span class="toc-number">1.2.3.</span> <span class="toc-text">3.字符串类型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL中的运算符"><span class="toc-number">1.3.</span> <span class="toc-text">MySQL中的运算符</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-算术运算符"><span class="toc-number">1.3.1.</span> <span class="toc-text">1.算术运算符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-比较运算符"><span class="toc-number">1.3.2.</span> <span class="toc-text">2.比较运算符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-逻辑运算符"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.逻辑运算符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-位运算符"><span class="toc-number">1.3.4.</span> <span class="toc-text">4.位运算符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-运算符的优先级"><span class="toc-number">1.3.5.</span> <span class="toc-text">5.运算符的优先级</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#常用函数"><span class="toc-number">2.</span> <span class="toc-text">常用函数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#字符串函数"><span class="toc-number">2.1.</span> <span class="toc-text">字符串函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数值函数"><span class="toc-number">2.2.</span> <span class="toc-text">数值函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#日期和时间函数"><span class="toc-number">2.3.</span> <span class="toc-text">日期和时间函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#流程函数"><span class="toc-number">2.4.</span> <span class="toc-text">流程函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他常用函数"><span class="toc-number">2.5.</span> <span class="toc-text">其他常用函数</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#存储过程和函数"><span class="toc-number">3.</span> <span class="toc-text">存储过程和函数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#存储过程和函数简介"><span class="toc-number">3.1.</span> <span class="toc-text">存储过程和函数简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#存储过程和函数的相关操作"><span class="toc-number">3.2.</span> <span class="toc-text">存储过程和函数的相关操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#0-在对存储过程和函数进行操作时，需要确定用户是否具有权限"><span class="toc-number">3.2.1.</span> <span class="toc-text">0.在对存储过程和函数进行操作时，需要确定用户是否具有权限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-创建、修改存储过程或者函数"><span class="toc-number">3.2.2.</span> <span class="toc-text">1.创建、修改存储过程或者函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-删除存储过程或者函数"><span class="toc-number">3.2.3.</span> <span class="toc-text">2.删除存储过程或者函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-查看存储过程或者函数"><span class="toc-number">3.2.4.</span> <span class="toc-text">3.查看存储过程或者函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-变量的使用"><span class="toc-number">3.2.5.</span> <span class="toc-text">4.变量的使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-定义条件和处理"><span class="toc-number">3.2.6.</span> <span class="toc-text">5.定义条件和处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-光标的使用"><span class="toc-number">3.2.7.</span> <span class="toc-text">6.光标的使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-流程控制"><span class="toc-number">3.2.8.</span> <span class="toc-text">7.流程控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-事件调度器"><span class="toc-number">3.2.9.</span> <span class="toc-text">8.事件调度器</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#存储引擎和索引"><span class="toc-number">4.</span> <span class="toc-text">存储引擎和索引</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL存储引擎概述"><span class="toc-number">4.1.</span> <span class="toc-text">MySQL存储引擎概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#各种存储引擎的特性"><span class="toc-number">4.2.</span> <span class="toc-text">各种存储引擎的特性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-MyISAM"><span class="toc-number">4.2.1.</span> <span class="toc-text">1.MyISAM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-InnoDB"><span class="toc-number">4.2.2.</span> <span class="toc-text">2.InnoDB</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#索引概述"><span class="toc-number">4.3.</span> <span class="toc-text">索引概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BTREE索引与HASH索引"><span class="toc-number">4.4.</span> <span class="toc-text">BTREE索引与HASH索引</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SQL优化"><span class="toc-number">5.</span> <span class="toc-text">SQL优化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#优化SQL语句的一般步骤"><span class="toc-number">5.1.</span> <span class="toc-text">优化SQL语句的一般步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-通过show-session-global-status命令，默认session-当前连接-，global-自数据库上次启动至今-的统计结果"><span class="toc-number">5.1.1.</span> <span class="toc-text">1.通过show [session|global]status命令，默认session(当前连接)，global(自数据库上次启动至今)的统计结果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-定位执行效率较低的SQL语句"><span class="toc-number">5.1.2.</span> <span class="toc-text">2.定位执行效率较低的SQL语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-通过EXPLAIN分析低效SQL的执行计划"><span class="toc-number">5.1.3.</span> <span class="toc-text">3.通过EXPLAIN分析低效SQL的执行计划</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-通过show-profile分析SQL"><span class="toc-number">5.1.4.</span> <span class="toc-text">4.通过show profile分析SQL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-确定问题并优化"><span class="toc-number">5.1.5.</span> <span class="toc-text">5.确定问题并优化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#索引问题"><span class="toc-number">5.2.</span> <span class="toc-text">索引问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-索引的存储分类"><span class="toc-number">5.2.1.</span> <span class="toc-text">1.索引的存储分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-使用索引"><span class="toc-number">5.2.2.</span> <span class="toc-text">2.使用索引</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常用SQL的优化"><span class="toc-number">5.3.</span> <span class="toc-text">常用SQL的优化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-大批量插入数据"><span class="toc-number">5.3.1.</span> <span class="toc-text">1.大批量插入数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-优化INSERT语句"><span class="toc-number">5.3.2.</span> <span class="toc-text">2.优化INSERT语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-优化ORDER-BY语句"><span class="toc-number">5.3.3.</span> <span class="toc-text">3.优化ORDER BY语句</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"【深入浅出MySQL】　| Just For Fun！　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+        <section class="youyan" id="comments">
+    <script>
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = 'http://v2.uyan.cc/code/uyan.js?uid=2134263';
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+    <div id="uyan_frame"></div>
+</section>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/03/18/Java实现简单线性表/" title="上一篇: Java实现简单线性表">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/03/12/【Java高并发程序设计】/" title="下一篇: 【Java高并发程序设计】">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/03/04/elasticsearch(四、索引管理)/">elasticsearch(四、索引管理)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/04/elasticsearch(三、内核知识)/">elasticsearch(三、内核知识)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/04/elasticsearch(二、搜索引擎)/">elasticsearch(二、搜索引擎)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/03/elasticsearch(一、核心概念和机制)/">elasticsearch(一、核心概念和机制)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/03/【Java8函数式编程】/">【Java8函数式编程】</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/03/Mysql存储引擎和事务/">Mysql存储引擎和事务</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/Java基础笔试题/">Java基础笔试题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/19/Java实现简单算法/">Java实现简单算法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/19/Java实现简单树/">Java实现简单树</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/18/Java实现简单栈和队列/">Java实现简单栈和队列</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/18/Java实现简单线性表/">Java实现简单线性表</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/12/【深入浅出MySQL】/">【深入浅出MySQL】</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/12/【Java高并发程序设计】/">【Java高并发程序设计】</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/11/Java简单IO流操作/">Java简单IO流操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/Java常用对象/">Java常见对象</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/Java基本概念/">Java基本概念</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2018 fangminx
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

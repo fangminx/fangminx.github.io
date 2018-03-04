@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="fangminx" />
+
+
+
+<meta name="description" content="索引CRUD 创建索引的语法  123456789PUT /my_index&amp;#123;    &amp;quot;settings&amp;quot;: &amp;#123; ... any settings ... &amp;#125;,    &amp;quot;mappings&amp;quot;: &amp;#123;        &amp;quot;type_one&amp;quot;: &amp;#123; ... any mappings ... &amp;#125">
+<meta name="keywords" content="elasticsearch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="elasticsearch(四、索引管理)">
+<meta property="og:url" content="http://yoursite.com/2018/03/04/elasticsearch(四、索引管理)/index.html">
+<meta property="og:site_name" content="Just For Fun！">
+<meta property="og:description" content="索引CRUD 创建索引的语法  123456789PUT /my_index&amp;#123;    &amp;quot;settings&amp;quot;: &amp;#123; ... any settings ... &amp;#125;,    &amp;quot;mappings&amp;quot;: &amp;#123;        &amp;quot;type_one&amp;quot;: &amp;#123; ... any mappings ... &amp;#125">
+<meta property="og:updated_time" content="2018-03-04T03:01:48.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="elasticsearch(四、索引管理)">
+<meta name="twitter:description" content="索引CRUD 创建索引的语法  123456789PUT /my_index&amp;#123;    &amp;quot;settings&amp;quot;: &amp;#123; ... any settings ... &amp;#125;,    &amp;quot;mappings&amp;quot;: &amp;#123;        &amp;quot;type_one&amp;quot;: &amp;#123; ... any mappings ... &amp;#125">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="Just For Fun！" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>elasticsearch(四、索引管理) | Just For Fun！</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">fangminx</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">就是为了好玩！</p>
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="#" title="Email"></a>
+                            
+                                <a class="fa 新浪微博" href="#" title="新浪微博"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/fangminx" title="GitHub"></a>
+                            
+                                <a class="fa V2EX" href="#" title="V2EX"></a>
+                            
+                                <a class="fa 知乎" href="#" title="知乎"></a>
+                            
+                                <a class="fa Facebook" href="#" title="Facebook"></a>
+                            
+                                <a class="fa Google" href="#" title="Google"></a>
+                            
+                                <a class="fa Twitter" href="#" title="Twitter"></a>
+                            
+                                <a class="fa QQ" href="#" title="QQ"></a>
+                            
+                                <a class="fa 微信" href="#" title="微信"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java8/">Java8</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客重构/">博客重构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发/">并发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/牛客网/">牛客网</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/笔试题/">笔试题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/简单数据结构/">简单数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/简单算法/">简单算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">来源</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">就是为了好玩！</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">fangminx</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">fangminx</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">就是为了好玩！</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="#" title="Email"></a>
+                            
+                                <a class="fa 新浪微博" target="_blank" href="#" title="新浪微博"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/fangminx" title="GitHub"></a>
+                            
+                                <a class="fa V2EX" target="_blank" href="#" title="V2EX"></a>
+                            
+                                <a class="fa 知乎" target="_blank" href="#" title="知乎"></a>
+                            
+                                <a class="fa Facebook" target="_blank" href="#" title="Facebook"></a>
+                            
+                                <a class="fa Google" target="_blank" href="#" title="Google"></a>
+                            
+                                <a class="fa Twitter" target="_blank" href="#" title="Twitter"></a>
+                            
+                                <a class="fa QQ" target="_blank" href="#" title="QQ"></a>
+                            
+                                <a class="fa 微信" target="_blank" href="#" title="微信"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-elasticsearch(四、索引管理)" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/03/04/elasticsearch(四、索引管理)/" class="article-date">
+      <time datetime="2018-03-04T02:24:03.000Z" itemprop="datePublished">2018-03-04</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      elasticsearch(四、索引管理)
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="索引CRUD"><a href="#索引CRUD" class="headerlink" title="索引CRUD"></a>索引CRUD</h2><ul>
+<li>创建索引的语法</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">PUT /my_index</div><div class="line">&#123;</div><div class="line">    &quot;settings&quot;: &#123; ... any settings ... &#125;,</div><div class="line">    &quot;mappings&quot;: &#123;</div><div class="line">        &quot;type_one&quot;: &#123; ... any mappings ... &#125;,</div><div class="line">        &quot;type_two&quot;: &#123; ... any mappings ... &#125;,</div><div class="line">        ...</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<ul>
+<li>创建索引的示例</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">PUT /my_index</div><div class="line">&#123;</div><div class="line">  &quot;settings&quot;: &#123;</div><div class="line">    &quot;number_of_shards&quot;: 1,</div><div class="line">    &quot;number_of_replicas&quot;: 0</div><div class="line">  &#125;,</div><div class="line">  &quot;mappings&quot;: &#123;</div><div class="line">    &quot;my_type&quot;: &#123;</div><div class="line">      &quot;properties&quot;: &#123;</div><div class="line">        &quot;my_field&quot;: &#123;</div><div class="line">          &quot;type&quot;: &quot;text&quot;</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>修改索引</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">PUT /my_index/_settings</div><div class="line">&#123;</div><div class="line">    &quot;number_of_replicas&quot;: 1</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>删除索引</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">DELETE /my_index</div><div class="line">DELETE /index_one,index_two</div><div class="line">DELETE /index_*</div><div class="line"> </div><div class="line">DELETE /_all </div><div class="line">(若禁用：elasticsearch.yml=&gt;修改action.destructive_requires_name: true)</div></pre></td></tr></table></figure>
+<h2 id="修改定制分词器"><a href="#修改定制分词器" class="headerlink" title="修改定制分词器"></a>修改定制分词器</h2><ul>
+<li>常见分词器</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">standard（默认）</div><div class="line"> </div><div class="line">standard tokenizer：以单词边界进行切分</div><div class="line">standard token filter：什么都不做</div><div class="line">lowercase token filter：将所有字母转换为小写</div><div class="line">stop token filer（默认被禁用）：移除停用词，比如a the it等等</div></pre></td></tr></table></figure>
+<ul>
+<li>修改分词器的设置=&gt;启用english停用词</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">PUT /my_index</div><div class="line">&#123;</div><div class="line">  &quot;settings&quot;: &#123;</div><div class="line">    &quot;analysis&quot;: &#123;</div><div class="line">      &quot;analyzer&quot;: &#123;</div><div class="line">        &quot;es_std&quot;: &#123;</div><div class="line">          &quot;type&quot;: &quot;standard&quot;,</div><div class="line">          &quot;stopwords&quot;: &quot;_english_&quot;</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>查看分词效果</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">GET /my_index/_analyze</div><div class="line">&#123;</div><div class="line">  &quot;analyzer&quot;: &quot;standard&quot;, </div><div class="line">  &quot;text&quot;: &quot;a dog is in the house&quot;</div><div class="line">&#125;</div><div class="line"> </div><div class="line">GET /my_index/_analyze</div><div class="line">&#123;</div><div class="line">  &quot;analyzer&quot;: &quot;es_std&quot;,</div><div class="line">  &quot;text&quot;:&quot;a dog is in the house&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>定制化自己的分词器</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">PUT /my_index</div><div class="line">&#123;</div><div class="line">  &quot;settings&quot;: &#123;</div><div class="line">    &quot;analysis&quot;: &#123;</div><div class="line">      &quot;char_filter&quot;: &#123;</div><div class="line">        &quot;&amp;_to_and&quot;: &#123;</div><div class="line">          &quot;type&quot;: &quot;mapping&quot;,</div><div class="line">          &quot;mappings&quot;: [&quot;&amp;=&gt; and&quot;]</div><div class="line">        &#125;</div><div class="line">      &#125;,</div><div class="line">      &quot;filter&quot;: &#123;</div><div class="line">        &quot;my_stopwords&quot;: &#123;</div><div class="line">          &quot;type&quot;: &quot;stop&quot;,</div><div class="line">          &quot;stopwords&quot;: [&quot;the&quot;, &quot;a&quot;]</div><div class="line">        &#125;</div><div class="line">      &#125;,</div><div class="line">      &quot;analyzer&quot;: &#123;</div><div class="line">        &quot;my_analyzer&quot;: &#123;</div><div class="line">          &quot;type&quot;: &quot;custom&quot;,</div><div class="line">          &quot;char_filter&quot;: [&quot;html_strip&quot;, &quot;&amp;_to_and&quot;],</div><div class="line">          &quot;tokenizer&quot;: &quot;standard&quot;,</div><div class="line">          &quot;filter&quot;: [&quot;lowercase&quot;, &quot;my_stopwords&quot;]</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">查看分词器效果：</div><div class="line">GET /my_index/_analyze</div><div class="line">&#123;</div><div class="line">  &quot;text&quot;: &quot;tom&amp;jerry are a friend in the house, &lt;a&gt;, HAHA!!&quot;,</div><div class="line">  &quot;analyzer&quot;: &quot;my_analyzer&quot;</div><div class="line">&#125;</div><div class="line"> </div><div class="line">使field使用自定义的分词器：</div><div class="line">PUT /my_index/_mapping/my_type</div><div class="line">&#123;</div><div class="line">  &quot;properties&quot;: &#123;</div><div class="line">    &quot;content&quot;: &#123;</div><div class="line">      &quot;type&quot;: &quot;text&quot;,</div><div class="line">      &quot;analyzer&quot;: &quot;my_analyzer&quot;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="type底层数据结构"><a href="#type底层数据结构" class="headerlink" title="type底层数据结构"></a>type底层数据结构</h2><ul>
+<li>lucene是没有type的概念</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">lucene中建立索引的时候，全部是opaque bytes(二进制)类型，不区分其他类型</div><div class="line"> </div><div class="line">一个index中的多个type，实际上是放在一起存储的</div></pre></td></tr></table></figure>
+<ul>
+<li>举例</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div></pre></td><td class="code"><pre><div class="line">mapping:</div><div class="line">&#123;</div><div class="line">   &quot;ecommerce&quot;: &#123;</div><div class="line">      &quot;mappings&quot;: &#123;</div><div class="line">         &quot;elactronic_goods&quot;: &#123;</div><div class="line">            &quot;properties&quot;: &#123;</div><div class="line">               &quot;name&quot;: &#123;</div><div class="line">                  &quot;type&quot;: &quot;string&quot;,</div><div class="line">               &#125;,</div><div class="line">               &quot;price&quot;: &#123;</div><div class="line">                  &quot;type&quot;: &quot;double&quot;</div><div class="line">               &#125;,</div><div class="line">	       &quot;service_period&quot;: &#123;</div><div class="line">		  &quot;type&quot;: &quot;string&quot;</div><div class="line">	       &#125;			</div><div class="line">            &#125;</div><div class="line">         &#125;,</div><div class="line">         &quot;fresh_goods&quot;: &#123;</div><div class="line">            &quot;properties&quot;: &#123;</div><div class="line">               &quot;name&quot;: &#123;</div><div class="line">                  &quot;type&quot;: &quot;string&quot;,</div><div class="line">               &#125;,</div><div class="line">               &quot;price&quot;: &#123;</div><div class="line">                  &quot;type&quot;: &quot;double&quot;</div><div class="line">               &#125;,</div><div class="line">	       &quot;eat_period&quot;: &#123;</div><div class="line">		  &quot;type&quot;: &quot;string&quot;</div><div class="line">	       &#125;</div><div class="line">            &#125;</div><div class="line">         &#125;</div><div class="line">      &#125;</div><div class="line">   &#125;</div><div class="line">&#125;</div><div class="line"> </div><div class="line">document：</div><div class="line"> </div><div class="line">&#123;</div><div class="line">  &quot;name&quot;: &quot;geli kongtiao&quot;,</div><div class="line">  &quot;price&quot;: 1999.0,</div><div class="line">  &quot;service_period&quot;: &quot;one year&quot;</div><div class="line">&#125;</div><div class="line">  </div><div class="line">&#123;</div><div class="line">  &quot;name&quot;: &quot;aozhou dalongxia&quot;,</div><div class="line">  &quot;price&quot;: 199.0,</div><div class="line">  &quot;eat_period&quot;: &quot;one week&quot;</div><div class="line">&#125;</div><div class="line"> </div><div class="line">底层对mapping和document的存储：</div><div class="line">&#123;</div><div class="line">   &quot;ecommerce&quot;: &#123;</div><div class="line">      &quot;mappings&quot;: &#123;</div><div class="line">        &quot;_type&quot;: &#123;</div><div class="line">          &quot;type&quot;: &quot;string&quot;,</div><div class="line">          &quot;index&quot;: &quot;not_analyzed&quot;</div><div class="line">        &#125;,</div><div class="line">        &quot;name&quot;: &#123;</div><div class="line">          &quot;type&quot;: &quot;string&quot;</div><div class="line">        &#125;</div><div class="line">        &quot;price&quot;: &#123;</div><div class="line">          &quot;type&quot;: &quot;double&quot;</div><div class="line">        &#125;</div><div class="line">        &quot;service_period&quot;: &#123;</div><div class="line">          &quot;type&quot;: &quot;string&quot;</div><div class="line">        &#125;</div><div class="line">        &quot;eat_period&quot;: &#123;</div><div class="line">          &quot;type&quot;: &quot;string&quot;</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">   &#125;</div><div class="line">&#125;</div><div class="line"> </div><div class="line">&#123;</div><div class="line">  &quot;_type&quot;: &quot;elactronic_goods&quot;,</div><div class="line">  &quot;name&quot;: &quot;geli kongtiao&quot;,</div><div class="line">  &quot;price&quot;: 1999.0,</div><div class="line">  &quot;service_period&quot;: &quot;one year&quot;,</div><div class="line">  &quot;eat_period&quot;: &quot;&quot;</div><div class="line">&#125;</div><div class="line"> </div><div class="line">&#123;</div><div class="line">  &quot;_type&quot;: &quot;fresh_goods&quot;,</div><div class="line">  &quot;name&quot;: &quot;aozhou dalongxia&quot;,</div><div class="line">  &quot;price&quot;: 199.0,</div><div class="line">  &quot;service_period&quot;: &quot;&quot;,</div><div class="line">  &quot;eat_period&quot;: &quot;one week&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>最佳实践</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">将类似结构的type放在一个index下，这些type应该有多个field是相同的</div><div class="line"> </div><div class="line">若两个type的field完全不同，放在一个index下，每个document至少有一半field在底层的lucene中是空值，</div><div class="line">会有严重的性能问题</div></pre></td></tr></table></figure>
+<h2 id="mapping-root-object"><a href="#mapping-root-object" class="headerlink" title="_mapping root object"></a>_mapping root object</h2><ul>
+<li>root object介绍</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">某个type对应的mapping json，包括了properties，metadata（_id，_source，_type），settings（analyzer）等</div></pre></td></tr></table></figure>
+<ul>
+<li>properties</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">PUT /my_index/_mapping/my_type</div><div class="line">&#123;</div><div class="line">  &quot;properties&quot;: &#123;</div><div class="line">    &quot;title&quot;: &#123;</div><div class="line">      &quot;type&quot;: &quot;text&quot;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">除了可配置type，还有index，analyzer</div></pre></td></tr></table></figure>
+<ul>
+<li>_source</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">（1）partial update基于_source实现</div><div class="line">（2）查询的时候，直接可以拿到完整的document，不需要先拿document id，再发送一次请求拿document</div><div class="line">（3）reindex时，直接基于_source实现，不需要从数据库（或者其他外部存储）查询数据再修改</div><div class="line">（4）可以基于_source定制返回field</div><div class="line">（5）debug query更容易，因为可以直接看到_source</div><div class="line"> </div><div class="line">如果不需要上述好处，可以禁用_source</div><div class="line"> </div><div class="line">PUT /my_index/_mapping/my_type2</div><div class="line">&#123;</div><div class="line">  &quot;_source&quot;: &#123;&quot;enabled&quot;: false&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>_all</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">将所有field打包在一起，作为一个_all field，建立索引。</div><div class="line">没指定任何field进行搜索时，就是使用_all field在搜索。</div><div class="line"> </div><div class="line">禁用：</div><div class="line">PUT /my_index/_mapping/my_type3</div><div class="line">&#123;</div><div class="line">  &quot;_all&quot;: &#123;&quot;enabled&quot;: false&#125;</div><div class="line">&#125;</div><div class="line"> </div><div class="line">也可以在field级别设置include_in_all field，</div><div class="line">设置是否要将field的值包含在_all field中</div><div class="line"> </div><div class="line">PUT /my_index/_mapping/my_type4</div><div class="line">&#123;</div><div class="line">  &quot;properties&quot;: &#123;</div><div class="line">    &quot;my_field&quot;: &#123;</div><div class="line">      &quot;type&quot;: &quot;text&quot;,</div><div class="line">      &quot;include_in_all&quot;: false</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="dynamic策略"><a href="#dynamic策略" class="headerlink" title="dynamic策略"></a>dynamic策略</h2><ul>
+<li>定制dynamic</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">true：遇到陌生字段，就进行dynamic mapping</div><div class="line">false：遇到陌生字段，就忽略</div><div class="line">strict：遇到陌生字段，就报错</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div></pre></td><td class="code"><pre><div class="line">1.指定Type和object-field的dynamic类型：</div><div class="line">PUT /my_index</div><div class="line">&#123;</div><div class="line">  &quot;mappings&quot;: &#123;</div><div class="line">    &quot;my_type&quot;: &#123;</div><div class="line">      &quot;dynamic&quot;: &quot;strict&quot;,</div><div class="line">      &quot;properties&quot;: &#123;</div><div class="line">        &quot;title&quot;: &#123;</div><div class="line">          &quot;type&quot;: &quot;text&quot;</div><div class="line">        &#125;,</div><div class="line">        &quot;address&quot;: &#123;</div><div class="line">          &quot;type&quot;: &quot;object&quot;,</div><div class="line">          &quot;dynamic&quot;: &quot;true&quot;</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"> </div><div class="line">2.插入了不存在字段content报错：</div><div class="line">PUT /my_index/my_type/1</div><div class="line">&#123;</div><div class="line">  &quot;title&quot;: &quot;my article&quot;,</div><div class="line">  &quot;content&quot;: &quot;this is my article&quot;,</div><div class="line">  &quot;address&quot;: &#123;</div><div class="line">    &quot;province&quot;: &quot;guangdong&quot;,</div><div class="line">    &quot;city&quot;: &quot;guangzhou&quot;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"> </div><div class="line">&#123;</div><div class="line">  &quot;error&quot;: &#123;</div><div class="line">    &quot;root_cause&quot;: [</div><div class="line">      &#123;</div><div class="line">        &quot;type&quot;: &quot;strict_dynamic_mapping_exception&quot;,</div><div class="line">        &quot;reason&quot;: &quot;mapping set to strict, dynamic introduction of [content] within [my_type] is not allowed&quot;</div><div class="line">      &#125;</div><div class="line">    ],</div><div class="line">    &quot;type&quot;: &quot;strict_dynamic_mapping_exception&quot;,</div><div class="line">    &quot;reason&quot;: &quot;mapping set to strict, dynamic introduction of [content] within [my_type] is not allowed&quot;</div><div class="line">  &#125;,</div><div class="line">  &quot;status&quot;: 400</div><div class="line">&#125;</div><div class="line"> </div><div class="line">3.正确插入：</div><div class="line">PUT /my_index/my_type/1</div><div class="line">&#123;</div><div class="line">  &quot;title&quot;: &quot;my article&quot;,</div><div class="line">  &quot;address&quot;: &#123;</div><div class="line">    &quot;province&quot;: &quot;guangdong&quot;,</div><div class="line">    &quot;city&quot;: &quot;guangzhou&quot;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"> </div><div class="line">4.查看mapping：</div><div class="line">GET /my_index/_mapping/my_type</div><div class="line"> </div><div class="line">&#123;</div><div class="line">  &quot;my_index&quot;: &#123;</div><div class="line">    &quot;mappings&quot;: &#123;</div><div class="line">      &quot;my_type&quot;: &#123;</div><div class="line">        &quot;dynamic&quot;: &quot;strict&quot;,</div><div class="line">        &quot;properties&quot;: &#123;</div><div class="line">          &quot;address&quot;: &#123;</div><div class="line">            &quot;dynamic&quot;: &quot;true&quot;,</div><div class="line">            &quot;properties&quot;: &#123;</div><div class="line">              &quot;city&quot;: &#123;</div><div class="line">                &quot;type&quot;: &quot;text&quot;,</div><div class="line">                &quot;fields&quot;: &#123;</div><div class="line">                  &quot;keyword&quot;: &#123;</div><div class="line">                    &quot;type&quot;: &quot;keyword&quot;,</div><div class="line">                    &quot;ignore_above&quot;: 256</div><div class="line">                  &#125;</div><div class="line">                &#125;</div><div class="line">              &#125;,</div><div class="line">              &quot;province&quot;: &#123;</div><div class="line">                &quot;type&quot;: &quot;text&quot;,</div><div class="line">                &quot;fields&quot;: &#123;</div><div class="line">                  &quot;keyword&quot;: &#123;</div><div class="line">                    &quot;type&quot;: &quot;keyword&quot;,</div><div class="line">                    &quot;ignore_above&quot;: 256</div><div class="line">                  &#125;</div><div class="line">                &#125;</div><div class="line">              &#125;</div><div class="line">            &#125;</div><div class="line">          &#125;,</div><div class="line">          &quot;title&quot;: &#123;</div><div class="line">            &quot;type&quot;: &quot;text&quot;</div><div class="line">          &#125;</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>定制dynamic mapping策略</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">1)date_detection</div><div class="line"> </div><div class="line">默认会按照一定格式识别date，比如yyyy-MM-dd。但是如果某个field先过来一个2017-01-01的值，</div><div class="line">就会被自动dynamic mapping成date，</div><div class="line">后面如果再来一个&quot;hello world&quot;之类的值，就会报错。可以手动关闭某个type的date_detection:</div><div class="line"> </div><div class="line">PUT /my_index/_mapping/my_type</div><div class="line">&#123;</div><div class="line">    &quot;date_detection&quot;: false</div><div class="line">&#125;</div><div class="line"> </div><div class="line">如果有需要，自己手动指定某个field为date类型。</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">2)定制自己的dynamic mapping template（type level）</div><div class="line"> </div><div class="line">PUT /my_index</div><div class="line">&#123;</div><div class="line">    &quot;mappings&quot;: &#123;</div><div class="line">        &quot;my_type&quot;: &#123;</div><div class="line">            &quot;dynamic_templates&quot;: [</div><div class="line">                &#123; &quot;en&quot;: &#123;</div><div class="line">                      &quot;match&quot;:              &quot;*_en&quot;, </div><div class="line">                      &quot;match_mapping_type&quot;: &quot;string&quot;,</div><div class="line">                      &quot;mapping&quot;: &#123;</div><div class="line">                          &quot;type&quot;:           &quot;string&quot;,</div><div class="line">                          &quot;analyzer&quot;:       &quot;english&quot;</div><div class="line">                      &#125;</div><div class="line">                &#125;&#125;</div><div class="line">            ]</div><div class="line">&#125;&#125;&#125;</div><div class="line"> </div><div class="line">PUT /my_index/my_type/1</div><div class="line">&#123;</div><div class="line">  &quot;title&quot;: &quot;this is my first article&quot;</div><div class="line">&#125;</div><div class="line"> </div><div class="line">PUT /my_index/my_type/2</div><div class="line">&#123;</div><div class="line">  &quot;title_en&quot;: &quot;this is my first article&quot;</div><div class="line">&#125;</div><div class="line"> </div><div class="line">title没有匹配到任何的dynamic模板，默认standard分词器，不会过滤停用词，is会进入倒排索引，用is可以搜到</div><div class="line">title_en匹配到了dynamic模板，是english分词器，会过滤停用词，is会被过滤掉，用is搜不到</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"> 3)定制自己的default mapping template（index level）</div><div class="line"> </div><div class="line">PUT /my_index</div><div class="line">&#123;</div><div class="line">    &quot;mappings&quot;: &#123;</div><div class="line">        &quot;_default_&quot;: &#123;</div><div class="line">            &quot;_all&quot;: &#123; &quot;enabled&quot;:  false &#125;</div><div class="line">        &#125;,</div><div class="line">        &quot;blog&quot;: &#123;</div><div class="line">            &quot;_all&quot;: &#123; &quot;enabled&quot;:  true  &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"> </div><div class="line">只有blog字段使用_all</div></pre></td></tr></table></figure>
+<h2 id="零停机重建索引"><a href="#零停机重建索引" class="headerlink" title="零停机重建索引"></a>零停机重建索引</h2><ul>
+<li>重建索引</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">一个field的设置是不能被修改的，如果要修改一个Field，那么应该重新按照新的mapping，</div><div class="line">建立一个index，然后将数据批量查询出来，重新用bulk api写入index中</div><div class="line"> </div><div class="line">建议批量查询采用scroll api，并且采用多线程并发的方式reindex.</div><div class="line">每次scoll就查询指定日期的一段数据，交给reindex其中一个线程即可</div></pre></td></tr></table></figure>
+<ul>
+<li>实例演示</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">1)一开始，依靠dynamic mapping，插入数据，title是2017-01-01，所以title被自动映射为date类型，</div><div class="line">实际上它应该是string类型</div><div class="line"> </div><div class="line">PUT /my_index/my_type/3</div><div class="line">&#123;</div><div class="line">  &quot;title&quot;: &quot;2017-01-03&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">2)当后期向索引中加入string类型的title值时，报错</div><div class="line"> </div><div class="line">PUT /my_index/my_type/4</div><div class="line">&#123;</div><div class="line">  &quot;title&quot;: &quot;my first article&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">3)此时无法修改title类型</div><div class="line"> </div><div class="line">PUT /my_index/_mapping/my_type</div><div class="line">&#123;</div><div class="line">  &quot;properties&quot;: &#123;</div><div class="line">    &quot;title&quot;: &#123;</div><div class="line">      &quot;type&quot;: &quot;text&quot;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">4)唯一的办法，就是进行reindex,将旧索引的数据查询出来，再导入到新建的索引</div><div class="line"> </div><div class="line">为了防止重启java应用，让java应用指向一个索引别名：goods_index</div><div class="line"> </div><div class="line">PUT /my_index/_alias/goods_index</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">5)新建一个index，调整其title的类型为string</div><div class="line"> </div><div class="line">PUT /my_index_new</div><div class="line">&#123;</div><div class="line">  &quot;mappings&quot;: &#123;</div><div class="line">    &quot;my_type&quot;: &#123;</div><div class="line">      &quot;properties&quot;: &#123;</div><div class="line">        &quot;title&quot;: &#123;</div><div class="line">          &quot;type&quot;: &quot;text&quot;</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">6)使用scroll api将数据批量查询出来</div><div class="line"> </div><div class="line">GET /my_index/_search?scroll=1m</div><div class="line">&#123;</div><div class="line">    &quot;query&quot;: &#123;</div><div class="line">        &quot;match_all&quot;: &#123;&#125;</div><div class="line">    &#125;,</div><div class="line">    &quot;sort&quot;: [&quot;_doc&quot;],</div><div class="line">    &quot;size&quot;:  1</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">7)采用bulk api,将scoll查出来的一批数据，批量写入新索引</div><div class="line"> </div><div class="line">POST /_bulk</div><div class="line">&#123; &quot;index&quot;:  &#123; &quot;_index&quot;: &quot;my_index_new&quot;, &quot;_type&quot;: &quot;my_type&quot;, &quot;_id&quot;: &quot;2&quot; &#125;&#125;</div><div class="line">&#123; &quot;title&quot;:    &quot;2017-01-02&quot; &#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">8)循环6-7，将goods_index alias切换到my_index_new</div><div class="line"> </div><div class="line">POST /_aliases</div><div class="line">&#123;</div><div class="line">    &quot;actions&quot;: [</div><div class="line">        &#123; &quot;remove&quot;: &#123; &quot;index&quot;: &quot;my_index&quot;, &quot;alias&quot;: &quot;goods_index&quot; &#125;&#125;,</div><div class="line">        &#123; &quot;add&quot;:    &#123; &quot;index&quot;: &quot;my_index_new&quot;, &quot;alias&quot;: &quot;goods_index&quot; &#125;&#125;</div><div class="line">    ]</div><div class="line">&#125;</div><div class="line"> </div><div class="line">通过goods_index别名来查询:</div><div class="line">GET /goods_index/my_type/_search</div></pre></td></tr></table></figure>
+<ul>
+<li>操作总结</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">1)PUT /my_index_v1/_alias/my_index</div><div class="line"> </div><div class="line">2)client对my_index进行操作</div><div class="line"> </div><div class="line">3)reindex操作，完成之后，切换v1到v2</div><div class="line"> </div><div class="line">4)POST /_aliases</div><div class="line">&#123;</div><div class="line">    &quot;actions&quot;: [</div><div class="line">        &#123; &quot;remove&quot;: &#123; &quot;index&quot;: &quot;my_index_v1&quot;, &quot;alias&quot;: &quot;my_index&quot; &#125;&#125;,</div><div class="line">        &#123; &quot;add&quot;:    &#123; &quot;index&quot;: &quot;my_index_v2&quot;, &quot;alias&quot;: &quot;my_index&quot; &#125;&#125;</div><div class="line">    ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2018/03/04/elasticsearch(四、索引管理)/">elasticsearch(四、索引管理)</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">fangminx</a></p>
+        <p><span>发布时间:</span>2018-03-04, 10:24:03</p>
+        <p><span>最后更新:</span>2018-03-04, 11:01:48</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2018/03/04/elasticsearch(四、索引管理)/" title="elasticsearch(四、索引管理)">http://yoursite.com/2018/03/04/elasticsearch(四、索引管理)/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2018/03/04/elasticsearch(四、索引管理)/　　作者: fangminx" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2018/03/04/elasticsearch(三、内核知识)/">
+                    elasticsearch(三、内核知识)
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#索引CRUD"><span class="toc-number">1.</span> <span class="toc-text">索引CRUD</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改定制分词器"><span class="toc-number">2.</span> <span class="toc-text">修改定制分词器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#type底层数据结构"><span class="toc-number">3.</span> <span class="toc-text">type底层数据结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mapping-root-object"><span class="toc-number">4.</span> <span class="toc-text">_mapping root object</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dynamic策略"><span class="toc-number">5.</span> <span class="toc-text">dynamic策略</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#零停机重建索引"><span class="toc-number">6.</span> <span class="toc-text">零停机重建索引</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"elasticsearch(四、索引管理)　| Just For Fun！　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+        <section class="youyan" id="comments">
+    <script>
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = 'http://v2.uyan.cc/code/uyan.js?uid=2134263';
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+    <div id="uyan_frame"></div>
+</section>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2018/03/04/elasticsearch(三、内核知识)/" title="下一篇: elasticsearch(三、内核知识)">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/03/04/elasticsearch(四、索引管理)/">elasticsearch(四、索引管理)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/04/elasticsearch(三、内核知识)/">elasticsearch(三、内核知识)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/04/elasticsearch(二、搜索引擎)/">elasticsearch(二、搜索引擎)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/03/elasticsearch(一、核心概念和机制)/">elasticsearch(一、核心概念和机制)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/03/【Java8函数式编程】/">【Java8函数式编程】</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/03/Mysql存储引擎和事务/">Mysql存储引擎和事务</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/Java基础笔试题/">Java基础笔试题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/19/Java实现简单算法/">Java实现简单算法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/19/Java实现简单树/">Java实现简单树</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/18/Java实现简单栈和队列/">Java实现简单栈和队列</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/18/Java实现简单线性表/">Java实现简单线性表</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/12/【深入浅出MySQL】/">【深入浅出MySQL】</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/12/【Java高并发程序设计】/">【Java高并发程序设计】</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/11/Java简单IO流操作/">Java简单IO流操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/Java常用对象/">Java常见对象</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/Java基本概念/">Java基本概念</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2018 fangminx
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

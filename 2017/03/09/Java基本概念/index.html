@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="fangminx" />
+
+
+
+<meta name="description" content="Dos窗口 使用windows+R输入cmd打开该窗口 d:切换到D盘，dir列出当前目录的文件和文件夹 md aaa创建aaa文件夹，rd aaa移除空的aaa目录，rd /s aaa可以移除非空的aaa目录 cd ..单级回退，cd a/b/c多级进入，cd /回到根目录 del a.txt删除a.txt，del *.txt删除所有.txt`文件 cls清屏，exit退出 使用windows+">
+<meta name="keywords" content="博客重构,Java基础">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java基本概念">
+<meta property="og:url" content="http://yoursite.com/2017/03/09/Java基本概念/index.html">
+<meta property="og:site_name" content="Just For Fun！">
+<meta property="og:description" content="Dos窗口 使用windows+R输入cmd打开该窗口 d:切换到D盘，dir列出当前目录的文件和文件夹 md aaa创建aaa文件夹，rd aaa移除空的aaa目录，rd /s aaa可以移除非空的aaa目录 cd ..单级回退，cd a/b/c多级进入，cd /回到根目录 del a.txt删除a.txt，del *.txt删除所有.txt`文件 cls清屏，exit退出 使用windows+">
+<meta property="og:updated_time" content="2018-03-04T03:01:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java基本概念">
+<meta name="twitter:description" content="Dos窗口 使用windows+R输入cmd打开该窗口 d:切换到D盘，dir列出当前目录的文件和文件夹 md aaa创建aaa文件夹，rd aaa移除空的aaa目录，rd /s aaa可以移除非空的aaa目录 cd ..单级回退，cd a/b/c多级进入，cd /回到根目录 del a.txt删除a.txt，del *.txt删除所有.txt`文件 cls清屏，exit退出 使用windows+">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="Just For Fun！" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>Java基本概念 | Just For Fun！</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">fangminx</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">就是为了好玩！</p>
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="#" title="Email"></a>
+                            
+                                <a class="fa 新浪微博" href="#" title="新浪微博"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/fangminx" title="GitHub"></a>
+                            
+                                <a class="fa V2EX" href="#" title="V2EX"></a>
+                            
+                                <a class="fa 知乎" href="#" title="知乎"></a>
+                            
+                                <a class="fa Facebook" href="#" title="Facebook"></a>
+                            
+                                <a class="fa Google" href="#" title="Google"></a>
+                            
+                                <a class="fa Twitter" href="#" title="Twitter"></a>
+                            
+                                <a class="fa QQ" href="#" title="QQ"></a>
+                            
+                                <a class="fa 微信" href="#" title="微信"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java8/">Java8</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客重构/">博客重构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发/">并发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/牛客网/">牛客网</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/笔试题/">笔试题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/简单数据结构/">简单数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/简单算法/">简单算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">来源</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">就是为了好玩！</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">fangminx</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">fangminx</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">就是为了好玩！</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="#" title="Email"></a>
+                            
+                                <a class="fa 新浪微博" target="_blank" href="#" title="新浪微博"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/fangminx" title="GitHub"></a>
+                            
+                                <a class="fa V2EX" target="_blank" href="#" title="V2EX"></a>
+                            
+                                <a class="fa 知乎" target="_blank" href="#" title="知乎"></a>
+                            
+                                <a class="fa Facebook" target="_blank" href="#" title="Facebook"></a>
+                            
+                                <a class="fa Google" target="_blank" href="#" title="Google"></a>
+                            
+                                <a class="fa Twitter" target="_blank" href="#" title="Twitter"></a>
+                            
+                                <a class="fa QQ" target="_blank" href="#" title="QQ"></a>
+                            
+                                <a class="fa 微信" target="_blank" href="#" title="微信"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-Java基本概念" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/03/09/Java基本概念/" class="article-date">
+      <time datetime="2017-03-09T14:07:16.000Z" itemprop="datePublished">2017-03-09</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Java基本概念
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java基础/">Java基础</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/博客重构/">博客重构</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="Dos窗口"><a href="#Dos窗口" class="headerlink" title="Dos窗口"></a>Dos窗口</h2><ol>
+<li>使用<code>windows+R</code>输入<code>cmd</code>打开该窗口</li>
+<li><code>d:</code>切换到D盘，<code>dir</code>列出当前目录的文件和文件夹</li>
+<li><code>md aaa</code>创建aaa文件夹，<code>rd aaa</code>移除空的aaa目录，<code>rd /s aaa</code>可以移除非空的aaa目录</li>
+<li><code>cd ..</code>单级回退，<code>cd a/b/c</code>多级进入，<code>cd /</code>回到根目录</li>
+<li><code>del a.txt</code>删除a.txt，<code>del *.txt</code>删除所有.txt`文件</li>
+<li><code>cls</code>清屏，<code>exit</code>退出</li>
+<li>使用<code>windows+R</code>或者在Dos窗口下输入<code>calc</code>调用计算器，输入<code>notepad</code>调用记事本</li>
+<li>使用<code>windows+R</code>或者在Dos窗口下输入<code>shutdown /s /t 10</code>系统会提示10秒后关机，<code>shutdown /a</code>系统会提示取消关机<a id="more"></a>
+<h2 id="JDK-JRE-JVM的作用及关系"><a href="#JDK-JRE-JVM的作用及关系" class="headerlink" title="JDK,JRE,JVM的作用及关系"></a>JDK,JRE,JVM的作用及关系</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1.JRE只是java程序的运行环境，包含JVM及核心类库</div><div class="line">		</div><div class="line">2.JDK是java开发工具，不仅提供了java程序运行所需的JRE，还提供了一系列的编译、运行等工具，如javac、java等</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="环境变量CLASSPATH的作用"><a href="#环境变量CLASSPATH的作用" class="headerlink" title="环境变量CLASSPATH的作用"></a>环境变量CLASSPATH的作用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CLASSPATH环境变量保存的是一些目录和jar文件地址，这些路径是为java程序在编译和运行时搜索类而用</div></pre></td></tr></table></figure>
+<h2 id="垃圾回收机制"><a href="#垃圾回收机制" class="headerlink" title="垃圾回收机制"></a>垃圾回收机制</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="number">1</span>.Java.lang.Object中有个finalize()方法，它会在垃圾回收器认为这个对象是垃圾之后，</div><div class="line">真正回收之前被调用</div><div class="line">   </div><div class="line"><span class="number">2</span>.Java.lang.System中有个gc()方法，通过显示调用它可以请求垃圾回收器线程，</div><div class="line">但线程是否开始还是由JVM的算法决定</div><div class="line">    </div><div class="line"><span class="number">3</span>.Java.lang.Runtime中的gc()方法和System的作用一样，只不过Runtime是一个单例模式的类，</div><div class="line">需要用getRuntime()获得它的实例，然后才能调用gc()方法</div><div class="line">           </div><div class="line">System.gc();</div><div class="line">Runtime.getRuntime().gc();</div></pre></td></tr></table></figure>
+<h2 id="Java基础数据类型及其包装类"><a href="#Java基础数据类型及其包装类" class="headerlink" title="Java基础数据类型及其包装类"></a>Java基础数据类型及其包装类</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="number">1</span>.byte1字节-Byte，short2字节-Short，int4字节-Integer，float4字节-Float，double8字节-Double,</div><div class="line">char2字节-Character，boolean1字节-Boolean</div><div class="line">   </div><div class="line"><span class="number">2</span>.数据类型转换默认`从小到大`，<span class="keyword">byte</span>,<span class="keyword">short</span>,<span class="keyword">char</span>之间不相互转换，直接转成<span class="keyword">int</span>类型参与运算</div><div class="line">   </div><div class="line"><span class="number">3</span>.`从大到小`进行强转，可能有精度损失，目标数据类型 变量名 = (目标数据类型) (被转换的数据)</div><div class="line">        </div><div class="line"><span class="keyword">byte</span> b1=<span class="number">3</span>,b2=<span class="number">4</span>,b;</div><div class="line">b=b1+b2;<span class="comment">//错，b1、b2要转成int做加法，赋给byte要强转</span></div><div class="line">b=<span class="number">3</span>+<span class="number">4</span>;<span class="comment">//正确，常量相加，首先做加法，然后看结果是否在赋值的数据类型范围内</span></div></pre></td></tr></table></figure>
+<h2 id="进制"><a href="#进制" class="headerlink" title="进制"></a>进制</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="number">1</span>.二进制-<span class="number">0</span>b开头、八进制-<span class="number">0</span>开头、十六进制-<span class="number">0</span>x开头</div><div class="line"><span class="number">2</span>.其他进制到十进制：(用乘推导)</div><div class="line"><span class="number">3</span>.十进制到其他进制：(用除推导)</div><div class="line">     </div><div class="line"><span class="comment">//其他进制到十进制</span></div><div class="line">十进制<span class="number">12345</span>=<span class="number">1</span>*<span class="number">10</span>^<span class="number">4</span> + <span class="number">2</span>*<span class="number">10</span>^<span class="number">3</span> + <span class="number">3</span>*<span class="number">10</span>^<span class="number">2</span> + <span class="number">4</span>*<span class="number">10</span>^<span class="number">1</span> + <span class="number">5</span>*<span class="number">10</span>^<span class="number">0</span> = <span class="number">12345</span></div><div class="line">二进制<span class="number">0b100</span>=<span class="number">1</span>*<span class="number">2</span>^<span class="number">2</span> + <span class="number">0</span>*<span class="number">2</span>^<span class="number">1</span> + <span class="number">0</span>*<span class="number">2</span>^<span class="number">0</span> = <span class="number">4</span></div><div class="line">八进制<span class="number">0100</span>=<span class="number">1</span>*<span class="number">8</span>^<span class="number">2</span> + <span class="number">0</span>*<span class="number">8</span>^<span class="number">1</span> + <span class="number">0</span>*<span class="number">8</span>^<span class="number">0</span> = <span class="number">64</span></div><div class="line">十六进制<span class="number">100</span>=<span class="number">1</span>*<span class="number">16</span>^<span class="number">2</span> + <span class="number">0</span>*<span class="number">16</span>^<span class="number">1</span> + <span class="number">0</span>*<span class="number">16</span>^<span class="number">0</span> = <span class="number">256</span></div><div class="line">   </div><div class="line"><span class="comment">//十进制到其他进制</span></div><div class="line">十进制<span class="number">12345</span>（到十进制）：不断除以<span class="number">10</span>，记余数，直到<span class="number">0</span>，余数反转，为<span class="number">12345</span></div><div class="line">十进制<span class="number">20</span>（到二进制）： 不断除以<span class="number">2</span>，记余数，直到<span class="number">0</span>，余数反转，为<span class="number">0b10100</span></div></pre></td></tr></table></figure>
+<h2 id="原码、反码、补码"><a href="#原码、反码、补码" class="headerlink" title="原码、反码、补码"></a>原码、反码、补码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">原码：正数的原码最高位是<span class="number">0</span>，负数的原码最高位是<span class="number">1</span>，其他是数值位</div><div class="line">	+<span class="number">7</span>		<span class="number">0</span>	<span class="number">0000111</span></div><div class="line">	-<span class="number">7</span>		<span class="number">1</span>	<span class="number">0000111</span></div><div class="line">   </div><div class="line">反码：正数的反码与原码相同，负数的反码与原码符号位相同，数值位取反</div><div class="line">	+<span class="number">7</span>		<span class="number">0</span>	<span class="number">0000111</span></div><div class="line">	-<span class="number">7</span>		<span class="number">1</span>	<span class="number">1111000</span></div><div class="line">   </div><div class="line">补码：正数的补码与原码相同，负数的补码是在反码的基础上加<span class="number">1</span></div><div class="line">	+<span class="number">7</span>		<span class="number">0</span>	<span class="number">0000111</span></div><div class="line">	-<span class="number">7</span>		<span class="number">1</span>	<span class="number">1111001</span></div></pre></td></tr></table></figure>
+<h2 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="number">1</span>.相除想得到小数，至少一个为<span class="keyword">float</span>类型，可在输出时*<span class="number">1.0</span>把<span class="keyword">int</span>变为<span class="keyword">float</span></div><div class="line">   </div><div class="line"><span class="number">2</span>.++,--运算符：放前放后，都使操作数变<span class="number">1</span>，放前作为整体，变，放后面作为整体，不变</div><div class="line">   </div><div class="line"><span class="number">3</span>.扩展赋值运算符隐含强换，s += <span class="number">1</span>;等价于s = (s的数据类型)(s + <span class="number">1</span>);</div><div class="line">   </div><div class="line"><span class="number">4</span>.&amp;&amp;具有短路效果，左边是<span class="keyword">false</span>，右边不执行,&amp;两边都一定执行</div></pre></td></tr></table></figure>
+<h2 id="static关键字"><a href="#static关键字" class="headerlink" title="static关键字"></a>static关键字</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">1.随着类加载而加载，优先于对象存在，被类的所有对象共享</div><div class="line">   </div><div class="line">2.一个对象赋值或修改静态成员变量，其他的和再创建的对象都改变</div><div class="line">   </div><div class="line">3.静态方法中没有this关键字，静态方法只能访问静态的成员变量和方法</div></pre></td></tr></table></figure>
+<h2 id="继承、this、super"><a href="#继承、this、super" class="headerlink" title="继承、this、super"></a>继承、this、super</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">1.子类只能继承父类所有非私有的成员</div><div class="line">   </div><div class="line">2.子类所有构造方法默认访问父类空参构造方法，子类不能继承父类的含参构造方法，可以通过super关键字访问</div><div class="line">   </div><div class="line">3.调用成员变量`this.成员变量`，调用构造方法`this(数据类型)`，调用成员方法`this.成员方法`</div></pre></td></tr></table></figure>
+<h2 id="重写、重载"><a href="#重写、重载" class="headerlink" title="重写、重载"></a>重写、重载</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">方法重载：本类中出现的方法名一样，参数列表不同的方法，与返回值无关</div><div class="line">     </div><div class="line">方法重写：子类出现了和父类中方法声明一样的方法访问权限不能更低，私有方法不能继承，更不能重写</div><div class="line">    </div><div class="line">注意：静态方法不存在重写，但子类若存在同名方法，也要加静态</div></pre></td></tr></table></figure>
+<h2 id="final关键字"><a href="#final关键字" class="headerlink" title="final关键字"></a>final关键字</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">修饰类，该类不能被继承，修饰方法，该方法不能被重写，修饰变量，该变量不能重新赋值</div><div class="line">    </div><div class="line">修饰引用类型变量，地址值不能改变，但内容可以改变</div></pre></td></tr></table></figure>
+<h2 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">前提：继承或实现关系、方法重写、父类引用指向子类对象</div><div class="line">    </div><div class="line">多态中的对象只能访问父类有的成员，不能使用子类特有功能</div></pre></td></tr></table></figure>
+<h2 id="抽象类和接口"><a href="#抽象类和接口" class="headerlink" title="抽象类和接口"></a>抽象类和接口</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">1.都只能通过多态实例化</div><div class="line">    </div><div class="line">2.接口成员变量默认`public static final`修饰，无构造方法，只有抽象方法，默认`public abstract`</div><div class="line">     </div><div class="line">3.抽象类成员变量可以是变量，也可以是常量，有构造方法，成员方法至少一个是抽象的</div><div class="line">     </div><div class="line">4.抽象类被继承是`is a`的关系，体现共性，接口被实现是`like a`的关系，体现拓展</div></pre></td></tr></table></figure>
+<h2 id="权限修饰符"><a href="#权限修饰符" class="headerlink" title="权限修饰符"></a>权限修饰符</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span>只有本类内部可以访问</div><div class="line">    </div><div class="line">默认情况只在同一个包下自由访问</div><div class="line">    </div><div class="line"><span class="keyword">protected</span>同一个包下，或不同包下的子类可以访问</div></pre></td></tr></table></figure>
+<h2 id="内部类"><a href="#内部类" class="headerlink" title="内部类"></a>内部类</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="number">1</span>.内部类可以访问外部类的成员，`包括私有`，外部类要访问内部类的成员，必须创建对象</div><div class="line">    </div><div class="line"><span class="number">2</span>.访问非静态内部类：`Outer.Inner oi = <span class="keyword">new</span> Outer().new Inner();`（外部类对象.内部类对象）</div><div class="line">    </div><div class="line"><span class="number">3</span>.访问静态内部类：`Outer.Inner oi = <span class="keyword">new</span> Outer.Inner();`</div><div class="line">    </div><div class="line"><span class="number">4</span>.局部内部类访问的局部变量必须用`<span class="keyword">final</span>`修饰</div></pre></td></tr></table></figure>
+<h2 id="和equals"><a href="#和equals" class="headerlink" title="==和equals"></a>==和equals</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">==比较基本类型是比较值，比较引用类型是比较地址</div><div class="line">    </div><div class="line">equals方法只能比较引用类型，默认调用==比较地址，String类重写了该方法，比较的是字符串内容</div></pre></td></tr></table></figure>
+<h2 id="String"><a href="#String" class="headerlink" title="String"></a>String</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="number">1</span>.String s = <span class="keyword">new</span> String(“hello”);创建<span class="number">2</span>个对象，堆内存一个，常量池一个</div><div class="line">       </div><div class="line"><span class="number">2</span>.String s = “hello”;创建<span class="number">1</span>个对象，在常量池</div><div class="line">       </div><div class="line"><span class="number">3</span>.字符串变量相加，先开空间，再拼接，常量相加，编译后相当与一个整体</div><div class="line">       </div><div class="line">String s1 = <span class="string">"hello"</span>;</div><div class="line">String s2 = <span class="string">"world"</span>;</div><div class="line">String s3 = <span class="string">"helloworld"</span>;</div><div class="line">System.out.println(s3 == s1 + s2);<span class="comment">// false</span></div><div class="line">System.out.println(s3 == <span class="string">"hello"</span> + <span class="string">"world"</span>);<span class="comment">// true（若s3是new的，则false）</span></div></pre></td></tr></table></figure>
+<p>4.常用方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">startsWith</span><span class="params">(String str)</span>:以某个指定的字符串开头，区分大小写</span></div><div class="line"><span class="keyword">boolean</span> <span class="title">endsWith</span><span class="params">(String str)</span>:以某个指定的字符串结尾，区分大小写</div><div class="line"><span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span>:内容是否为空</div><div class="line"><span class="keyword">char</span> <span class="title">charAt</span><span class="params">(<span class="keyword">int</span> index)</span>:获取指定索引位置的字符</div><div class="line"><span class="keyword">int</span> <span class="title">indexOf</span><span class="params">(<span class="keyword">int</span> ch)</span>:返回指定字符第一次出现的索引（形参传入'a'和97都代表'a'）</div><div class="line">String <span class="title">substring</span><span class="params">(<span class="keyword">int</span> start)</span>:从指定位置开始截取字符串,默认到末尾</div><div class="line">包含start这个索引String <span class="title">substring</span><span class="params">(<span class="keyword">int</span> start,<span class="keyword">int</span> end)</span>:截取字符串包括start，不包括end</div><div class="line"><span class="keyword">byte</span>[] <span class="title">getBytes</span><span class="params">()</span>:把字符串转换为字节数组</div><div class="line"><span class="keyword">char</span>[] <span class="title">toCharArray</span><span class="params">()</span>:把字符串转换为字符数组</div><div class="line"><span class="keyword">static</span> String <span class="title">valueOf</span><span class="params">(<span class="keyword">char</span>[] chs)</span>: valueOf方法可以把任意类型的数据转成字符串</div><div class="line">String <span class="title">concat</span><span class="params">(String str)</span>:字符串拼接</div></pre></td></tr></table></figure>
+<h2 id="Stirng、StringBuffer、StringBuilder"><a href="#Stirng、StringBuffer、StringBuilder" class="headerlink" title="Stirng、StringBuffer、StringBuilder"></a>Stirng、StringBuffer、StringBuilder</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1.String是内容不可变的，而StringBuffer，StringBuilder都是内容可变的</div><div class="line">    </div><div class="line">2.StringBuffer是同步的，安全，效率低、StringBuilder是不同步的，不安全，效率高</div></pre></td></tr></table></figure>
+<h2 id="Arrays工具类"><a href="#Arrays工具类" class="headerlink" title="Arrays工具类"></a>Arrays工具类</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">toString</span><span class="params">(<span class="keyword">int</span>[] a)</span>：把数组转成字符串</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(<span class="keyword">int</span>[] a)</span>：对数组进行排序<span class="params">(底层是快排)</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">binarySearch</span><span class="params">(<span class="keyword">int</span>[] a,<span class="keyword">int</span> key)</span>：二分查找</div></pre></td></tr></table></figure>
+<h2 id="用LinkedList模拟栈数据结构"><a href="#用LinkedList模拟栈数据结构" class="headerlink" title="用LinkedList模拟栈数据结构"></a>用LinkedList模拟栈数据结构</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyStack</span> </span>&#123;</div><div class="line">	<span class="keyword">private</span> LinkedList link;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">MyStack</span><span class="params">()</span> </span>&#123;</div><div class="line">		link = <span class="keyword">new</span> LinkedList();</div><div class="line">	&#125;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(Object obj)</span> </span>&#123;</div><div class="line">		link.addFirst(obj);</div><div class="line">	&#125;</div><div class="line">	<span class="function"><span class="keyword">public</span> Object <span class="title">get</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="comment">// return link.getFirst();//这样会导致无法弹栈</span></div><div class="line">		<span class="keyword">return</span> link.removeFirst();</div><div class="line">	&#125;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> link.isEmpty();</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Collection：</div><div class="line">	List：有序，可重复</div><div class="line">		ArrayList：数据结构是数组，适合查询，线程不安全</div><div class="line">		Vector：同ArrayList，但线程安全</div><div class="line">		LinkedList：数据结构是链表，适合做增删，线程不安全</div><div class="line">	Set：无序，唯一</div><div class="line">		HashSet：数据结构是哈希表，依赖hashCode和equals方法</div><div class="line">			LinkedHashSet：链表保证有序，哈希表保证唯一</div><div class="line">		TreeSet：数据结构是红黑树</div><div class="line">Map：数据结构只针对键有效</div><div class="line">	HashMap：数据结构是哈希表，线程不安全，允许<span class="keyword">null</span>键和<span class="keyword">null</span>值</div><div class="line">		LinkedHashMap：数据结构是链表和哈希表</div><div class="line">	Hashtable：数据结构是哈希表，线程安全，不允许<span class="keyword">null</span>键和<span class="keyword">null</span>值</div><div class="line">	TreeMap：数据结构是红黑树</div></pre></td></tr></table></figure>
+<h2 id="TreeSet集合保证元素排序"><a href="#TreeSet集合保证元素排序" class="headerlink" title="TreeSet集合保证元素排序"></a>TreeSet集合保证元素排序</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">自然排序(元素具备比较性)，让元素类实现自然排序接口Comparable   </div><div class="line">TreeSet&lt;Student&gt; ts = <span class="keyword">new</span> TreeSet&lt;Student&gt;();</div><div class="line">    </div><div class="line">比较器排序(集合具备比较性)，使用一个带参构造方法</div><div class="line">TreeSet&lt;Student&gt; ts = <span class="keyword">new</span> TreeSet&lt;Student&gt;(<span class="keyword">new</span> MyComparator());</div><div class="line">      </div><div class="line">都重写方法：</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(Student s1, Student s2)</span> </span>&#123;</div><div class="line">	<span class="keyword">int</span> num = s1.getName().length() - s2.getName().length();</div><div class="line">	<span class="keyword">int</span> num2 = num == <span class="number">0</span> ? s1.getName().compareTo(s2.getName()) : num;</div><div class="line">	<span class="keyword">int</span> num3 = num2 == <span class="number">0</span> ? s1.getAge() - s2.getAge() : num2;</div><div class="line">	<span class="keyword">return</span> num3;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="Collections类"><a href="#Collections类" class="headerlink" title="Collections类"></a>Collections类</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function"><span class="keyword">void</span> <span class="title">sort</span><span class="params">(List&lt;T&gt; list)</span>：默认情况下是自然顺序。</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="keyword">int</span> <span class="title">binarySearch</span><span class="params">(List&lt;?&gt; list,T key)</span>：二分查找</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; T <span class="title">max</span><span class="params">(Collection&lt;?&gt; coll)</span>：最大值</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">reverse</span><span class="params">(List&lt;?&gt; list)</span>：反转</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">shuffle</span><span class="params">(List&lt;?&gt; list)</span>：随机置换</div></pre></td></tr></table></figure>
+<h2 id="throw和throws"><a href="#throw和throws" class="headerlink" title="throw和throws"></a>throw和throws</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">throws用在方法声明后，跟的是异常类名，可以多个，表示出现异常的可能性</div><div class="line">    </div><div class="line">throw用在方法中，跟的是异常对象名，表示抛出了异常</div></pre></td></tr></table></figure>
+<h2 id="final-finally和finalize"><a href="#final-finally和finalize" class="headerlink" title="final,finally和finalize"></a>final,finally和finalize</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">final：修饰类，类不能被继承，修饰变量，变量是常量，修饰方法，方法不能被重写</div><div class="line">    </div><div class="line">finally：是异常处理的一部分，用于释放资源</div><div class="line">    </div><div class="line">finalize：是Object类的一个方法，用于垃圾回收</div></pre></td></tr></table></figure>
+<h2 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h2><h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><pre><code>1.Error 我们不处理。这种问题一般都是很严重的，比如说内存溢出
+2.非RuntimeException的异常，不处理，编译就不能通过
+3.RuntimeException，一般不处理，原因是代码不够严谨，需要修正代码
+</code></pre><h3 id="处理方式"><a href="#处理方式" class="headerlink" title="处理方式"></a>处理方式</h3><p>1.jvm默认的处理：把异常的名称，原因及出现的问题等信息输出在控制台，同时会结束程序</p>
+<p>2.第一种处理格式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">	可能出现问题的代码;</div><div class="line">&#125;<span class="keyword">catch</span>(异常名 变量) &#123;</div><div class="line">	针对问题的处理;</div><div class="line">&#125;<span class="keyword">finally</span> &#123;</div><div class="line">	释放资源;</div><div class="line">&#125;<span class="comment">//	注：被finally控制的语句体一定会执行，除非执行到finally之前jvm退出了</span></div></pre></td></tr></table></figure>
+<p>3.第二种处理格式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">throws</span> 异常类名（必须跟在方法的括号后面）</div></pre></td></tr></table></figure>
+<p>4.多个异常的处理<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">try</span>&#123;</div><div class="line">	...</div><div class="line">&#125;<span class="keyword">catch</span>(异常类名 变量名) &#123;</div><div class="line">	...</div><div class="line">&#125;<span class="keyword">catch</span>(异常类名 变量名) &#123;</div><div class="line">	...</div><div class="line">&#125;</div><div class="line"><span class="comment">//平级关系的异常谁前谁后无所谓，子父关系的异常，父必须在后面</span></div><div class="line"><span class="comment">//一旦try出现异常，就会抛出，和catch匹配，结束整个try...catch</span></div></pre></td></tr></table></figure></p>
+<p>5.JDK7出现了一个新的异常处理方案<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">try</span>&#123;</div><div class="line">	...</div><div class="line">&#125;<span class="keyword">catch</span>(异常名<span class="number">1</span> | 异常名<span class="number">2</span> | ...  变量 ) &#123;</div><div class="line">	...</div><div class="line">&#125;</div><div class="line"><span class="comment">//多个异常必须是平级关系</span></div></pre></td></tr></table></figure></p>
+<h3 id="异常方法"><a href="#异常方法" class="headerlink" title="异常方法"></a>异常方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getMessage</span><span class="params">()</span>:异常的消息字符串		</span></div><div class="line"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span>:返回异常的简单信息描述</div><div class="line"><span class="keyword">void</span> <span class="title">printStackTrace</span><span class="params">()</span>: 获取异常类名和异常信息，位置</div></pre></td></tr></table></figure>
+<h3 id="问题：catch里有return语句，finally还会执行吗？"><a href="#问题：catch里有return语句，finally还会执行吗？" class="headerlink" title="问题：catch里有return语句，finally还会执行吗？"></a>问题：catch里有return语句，finally还会执行吗？</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">	System.out.println(getInt());</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getInt</span><span class="params">()</span> </span>&#123;</div><div class="line">	<span class="keyword">int</span> a = <span class="number">10</span>;</div><div class="line">	<span class="keyword">try</span> &#123;</div><div class="line">		System.out.println(a / <span class="number">0</span>);</div><div class="line">		a = <span class="number">20</span>;</div><div class="line">	&#125; <span class="keyword">catch</span> (ArithmeticException e) &#123;</div><div class="line">		a = <span class="number">30</span>;</div><div class="line">		<span class="keyword">return</span> a;<span class="comment">//这里不是return a，而是return 30这个返回路径</span></div><div class="line">		<span class="comment">//继续执行finally的内容，a=40，再次回到以前的返回路径，继续走return 30;</span></div><div class="line">	&#125; <span class="keyword">finally</span> &#123;</div><div class="line">		a = <span class="number">40</span>;</div><div class="line">		<span class="comment">//return a;//如果这样结果就是40了（这里和下面的return a;只能出现一个）</span></div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> a;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="自定义异常类：继承Exception或继承RuntimeException"><a href="#自定义异常类：继承Exception或继承RuntimeException" class="headerlink" title="自定义异常类：继承Exception或继承RuntimeException"></a>自定义异常类：继承Exception或继承RuntimeException</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyException</span> <span class="keyword">extends</span> <span class="title">Exception</span> </span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">MyException</span><span class="params">()</span> </span>&#123;</div><div class="line">	   &#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">MyException</span><span class="params">(String message)</span> </span>&#123;</div><div class="line">		<span class="keyword">super</span>(message);</div><div class="line">	  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="异常注意事项"><a href="#异常注意事项" class="headerlink" title="异常注意事项"></a>异常注意事项</h3><ul>
+<li>子类重写父类方法时，子类的方法必须抛出相同的异常或父类异常的子类</li>
+<li>如果父类抛出了多个异常,子类重写父类时,只能抛出相同的异常或者是它们的子集</li>
+<li>子类不能抛出父类没有的异常</li>
+<li>如果<code>被重写的方法</code>没有异常抛出,那么子类的方法绝不可以抛出异常,这时子类方法若有异常发生,子类只能try,不能throws</li>
+</ul>
+<h2 id="进程和线程"><a href="#进程和线程" class="headerlink" title="进程和线程"></a>进程和线程</h2><ul>
+<li><strong>进程：</strong>正在运行的程序，是系统进行资源分配和调用的独立单位，每一个进程都有它自己的内存空间和系统资源</li>
+<li><strong>线程：</strong>是进程中的单个顺序控制流，是一条执行路径，一个进程如果只有一条执行路径，则称为单线程程序，否则称为多线程程序</li>
+<li><strong>并行：</strong>是逻辑上同时发生，指在某一个<code>时间内</code>同时运行多个程序，<strong>并发</strong>是物理上同时发生，指在某一个<code>时间点</code>同时运行多个程序    </li>
+<li><strong>Java程序的运行原理：</strong>由java命令启动JVM，JVM启动就相当于启动了一个进程，接着有该进程创建了一个主线程去调用main方法</li>
+</ul>
+<h2 id="实现多线程的程序"><a href="#实现多线程的程序" class="headerlink" title="实现多线程的程序"></a>实现多线程的程序</h2><p><strong>原理</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">1. 线程是依赖进程而存在的，所以我们应该先创建一个进程</div><div class="line">2. 而进程是由系统创建的，所以我们应该去调用系统功能</div><div class="line">3. Java是不能直接调用系统功能来创建进程的，所以，我们没有办法直接实现多线程程序，</div><div class="line">4.但是Java可以去调用C/C++写好的程序来实现多线程程序，由C/C++去调用系统功能创建进程</div><div class="line">     </div><div class="line">Java提供的类是：Thread</div></pre></td></tr></table></figure>
+<p><strong>方式一</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">1.自定义类MyThread继承Thread类</div><div class="line">2.MyThread类里面重写run方法</div><div class="line">3.创建对象 MyThread my = new MyThread();</div><div class="line">4.启动线程 my.start();</div></pre></td></tr></table></figure>
+<p><strong>方式二</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1.自定义类MyRunnable实现Runnable接口</div><div class="line">2.重写run()方法</div><div class="line">3.创建MyRunnable类的对象</div></pre></td></tr></table></figure></p>
+<h2 id="线程操作"><a href="#线程操作" class="headerlink" title="线程操作"></a>线程操作</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> String <span class="title">getName</span><span class="params">()</span>:获取线程的名称</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span>:设置线程的名称</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> Thread <span class="title">currentThread</span><span class="params">()</span>:获取线程对象名称：Thread.<span class="title">currentThread</span><span class="params">()</span>.<span class="title">getName</span><span class="params">()</span></div><div class="line">     </div><div class="line"><span class="comment">//该方法必须在启动线程前调用，随着Jvm的退出而退出</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">setDaemon</span><span class="params">(<span class="keyword">boolean</span> on)</span>:将该线程标记为守护线程或用户线程</div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">getPriority</span><span class="params">()</span>:返回线程对象的优先级</div><div class="line">      </div><div class="line"><span class="comment">//线程默认优先级是5，线程优先级的范围是：1-10</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">setPriority</span><span class="params">(<span class="keyword">int</span> newPriority)</span>：更改线程的优先级。 </div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">join</span><span class="params">()</span>:等待该线程终止</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">yield</span><span class="params">()</span>:暂停当前正在执行的线程对象，并执行其他线程</div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sleep</span><span class="params">(<span class="keyword">long</span> millis)</span>:线程休眠</div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">stop</span><span class="params">()</span>:让线程停止，已过时</div><div class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">interrupt</span><span class="params">()</span>:中断线程，把线程的状态终止，并抛出一个InterruptedException</div></pre></td></tr></table></figure>
+<p><strong>run()和start()的区别：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">run():仅仅是封装被线程执行的代码，直接调用是普通方法</div><div class="line">start():首先启动了线程，然后再由jvm去调用该线程的run()方法</div><div class="line">start():不能被同一个线程对象多次调用,否则IllegalThreadStateException:非法的线程状态异常</div></pre></td></tr></table></figure></p>
+<p><strong>判断一个程序是否会有线程安全问题的标准：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1.是否是多线程环境</div><div class="line">2.是否有共享数据</div><div class="line">3.是否有多条语句操作共享数据</div></pre></td></tr></table></figure></p>
+<p><strong>锁对象问题</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1.同步代码块的锁对象可以是任意对象</div><div class="line">2.关键字synchronized加在方法上，锁对象是this</div><div class="line">3.静态方法锁对象是类的字节码文件对象</div></pre></td></tr></table></figure>
+<p><strong>线程安全的类或集合：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">StringBuffer sb = <span class="keyword">new</span> StringBuffer();</div><div class="line">Vector&lt;String&gt; v = <span class="keyword">new</span> Vector&lt;String&gt;();</div><div class="line">Hashtable&lt;String, String&gt; h = <span class="keyword">new</span> Hashtable&lt;String, String&gt;();</div><div class="line">    </div><div class="line"><span class="comment">//替代Vector集合的集合： public static &lt;T&gt; List&lt;T&gt; synchronizedList(List&lt;T&gt; list)</span></div><div class="line">List&lt;String&gt; list1 = <span class="keyword">new</span> ArrayList&lt;String&gt;();<span class="comment">// 线程不安全</span></div><div class="line">List&lt;String&gt; list2 = Collections.synchronizedList(<span class="keyword">new</span> ArrayList&lt;String&gt;()); <span class="comment">// 线程安全</span></div></pre></td></tr></table></figure>
+<p><strong>锁对象Lock</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//为了更清晰的表达如何加锁和释放锁,JDK5以后提供了一个新的锁对象Lock：</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span>:获取锁</span></div><div class="line"><span class="keyword">void</span> <span class="title">unlock</span><span class="params">()</span>:释放锁 </div><div class="line">    </div><div class="line"><span class="comment">//ReentrantLock是Lock的实现类：</span></div><div class="line"><span class="keyword">private</span> Lock lock = <span class="keyword">new</span> ReentrantLock();</div></pre></td></tr></table></figure>
+<p><strong>死锁</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//使用了锁嵌套，两个或两个以上的线程在争夺资源的过程中，发生的一种相互等待的现象</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DieLock</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</div><div class="line">    </div><div class="line">	<span class="keyword">private</span> <span class="keyword">boolean</span> flag;</div><div class="line">     </div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">DieLock</span><span class="params">(<span class="keyword">boolean</span> flag)</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>.flag = flag;</div><div class="line">	&#125;</div><div class="line">    </div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">if</span> (flag) &#123;</div><div class="line">			<span class="keyword">synchronized</span> (MyLock.objA) &#123;</div><div class="line">				System.out.println(<span class="string">"if objA"</span>);</div><div class="line">				<span class="keyword">synchronized</span> (MyLock.objB) &#123;</div><div class="line">					System.out.println(<span class="string">"if objB"</span>);</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">		&#125; <span class="keyword">else</span> &#123;</div><div class="line">			<span class="keyword">synchronized</span> (MyLock.objB) &#123;</div><div class="line">				System.out.println(<span class="string">"else objB"</span>);</div><div class="line">				<span class="keyword">synchronized</span> (MyLock.objA) &#123;</div><div class="line">					System.out.println(<span class="string">"else objA"</span>);</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">    </div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DieLockDemo</span> </span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">		DieLock dl1 = <span class="keyword">new</span> DieLock(<span class="keyword">true</span>);</div><div class="line">		DieLock dl2 = <span class="keyword">new</span> DieLock(<span class="keyword">false</span>);</div><div class="line">		dl1.start();</div><div class="line">		dl2.start();</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">    </div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyLock</span> </span>&#123;</div><div class="line">	<span class="comment">// 创建两把锁对象</span></div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Object objA = <span class="keyword">new</span> Object();</div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Object objB = <span class="keyword">new</span> Object();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>生产者消费者模型</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Object类中提供了三个方法：</div><div class="line">    wait():等待</div><div class="line">    notify():唤醒单个线程</div><div class="line">    notifyAll():唤醒所有线程</div><div class="line">    </div><div class="line">为什么这些方法不定义在Thread类中呢?</div><div class="line">    因为这些方法的调用必须通过锁对象调用，锁对象可以是任意锁对象</div></pre></td></tr></table></figure></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span> </span>&#123;</div><div class="line">	<span class="keyword">private</span> String name;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">int</span> age;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">boolean</span> flag; <span class="comment">// 默认情况是没有数据，如果是true，说明有数据</span></div><div class="line">    </div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(String name, <span class="keyword">int</span> age)</span> </span>&#123;</div><div class="line">		<span class="comment">// 如果有数据，就等待</span></div><div class="line">		<span class="keyword">if</span> (<span class="keyword">this</span>.flag) &#123;</div><div class="line">			<span class="keyword">try</span> &#123;</div><div class="line">				<span class="keyword">this</span>.wait();</div><div class="line">			&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">				e.printStackTrace();</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">    </div><div class="line">		<span class="comment">// 设置数据</span></div><div class="line">		<span class="keyword">this</span>.name = name;</div><div class="line">		<span class="keyword">this</span>.age = age;</div><div class="line">    </div><div class="line">		<span class="comment">// 修改标记</span></div><div class="line">		<span class="keyword">this</span>.flag = <span class="keyword">true</span>;</div><div class="line">		<span class="keyword">this</span>.notify();<span class="comment">//唤醒其他锁线程，但必须抢到CPU的执行权才能执行</span></div><div class="line">	&#125;</div><div class="line">    </div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">get</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="comment">// 如果没有数据，就等待</span></div><div class="line">		<span class="keyword">if</span> (!<span class="keyword">this</span>.flag) &#123;</div><div class="line">			<span class="keyword">try</span> &#123;</div><div class="line">				<span class="keyword">this</span>.wait();</div><div class="line">			&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">				e.printStackTrace();</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">    </div><div class="line">		<span class="comment">// 获取数据</span></div><div class="line">		System.out.println(<span class="keyword">this</span>.name + <span class="string">"---"</span> + <span class="keyword">this</span>.age);</div><div class="line">    </div><div class="line">		<span class="comment">// 修改标记</span></div><div class="line">		<span class="keyword">this</span>.flag = <span class="keyword">false</span>;</div><div class="line">		<span class="keyword">this</span>.notify();</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SetThread</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</div><div class="line">    </div><div class="line">	<span class="keyword">private</span> Student s;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">int</span> x = <span class="number">0</span>;</div><div class="line">    </div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">SetThread</span><span class="params">(Student s)</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>.s = s;</div><div class="line">	&#125;</div><div class="line">    </div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</div><div class="line">			<span class="keyword">if</span> (x % <span class="number">2</span> == <span class="number">0</span>) &#123;</div><div class="line">				s.set(<span class="string">"学生一"</span>, <span class="number">27</span>);</div><div class="line">			&#125; <span class="keyword">else</span> &#123;</div><div class="line">				s.set(<span class="string">"学生二"</span>, <span class="number">30</span>);</div><div class="line">			&#125;</div><div class="line">			x++;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GetThread</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</div><div class="line">	<span class="keyword">private</span> Student s;</div><div class="line">    </div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">GetThread</span><span class="params">(Student s)</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>.s = s;</div><div class="line">	&#125;</div><div class="line">    </div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</div><div class="line">			s.get();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StudentDemo</span> </span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">		<span class="comment">//创建资源</span></div><div class="line">		Student s = <span class="keyword">new</span> Student();</div><div class="line">    </div><div class="line">		SetThread st = <span class="keyword">new</span> SetThread(s);</div><div class="line">		GetThread gt = <span class="keyword">new</span> GetThread(s);</div><div class="line">		Thread t1 = <span class="keyword">new</span> Thread(st);</div><div class="line">		Thread t2 = <span class="keyword">new</span> Thread(gt);</div><div class="line">		t1.start();</div><div class="line">		t2.start();</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h2><ul>
+<li>使用步骤：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//创建一个线程池对象，控制要创建几个线程对象</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title">newFixedThreadPool</span><span class="params">(<span class="keyword">int</span> nThreads)</span></span></div><div class="line">	ExecutorService pool = Executors.newFixedThreadPool(<span class="number">2</span>);</div><div class="line"></div><div class="line"><span class="comment">//可以执行Runnable对象或者Callable对象代表的线程	</span></div><div class="line"></div><div class="line"><span class="comment">//调用如下方法开启线程：</span></div><div class="line"><span class="comment">//Future&lt;?&gt; submit(Runnable task)</span></div><div class="line"><span class="comment">//&lt;T&gt; Future&lt;T&gt; submit(Callable&lt;T&gt; task)</span></div><div class="line">	pool.submit(<span class="keyword">new</span> MyRunnable());</div><div class="line"></div><div class="line"><span class="comment">//结束线程</span></div><div class="line">	pool.shutdown();</div></pre></td></tr></table></figure>
+<p><strong>线程求和案例</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Callable是带泛型的接口（泛型指call()方法的返回值类型）</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyCallable</span> <span class="keyword">implements</span> <span class="title">Callable</span>&lt;<span class="title">Integer</span>&gt; </span>&#123;</div><div class="line"><span class="keyword">private</span> <span class="keyword">int</span> number;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">MyCallable</span><span class="params">(<span class="keyword">int</span> number)</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>.number = number;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> Integer <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">1</span>; x &lt;= number; x++) &#123;</div><div class="line">        sum += x;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> sum;</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>匿名内部类格式开启线程</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadDemo</span> </span>&#123;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    <span class="comment">// 继承Thread类来实现多线程</span></div><div class="line">    <span class="keyword">new</span> Thread() &#123;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; <span class="number">100</span>; x++) &#123;</div><div class="line">                System.out.println(Thread.currentThread().getName() + <span class="string">":"</span></div><div class="line">                        + x);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;.start();</div><div class="line"></div><div class="line"><span class="comment">// 实现Runnable接口来实现多线程</span></div><div class="line"><span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; <span class="number">100</span>; x++) &#123;</div><div class="line">            System.out.println(Thread.currentThread().getName() + <span class="string">":"</span></div><div class="line">                    + x);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;) &#123;</div><div class="line">&#125;.start();</div><div class="line"></div><div class="line">    <span class="comment">//下面代码run方法被重写了2次，而start方法是通知Jvm调用run方法，根据多态原理，			</span></div><div class="line">    <span class="comment">//最终执行下面的run方法，上面的run方法必须重写，但是不执行</span></div><div class="line">    <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; <span class="number">100</span>; x++) &#123;</div><div class="line">                System.out.println(<span class="string">"hello"</span> + <span class="string">":"</span> + x);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;) &#123;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; <span class="number">100</span>; x++) &#123;</div><div class="line">                System.out.println(<span class="string">"world"</span> + <span class="string">":"</span> + x);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;.start();</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>定时器</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//依赖Timer和TimerTask这两个类：</span></div><div class="line">   </div><div class="line"><span class="comment">//Timer: </span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Timer</span><span class="params">()</span></span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">schedule</span><span class="params">(TimerTask task,<span class="keyword">long</span> delay)</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">schedule</span><span class="params">(TimerTask task,<span class="keyword">long</span> delay,<span class="keyword">long</span> period)</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">cancel</span><span class="params">()</span></div><div class="line"><span class="comment">//TimerTask:</span></div><div class="line">    <span class="comment">//继承该类就变成了线程类，要重写run方法</span></div><div class="line">    <span class="comment">//继承类对象传入到timer类对象的方法中</span></div></pre></td></tr></table></figure>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/03/09/Java基本概念/">Java基本概念</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">fangminx</a></p>
+        <p><span>发布时间:</span>2017-03-09, 22:07:16</p>
+        <p><span>最后更新:</span>2018-03-04, 11:01:52</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/09/Java基本概念/" title="Java基本概念">http://yoursite.com/2017/03/09/Java基本概念/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/03/09/Java基本概念/　　作者: fangminx" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/03/09/Java常用对象/">
+                    Java常见对象
+                </a>
+            </div>
+        
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Dos窗口"><span class="toc-number">1.</span> <span class="toc-text">Dos窗口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JDK-JRE-JVM的作用及关系"><span class="toc-number">2.</span> <span class="toc-text">JDK,JRE,JVM的作用及关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#环境变量CLASSPATH的作用"><span class="toc-number">3.</span> <span class="toc-text">环境变量CLASSPATH的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#垃圾回收机制"><span class="toc-number">4.</span> <span class="toc-text">垃圾回收机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java基础数据类型及其包装类"><span class="toc-number">5.</span> <span class="toc-text">Java基础数据类型及其包装类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#进制"><span class="toc-number">6.</span> <span class="toc-text">进制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#原码、反码、补码"><span class="toc-number">7.</span> <span class="toc-text">原码、反码、补码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#运算符"><span class="toc-number">8.</span> <span class="toc-text">运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#static关键字"><span class="toc-number">9.</span> <span class="toc-text">static关键字</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#继承、this、super"><span class="toc-number">10.</span> <span class="toc-text">继承、this、super</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#重写、重载"><span class="toc-number">11.</span> <span class="toc-text">重写、重载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#final关键字"><span class="toc-number">12.</span> <span class="toc-text">final关键字</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#多态"><span class="toc-number">13.</span> <span class="toc-text">多态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#抽象类和接口"><span class="toc-number">14.</span> <span class="toc-text">抽象类和接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#权限修饰符"><span class="toc-number">15.</span> <span class="toc-text">权限修饰符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#内部类"><span class="toc-number">16.</span> <span class="toc-text">内部类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#和equals"><span class="toc-number">17.</span> <span class="toc-text">==和equals</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#String"><span class="toc-number">18.</span> <span class="toc-text">String</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Stirng、StringBuffer、StringBuilder"><span class="toc-number">19.</span> <span class="toc-text">Stirng、StringBuffer、StringBuilder</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Arrays工具类"><span class="toc-number">20.</span> <span class="toc-text">Arrays工具类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#用LinkedList模拟栈数据结构"><span class="toc-number">21.</span> <span class="toc-text">用LinkedList模拟栈数据结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#集合"><span class="toc-number">22.</span> <span class="toc-text">集合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TreeSet集合保证元素排序"><span class="toc-number">23.</span> <span class="toc-text">TreeSet集合保证元素排序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Collections类"><span class="toc-number">24.</span> <span class="toc-text">Collections类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#throw和throws"><span class="toc-number">25.</span> <span class="toc-text">throw和throws</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#final-finally和finalize"><span class="toc-number">26.</span> <span class="toc-text">final,finally和finalize</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#异常"><span class="toc-number">27.</span> <span class="toc-text">异常</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#分类"><span class="toc-number">27.1.</span> <span class="toc-text">分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#处理方式"><span class="toc-number">27.2.</span> <span class="toc-text">处理方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异常方法"><span class="toc-number">27.3.</span> <span class="toc-text">异常方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#问题：catch里有return语句，finally还会执行吗？"><span class="toc-number">27.4.</span> <span class="toc-text">问题：catch里有return语句，finally还会执行吗？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义异常类：继承Exception或继承RuntimeException"><span class="toc-number">27.5.</span> <span class="toc-text">自定义异常类：继承Exception或继承RuntimeException</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异常注意事项"><span class="toc-number">27.6.</span> <span class="toc-text">异常注意事项</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#进程和线程"><span class="toc-number">28.</span> <span class="toc-text">进程和线程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现多线程的程序"><span class="toc-number">29.</span> <span class="toc-text">实现多线程的程序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#线程操作"><span class="toc-number">30.</span> <span class="toc-text">线程操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#线程池"><span class="toc-number">31.</span> <span class="toc-text">线程池</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"Java基本概念　| Just For Fun！　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+        <section class="youyan" id="comments">
+    <script>
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = 'http://v2.uyan.cc/code/uyan.js?uid=2134263';
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+    <div id="uyan_frame"></div>
+</section>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/03/09/Java常用对象/" title="上一篇: Java常见对象">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/03/04/elasticsearch(四、索引管理)/">elasticsearch(四、索引管理)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/04/elasticsearch(三、内核知识)/">elasticsearch(三、内核知识)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/04/elasticsearch(二、搜索引擎)/">elasticsearch(二、搜索引擎)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/03/elasticsearch(一、核心概念和机制)/">elasticsearch(一、核心概念和机制)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/03/【Java8函数式编程】/">【Java8函数式编程】</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/03/Mysql存储引擎和事务/">Mysql存储引擎和事务</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/Java基础笔试题/">Java基础笔试题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/19/Java实现简单算法/">Java实现简单算法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/19/Java实现简单树/">Java实现简单树</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/18/Java实现简单栈和队列/">Java实现简单栈和队列</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/18/Java实现简单线性表/">Java实现简单线性表</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/12/【深入浅出MySQL】/">【深入浅出MySQL】</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/12/【Java高并发程序设计】/">【Java高并发程序设计】</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/11/Java简单IO流操作/">Java简单IO流操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/Java常用对象/">Java常见对象</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/Java基本概念/">Java基本概念</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2018 fangminx
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

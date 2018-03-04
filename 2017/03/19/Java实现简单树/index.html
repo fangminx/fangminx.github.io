@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="fangminx" />
+
+
+
+<meta name="description" content="一颗数只能有一个根节点，如果有了多个根节点，它就称为森林  树的定义12345N个有父子关系的节点的有限集合，满足：- 当N=0，称为空树。- 任意非空树，有且仅有一个根（root）节点。- 当N&amp;gt;1时，除根节点以外的其余节点可分为M个集合，每个集合又是一棵树，称为根的子树(subtree).- 树的任一节点可以有0或多个子节点，但只能有一个父节点，根节点没有父节点（唯一特例）">
+<meta name="keywords" content="博客重构,简单数据结构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java实现简单树">
+<meta property="og:url" content="http://yoursite.com/2017/03/19/Java实现简单树/index.html">
+<meta property="og:site_name" content="Just For Fun！">
+<meta property="og:description" content="一颗数只能有一个根节点，如果有了多个根节点，它就称为森林  树的定义12345N个有父子关系的节点的有限集合，满足：- 当N=0，称为空树。- 任意非空树，有且仅有一个根（root）节点。- 当N&amp;gt;1时，除根节点以外的其余节点可分为M个集合，每个集合又是一棵树，称为根的子树(subtree).- 树的任一节点可以有0或多个子节点，但只能有一个父节点，根节点没有父节点（唯一特例）">
+<meta property="og:updated_time" content="2018-03-04T03:01:58.920Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java实现简单树">
+<meta name="twitter:description" content="一颗数只能有一个根节点，如果有了多个根节点，它就称为森林  树的定义12345N个有父子关系的节点的有限集合，满足：- 当N=0，称为空树。- 任意非空树，有且仅有一个根（root）节点。- 当N&amp;gt;1时，除根节点以外的其余节点可分为M个集合，每个集合又是一棵树，称为根的子树(subtree).- 树的任一节点可以有0或多个子节点，但只能有一个父节点，根节点没有父节点（唯一特例）">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="Just For Fun！" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>Java实现简单树 | Just For Fun！</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">fangminx</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">就是为了好玩！</p>
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="#" title="Email"></a>
+                            
+                                <a class="fa 新浪微博" href="#" title="新浪微博"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/fangminx" title="GitHub"></a>
+                            
+                                <a class="fa V2EX" href="#" title="V2EX"></a>
+                            
+                                <a class="fa 知乎" href="#" title="知乎"></a>
+                            
+                                <a class="fa Facebook" href="#" title="Facebook"></a>
+                            
+                                <a class="fa Google" href="#" title="Google"></a>
+                            
+                                <a class="fa Twitter" href="#" title="Twitter"></a>
+                            
+                                <a class="fa QQ" href="#" title="QQ"></a>
+                            
+                                <a class="fa 微信" href="#" title="微信"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java8/">Java8</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客重构/">博客重构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发/">并发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/牛客网/">牛客网</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/笔试题/">笔试题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/简单数据结构/">简单数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/简单算法/">简单算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">来源</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">就是为了好玩！</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">fangminx</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">fangminx</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">就是为了好玩！</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="#" title="Email"></a>
+                            
+                                <a class="fa 新浪微博" target="_blank" href="#" title="新浪微博"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/fangminx" title="GitHub"></a>
+                            
+                                <a class="fa V2EX" target="_blank" href="#" title="V2EX"></a>
+                            
+                                <a class="fa 知乎" target="_blank" href="#" title="知乎"></a>
+                            
+                                <a class="fa Facebook" target="_blank" href="#" title="Facebook"></a>
+                            
+                                <a class="fa Google" target="_blank" href="#" title="Google"></a>
+                            
+                                <a class="fa Twitter" target="_blank" href="#" title="Twitter"></a>
+                            
+                                <a class="fa QQ" target="_blank" href="#" title="QQ"></a>
+                            
+                                <a class="fa 微信" target="_blank" href="#" title="微信"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-Java实现简单树" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/03/19/Java实现简单树/" class="article-date">
+      <time datetime="2017-03-18T16:17:51.000Z" itemprop="datePublished">2017-03-19</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Java实现简单树
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/博客重构/">博客重构</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/简单数据结构/">简单数据结构</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <ul>
+<li>一颗数只能有一个根节点，如果有了多个根节点，它就称为森林</li>
+</ul>
+<h2 id="树的定义"><a href="#树的定义" class="headerlink" title="树的定义"></a>树的定义</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">N个有父子关系的节点的有限集合，满足：</div><div class="line">- 当N=0，称为空树。</div><div class="line">- 任意非空树，有且仅有一个根（root）节点。</div><div class="line">- 当N&gt;1时，除根节点以外的其余节点可分为M个集合，每个集合又是一棵树，称为根的子树(subtree).</div><div class="line">- 树的任一节点可以有0或多个子节点，但只能有一个父节点，根节点没有父节点（唯一特例）</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h2 id="节点的分类"><a href="#节点的分类" class="headerlink" title="节点的分类"></a>节点的分类</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1.普通节点：包含子节点，具有唯一父节点的节点。</div><div class="line">2.叶子节点：没有子节点的节点。</div><div class="line">3.根节点：没有父节点的节点。</div></pre></td></tr></table></figure>
+<h2 id="二叉树"><a href="#二叉树" class="headerlink" title="二叉树"></a>二叉树</h2><h3 id="二叉树的定义"><a href="#二叉树的定义" class="headerlink" title="二叉树的定义"></a>二叉树的定义</h3><ul>
+<li>每个节点最多只能有两个子树的有序树，左边的子树称<code>左子树</code>，右边的子树称<code>右子树</code></li>
+<li>一棵深度为k的二叉树，包含了2^k-1个节点，称为<code>满二叉树</code></li>
+<li>一棵二叉树除最后一层外，其余层的所有节点都是满的，称为<code>完全二叉树</code>，满二叉树是特殊的完全二叉树</li>
+<li>二叉树第i层的节点数至多为2^(i-1)(i&gt;=1)</li>
+</ul>
+<h3 id="多叉树向二叉树转换"><a href="#多叉树向二叉树转换" class="headerlink" title="多叉树向二叉树转换"></a>多叉树向二叉树转换</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1.加虚线：同一个父节点的相邻兄弟节点之间加虚线。</div><div class="line">2.抹实线：每节点只保留它与最左子节点的连线。</div><div class="line">3.虚改实：虚线改为实线。</div></pre></td></tr></table></figure>
+<h3 id="二叉树的顺序存储"><a href="#二叉树的顺序存储" class="headerlink" title="二叉树的顺序存储"></a>二叉树的顺序存储</h3><ul>
+<li>对于普通二叉树，空出的节点对应的数组元素留空就可以了。</li>
+<li>对于完全二叉树，没有任何空间浪费。</li>
+<li>代码：ArrayBinTree.java</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ArrayBinTree</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line">	<span class="comment">//数组记录数的所有节点</span></div><div class="line">	<span class="keyword">private</span> Object[] datas;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">int</span> DEFAULT_DEEP = <span class="number">8</span>;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">int</span> deep;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">int</span> arraySize;</div><div class="line">	                   </div><div class="line">	<span class="comment">//以默认的深度创建二叉树</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">ArrayBinTree</span><span class="params">()</span></span>&#123;</div><div class="line">		<span class="keyword">this</span>.deep = DEFAULT_DEEP;</div><div class="line">		<span class="keyword">this</span>.arraySize = (<span class="keyword">int</span>)Math.pow(<span class="number">2</span>, deep)-<span class="number">1</span>;<span class="comment">//满二叉树所需节点数</span></div><div class="line">		datas = <span class="keyword">new</span> Object[arraySize];</div><div class="line">	&#125;</div><div class="line">	                   </div><div class="line">	<span class="comment">//以指定深度创建二叉树</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">ArrayBinTree</span><span class="params">(<span class="keyword">int</span> deep)</span></span>&#123;</div><div class="line">		<span class="keyword">this</span>.deep = deep;</div><div class="line">		<span class="keyword">this</span>.arraySize = (<span class="keyword">int</span>)Math.pow(<span class="number">2</span>, deep)-<span class="number">1</span>;</div><div class="line">		datas = <span class="keyword">new</span> Object[arraySize];</div><div class="line">	&#125;</div><div class="line">	                       </div><div class="line">	<span class="comment">//以指定深度，指定节点创建二叉树</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">ArrayBinTree</span><span class="params">(<span class="keyword">int</span> deep,T data)</span></span>&#123;</div><div class="line">		<span class="keyword">this</span>.deep = deep;</div><div class="line">		<span class="keyword">this</span>.arraySize = (<span class="keyword">int</span>)Math.pow(<span class="number">2</span>, deep)-<span class="number">1</span>;</div><div class="line">		datas = <span class="keyword">new</span> Object[arraySize];</div><div class="line">		datas[<span class="number">0</span>] = data;</div><div class="line">	&#125;</div><div class="line">	                          </div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 为指定节点添加子节点</div><div class="line">	 * <span class="doctag">@param</span> index	需要添加子节点的父节点索引</div><div class="line">	 * <span class="doctag">@param</span> data	新子节点的数据</div><div class="line">	 * <span class="doctag">@param</span> left	是否为左节点</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> index,T data, <span class="keyword">boolean</span> left)</span></span>&#123;</div><div class="line">		<span class="keyword">if</span>(datas[index]==<span class="keyword">null</span>)&#123;</div><div class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(index+<span class="string">"处节点为空，无法添加"</span>);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span>(<span class="number">2</span>*index +<span class="number">1</span>&gt;=arraySize)&#123;</div><div class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"树底层的数组已满，树越界异常"</span>);</div><div class="line">		&#125;</div><div class="line">		<span class="comment">//添加左节点</span></div><div class="line">		<span class="keyword">if</span>(left)&#123;</div><div class="line">			datas[<span class="number">2</span>*index+<span class="number">1</span>]=data;</div><div class="line">		&#125;<span class="keyword">else</span>&#123;</div><div class="line">			datas[<span class="number">2</span>*index+<span class="number">2</span>]=data;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	                </div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span></span>&#123;</div><div class="line">		<span class="keyword">return</span> datas[<span class="number">0</span>]==<span class="keyword">null</span>;</div><div class="line">	&#125;</div><div class="line">	                    </div><div class="line">	<span class="comment">//返回根节点</span></div><div class="line">	<span class="function"><span class="keyword">public</span> T <span class="title">root</span><span class="params">()</span></span>&#123;</div><div class="line">		<span class="keyword">return</span> (T)datas[<span class="number">0</span>];</div><div class="line">	&#125;</div><div class="line">	                   </div><div class="line">	<span class="comment">//返回指定节点的父节点</span></div><div class="line">	<span class="function"><span class="keyword">public</span> T <span class="title">parent</span><span class="params">(<span class="keyword">int</span> index)</span></span>&#123;</div><div class="line">		<span class="keyword">return</span> (T)datas[(index-<span class="number">1</span>)/<span class="number">2</span>];</div><div class="line">	&#125;</div><div class="line">	                    </div><div class="line">	<span class="comment">//返回指定节点的左子节点，当左子节点不存在时返回null</span></div><div class="line">	<span class="function"><span class="keyword">public</span> T <span class="title">left</span><span class="params">(<span class="keyword">int</span> index)</span></span>&#123;</div><div class="line">		<span class="keyword">if</span>(<span class="number">2</span>*index+<span class="number">1</span>&gt;=arraySize)&#123;</div><div class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"该节点为叶子节点，无子节点"</span>);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> (T)datas[<span class="number">2</span>*index+<span class="number">1</span>];</div><div class="line">	&#125;</div><div class="line">	                    </div><div class="line">	<span class="comment">//返回指定节点的右子节点，当右子节点不存在时返回null</span></div><div class="line">	<span class="function"><span class="keyword">public</span> T <span class="title">right</span><span class="params">(<span class="keyword">int</span> index)</span></span>&#123;</div><div class="line">		<span class="keyword">if</span>(<span class="number">2</span>*index+<span class="number">1</span>&gt;=arraySize)&#123;</div><div class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"该节点为叶子节点，无子节点"</span>);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> (T)datas[<span class="number">2</span>*index+<span class="number">2</span>];</div><div class="line">	&#125;</div><div class="line">	                  </div><div class="line">	<span class="comment">//返回二叉树的深度</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">deep</span><span class="params">(<span class="keyword">int</span> index)</span></span>&#123;</div><div class="line">		<span class="keyword">return</span> deep;</div><div class="line">	&#125;</div><div class="line">	                    </div><div class="line">	<span class="comment">//返回指定节点的位置</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">pos</span><span class="params">(T data)</span></span>&#123;</div><div class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">0</span>;i&lt;arraySize;i++)&#123;</div><div class="line">			<span class="keyword">if</span>(datas[i].equals(data))&#123;</div><div class="line">				<span class="keyword">return</span> i;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> -<span class="number">1</span>;</div><div class="line">	&#125;</div><div class="line">	                 </div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span>&#123;</div><div class="line">		<span class="keyword">return</span> Arrays.toString(datas);</div><div class="line">	&#125;</div><div class="line">	                       </div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">		ArrayBinTree&lt;String&gt; binTree = <span class="keyword">new</span> ArrayBinTree&lt;String&gt;(<span class="number">4</span>,<span class="string">"根"</span>);</div><div class="line">		binTree.add(<span class="number">0</span>, <span class="string">"第二层右子节点"</span>, <span class="keyword">false</span>);</div><div class="line">		binTree.add(<span class="number">2</span>, <span class="string">"第三层右子节点"</span>, <span class="keyword">false</span>);</div><div class="line">		binTree.add(<span class="number">6</span>, <span class="string">"第四层右子节点"</span>, <span class="keyword">false</span>);</div><div class="line">		System.out.println(binTree);</div><div class="line">                </div><div class="line"><span class="comment">//输出：</span></div><div class="line"><span class="comment">//[根, null, 第二层右子节点, null, null, null, 第三层右子节点, </span></div><div class="line"><span class="comment">//null, null, null, null, null, null, null, 第四层右子节点]</span></div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="二叉树的二叉链表存储"><a href="#二叉树的二叉链表存储" class="headerlink" title="二叉树的二叉链表存储"></a>二叉树的二叉链表存储</h3><ul>
+<li>每个节点记住他的左、右子节点，代码：TwoLinkBinTree.java</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TwoLinkBinTree</span>&lt;<span class="title">E</span>&gt; </span>&#123;</div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">TreeNode</span></span>&#123;</div><div class="line">		Object data;</div><div class="line">		TreeNode left;</div><div class="line">		TreeNode right;</div><div class="line">		                   </div><div class="line">		<span class="function"><span class="keyword">public</span> <span class="title">TreeNode</span><span class="params">()</span></span>&#123;</div><div class="line">			</div><div class="line">		&#125;</div><div class="line">		<span class="function"><span class="keyword">public</span> <span class="title">TreeNode</span><span class="params">(Object data)</span></span>&#123;</div><div class="line">			<span class="keyword">this</span>.data = data;</div><div class="line">		&#125;</div><div class="line">		<span class="function"><span class="keyword">public</span> <span class="title">TreeNode</span><span class="params">(Object data,TreeNode left,TreeNode right)</span></span>&#123;</div><div class="line">			<span class="keyword">this</span>.data = data;</div><div class="line">			<span class="keyword">this</span>.left = left;</div><div class="line">			<span class="keyword">this</span>.right = right;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">private</span> TreeNode root;</div><div class="line">	                       </div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">TwoLinkBinTree</span><span class="params">()</span></span>&#123;</div><div class="line">		<span class="keyword">this</span>.root = <span class="keyword">new</span> TreeNode();</div><div class="line">	&#125;</div><div class="line">	<span class="comment">//指定根元素创建二叉树</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">TwoLinkBinTree</span><span class="params">(E data)</span></span>&#123;</div><div class="line">		<span class="keyword">this</span>.root = <span class="keyword">new</span> TreeNode(data);</div><div class="line">	&#125;</div><div class="line">                              	</div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 对指定父节点添加子节点</div><div class="line">	 * <span class="doctag">@param</span> parent 指定的父节点</div><div class="line">	 * <span class="doctag">@param</span> data 新子节点的数据</div><div class="line">	 * <span class="doctag">@param</span> isLeft 是否为左节点</div><div class="line">	 * <span class="doctag">@return</span>	新增的节点</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">public</span> TreeNode <span class="title">addNode</span><span class="params">(TreeNode parent,E data,<span class="keyword">boolean</span> isLeft)</span></span>&#123;</div><div class="line">		<span class="keyword">if</span>(parent == <span class="keyword">null</span>)&#123;</div><div class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(parent+<span class="string">"节点为null"</span>);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span>(isLeft &amp;&amp; parent.left!=<span class="keyword">null</span>)&#123;</div><div class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(parent+<span class="string">"节点已有左子节点"</span>);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span>(!isLeft &amp;&amp; parent.right!=<span class="keyword">null</span>)&#123;</div><div class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(parent+<span class="string">"节点已有右子节点"</span>);</div><div class="line">		&#125;</div><div class="line">		TreeNode newNode = <span class="keyword">new</span> TreeNode(data);</div><div class="line">		<span class="keyword">if</span>(isLeft)&#123;</div><div class="line">			parent.left = newNode;</div><div class="line">		&#125;<span class="keyword">else</span>&#123;</div><div class="line">			parent.right = newNode;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> newNode;</div><div class="line">	&#125;</div><div class="line">	                        </div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span></span>&#123;</div><div class="line">		<span class="keyword">return</span> root.data == <span class="keyword">null</span>;</div><div class="line">	&#125;</div><div class="line">	                             </div><div class="line">	<span class="comment">//返回根节点</span></div><div class="line">	<span class="function"><span class="keyword">public</span> TreeNode <span class="title">root</span><span class="params">()</span></span>&#123;</div><div class="line">		<span class="keyword">if</span>(isEmpty())&#123;</div><div class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"树为空，无法访问根节点"</span>);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> root;</div><div class="line">	&#125;</div><div class="line">                                      	</div><div class="line">	<span class="comment">//返回指定节点的左子节点，当左子节点不存在时返回null</span></div><div class="line">	<span class="function"><span class="keyword">public</span> E <span class="title">leftChild</span><span class="params">(TreeNode parent)</span></span>&#123;</div><div class="line">		<span class="keyword">if</span>(parent==<span class="keyword">null</span>)&#123;</div><div class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(parent+<span class="string">"节点为null"</span>);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> parent.left == <span class="keyword">null</span>?<span class="keyword">null</span>:(E)parent.left.data;</div><div class="line">	&#125;</div><div class="line">	                                    </div><div class="line">	<span class="comment">//返回指定节点的右子节点，当右子节点不存在时返回null</span></div><div class="line">	<span class="function"><span class="keyword">public</span> E <span class="title">rightChild</span><span class="params">(TreeNode parent)</span></span>&#123;</div><div class="line">		<span class="keyword">if</span>(parent ==<span class="keyword">null</span>)&#123;</div><div class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(parent+<span class="string">"节点为null"</span>);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> parent.right == <span class="keyword">null</span>?<span class="keyword">null</span>:(E)parent.right.data;</div><div class="line">	&#125;</div><div class="line">	                                             </div><div class="line">	<span class="comment">//返回二叉树的深度</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">deep</span><span class="params">()</span></span>&#123;</div><div class="line">		<span class="keyword">return</span> deep(root);</div><div class="line">	&#125;</div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">deep</span><span class="params">(TreeNode node)</span> </span>&#123;</div><div class="line">		<span class="keyword">if</span>(node==<span class="keyword">null</span>)&#123;</div><div class="line">			<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span>(node.left == <span class="keyword">null</span> &amp;&amp; node.right ==<span class="keyword">null</span>)&#123;</div><div class="line">			<span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">		&#125;<span class="keyword">else</span>&#123;</div><div class="line">			<span class="keyword">int</span> leftDeep = deep(node.left);</div><div class="line">			<span class="keyword">int</span> rightDeep = deep(node.right);</div><div class="line">			<span class="keyword">int</span> max = leftDeep&gt;rightDeep?leftDeep:rightDeep;</div><div class="line">			<span class="keyword">return</span> max + <span class="number">1</span>;<span class="comment">//max是左或右子树的深度，要加1</span></div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="二叉树的三叉链表存储"><a href="#二叉树的三叉链表存储" class="headerlink" title="二叉树的三叉链表存储"></a>二叉树的三叉链表存储</h3><ul>
+<li>让每个节点不仅记住他的左、右子节点，还记住它的父节点，代码：ThreeLinkBinTree.java</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.util.ArrayDeque;</div><div class="line"><span class="keyword">import</span> java.util.ArrayList;</div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"><span class="keyword">import</span> java.util.Queue;</div><div class="line">              </div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreeLinkBinTree</span>&lt;<span class="title">E</span>&gt; </span>&#123;</div><div class="line">	 <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">TreeNode</span></span>&#123;</div><div class="line">		 Object data;</div><div class="line">		 TreeNode left;</div><div class="line">		 TreeNode right;</div><div class="line">		 TreeNode parent;</div><div class="line">		 <span class="function"><span class="keyword">public</span> <span class="title">TreeNode</span><span class="params">()</span></span>&#123;</div><div class="line">		                  	 </div><div class="line">		 &#125;</div><div class="line">		 <span class="function"><span class="keyword">public</span> <span class="title">TreeNode</span><span class="params">(Object data)</span></span>&#123;</div><div class="line">			 <span class="keyword">this</span>.data = data;</div><div class="line">		 &#125;</div><div class="line">		 <span class="function"><span class="keyword">public</span> <span class="title">TreeNode</span><span class="params">(Object data,TreeNode left,TreeNode right,</span></span></div><div class="line">                    TreeNode parent)&#123;</div><div class="line">			 <span class="keyword">this</span>.data = data;</div><div class="line">			 <span class="keyword">this</span>.left = left;</div><div class="line">			 <span class="keyword">this</span>.right = right;</div><div class="line">			 <span class="keyword">this</span>.parent = parent;</div><div class="line">		 &#125;</div><div class="line">	 &#125;</div><div class="line">	 <span class="keyword">private</span> TreeNode root;</div><div class="line">	          </div><div class="line">	 <span class="function"><span class="keyword">public</span> <span class="title">ThreeLinkBinTree</span><span class="params">()</span></span>&#123;</div><div class="line">		 <span class="keyword">this</span>.root = <span class="keyword">new</span> TreeNode();</div><div class="line">	 &#125;</div><div class="line">	         </div><div class="line">	 <span class="function"><span class="keyword">public</span> <span class="title">ThreeLinkBinTree</span><span class="params">(E data)</span></span>&#123;</div><div class="line">		 <span class="keyword">this</span>.root = <span class="keyword">new</span> TreeNode(data);</div><div class="line">	 &#125;</div><div class="line">	 </div><div class="line">	 <span class="comment">/**</span></div><div class="line">	  * 为指定节点添加子节点</div><div class="line">	  * <span class="doctag">@param</span> parent 需要添加子节点的父节点</div><div class="line">	  * <span class="doctag">@param</span> data	新子节点的数据</div><div class="line">	  * <span class="doctag">@param</span> isLeft 是否为左节点</div><div class="line">	  * <span class="doctag">@return</span> 新增的节点</div><div class="line">	  */</div><div class="line">	 <span class="function"><span class="keyword">public</span> TreeNode <span class="title">addNode</span><span class="params">(TreeNode parent,E data,<span class="keyword">boolean</span> isLeft)</span></span>&#123;</div><div class="line">		 <span class="keyword">if</span>(parent==<span class="keyword">null</span>)&#123;</div><div class="line">			 <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(parent+<span class="string">"节点为null"</span>);</div><div class="line">		 &#125;</div><div class="line">		 <span class="keyword">if</span>(isLeft &amp;&amp; parent.left != <span class="keyword">null</span>)&#123;</div><div class="line">			 <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(parent+<span class="string">"节点已有左子节点"</span>);</div><div class="line">		 &#125;</div><div class="line">		 <span class="keyword">if</span>(!isLeft &amp;&amp; parent.right != <span class="keyword">null</span>)&#123;</div><div class="line">			 <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(parent+<span class="string">"节点已有右子节点"</span>);</div><div class="line">		 &#125;</div><div class="line">		 TreeNode newNode = <span class="keyword">new</span> TreeNode(data);</div><div class="line">		 <span class="keyword">if</span>(isLeft)&#123;</div><div class="line">			 parent.left = newNode;</div><div class="line">		 &#125;<span class="keyword">else</span>&#123;</div><div class="line">			 parent.right = newNode;</div><div class="line">		 &#125;</div><div class="line">		 <span class="comment">//让新节点的parent引用到parent节点</span></div><div class="line">		 newNode.parent = parent;</div><div class="line">		 <span class="keyword">return</span> newNode;</div><div class="line">	 &#125;</div><div class="line">	    </div><div class="line">	 <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span></span>&#123;</div><div class="line">		 <span class="keyword">return</span> root.data == <span class="keyword">null</span>;</div><div class="line">	 &#125;</div><div class="line">	   </div><div class="line">	 <span class="comment">//返回根节点</span></div><div class="line">	 <span class="function"><span class="keyword">public</span> TreeNode <span class="title">root</span><span class="params">()</span></span>&#123;</div><div class="line">		 <span class="keyword">if</span>(isEmpty())&#123;</div><div class="line">			 <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"树为空，无法访问根节点"</span>);</div><div class="line">		 &#125;</div><div class="line">		 <span class="keyword">return</span> root;</div><div class="line">	 &#125;</div><div class="line">	    </div><div class="line">	 <span class="comment">//返回指定节点的父节点</span></div><div class="line">	 <span class="function"><span class="keyword">public</span> E <span class="title">parent</span><span class="params">(TreeNode node)</span></span>&#123;</div><div class="line">		 <span class="keyword">if</span>(node == <span class="keyword">null</span>)&#123;</div><div class="line">			 <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(node+<span class="string">"节点为null"</span>);</div><div class="line">		 &#125;</div><div class="line">		 <span class="keyword">return</span> (E)node.parent.data;</div><div class="line">	 &#125;</div><div class="line">	             </div><div class="line">	 <span class="comment">//返回指定节点的左子节点</span></div><div class="line">	 <span class="function"><span class="keyword">public</span> E <span class="title">leftChild</span><span class="params">(TreeNode parent)</span></span>&#123;</div><div class="line">		 <span class="keyword">if</span>(parent == <span class="keyword">null</span>)&#123;</div><div class="line">			 <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(parent+<span class="string">"节点为null"</span>);</div><div class="line">		 &#125;</div><div class="line">		 <span class="keyword">return</span> parent.left == <span class="keyword">null</span>?<span class="keyword">null</span>:(E)parent.left.data;</div><div class="line">	 &#125;</div><div class="line">	              </div><div class="line">	 <span class="comment">//返回指定节点的右子节点</span></div><div class="line">	 <span class="function"><span class="keyword">public</span> E <span class="title">rightChild</span><span class="params">(TreeNode parent)</span></span>&#123;</div><div class="line">		 <span class="keyword">if</span>(parent == <span class="keyword">null</span>)&#123;</div><div class="line">			 <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(parent+<span class="string">"节点为null"</span>);</div><div class="line">		 &#125;</div><div class="line">		 <span class="keyword">return</span> parent.right == <span class="keyword">null</span>?<span class="keyword">null</span>:(E)parent.right.data;</div><div class="line">	 &#125;</div><div class="line">	            </div><div class="line">	 <span class="comment">//返回二叉树的深度</span></div><div class="line">	 <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">deep</span><span class="params">()</span></span>&#123;</div><div class="line">		 <span class="keyword">return</span> deep(root);</div><div class="line">	 &#125;</div><div class="line">                </div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">deep</span><span class="params">(TreeNode node)</span> </span>&#123;</div><div class="line">		<span class="keyword">if</span>(node == <span class="keyword">null</span>)&#123;</div><div class="line">			<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span>(node.left ==<span class="keyword">null</span> &amp;&amp; node.right == <span class="keyword">null</span>)&#123;</div><div class="line">			<span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">		&#125;<span class="keyword">else</span>&#123;</div><div class="line">			<span class="keyword">int</span> leftDeep = deep(node.left);</div><div class="line">			<span class="keyword">int</span> rightDeep = deep(node.right);</div><div class="line">			<span class="keyword">int</span> max = leftDeep&gt;rightDeep?leftDeep:rightDeep;</div><div class="line">			<span class="keyword">return</span> max+<span class="number">1</span>;</div><div class="line">		&#125;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>深度优先搜索（接上面代码）<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">根据处理根节点的时机，来判断是什么遍历。</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line"> </div><div class="line"><span class="comment">//实现先序遍历</span></div><div class="line"><span class="function"><span class="keyword">public</span> List&lt;TreeNode&gt; <span class="title">preIterator</span><span class="params">()</span></span>&#123;</div><div class="line">	<span class="keyword">return</span> preIterator(root);</div><div class="line">&#125;</div><div class="line">  </div><div class="line"><span class="function"><span class="keyword">private</span> List&lt;TreeNode&gt; <span class="title">preIterator</span><span class="params">(TreeNode node)</span> </span>&#123;</div><div class="line">	ArrayList&lt;TreeNode&gt; list = <span class="keyword">new</span> ArrayList&lt;TreeNode&gt;();</div><div class="line">	list.add(node);<span class="comment">//先处理根节点</span></div><div class="line">	<span class="comment">//递归处理左子树</span></div><div class="line">	<span class="keyword">if</span>(node.left!=<span class="keyword">null</span>)&#123;</div><div class="line">		list.addAll(preIterator(node.left));</div><div class="line">	&#125;</div><div class="line">	<span class="comment">//递归处理右子树</span></div><div class="line">	<span class="keyword">if</span>(node.right!=<span class="keyword">null</span>)&#123;</div><div class="line">		list.addAll(preIterator(node.right));</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="keyword">return</span> list;</div><div class="line">&#125;</div><div class="line"> 	</div><div class="line"><span class="comment">//实现中序遍历</span></div><div class="line"><span class="function"><span class="keyword">public</span> List&lt;TreeNode&gt; <span class="title">inIterator</span><span class="params">()</span></span>&#123;</div><div class="line">	<span class="keyword">return</span> inTerator(root);</div><div class="line">&#125;</div><div class="line">        </div><div class="line"><span class="function"><span class="keyword">private</span> List&lt;TreeNode&gt; <span class="title">inTerator</span><span class="params">(TreeNode node)</span> </span>&#123;</div><div class="line">	ArrayList&lt;TreeNode&gt; list = <span class="keyword">new</span> ArrayList&lt;TreeNode&gt;();</div><div class="line">	<span class="comment">//递归处理左子树</span></div><div class="line">	<span class="keyword">if</span>(node.left!=<span class="keyword">null</span>)&#123;</div><div class="line">		list.addAll(inTerator(node.left));</div><div class="line">	&#125;</div><div class="line">	<span class="comment">//中间位置处理根节点</span></div><div class="line">	list.add(node);</div><div class="line">	<span class="comment">//递归处理右子树</span></div><div class="line">	<span class="keyword">if</span>(node.right!=<span class="keyword">null</span>)&#123;</div><div class="line">		list.addAll(inTerator(node.right));</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> list;</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="comment">//实现后序遍历</span></div><div class="line"><span class="function"><span class="keyword">public</span> List&lt;TreeNode&gt; <span class="title">postIterator</span><span class="params">()</span></span>&#123;</div><div class="line">	<span class="keyword">return</span> postIterator(root);</div><div class="line">&#125;</div><div class="line">      </div><div class="line"><span class="function"><span class="keyword">private</span> List&lt;TreeNode&gt; <span class="title">postIterator</span><span class="params">(TreeNode node)</span> </span>&#123;</div><div class="line">	ArrayList&lt;TreeNode&gt; list = <span class="keyword">new</span> ArrayList&lt;TreeNode&gt;();</div><div class="line">	<span class="comment">//递归处理左子树</span></div><div class="line">	<span class="keyword">if</span>(node.left!=<span class="keyword">null</span>)&#123;</div><div class="line">		list.addAll(postIterator(node.left));</div><div class="line">	&#125;</div><div class="line">	<span class="comment">//递归处理右子树</span></div><div class="line">	<span class="keyword">if</span>(node.right!=<span class="keyword">null</span>)&#123;</div><div class="line">		list.addAll(postIterator(node.right));</div><div class="line">	&#125;</div><div class="line">	<span class="comment">//最后处理根节点</span></div><div class="line">	list.add(node);</div><div class="line">	<span class="keyword">return</span> list;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>广度优先搜索（接上面代码）<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1.建立一个队列，把树的根节点压入队列。</div><div class="line">2.从队列中弹出一个节点（第一次弹出的是根节点），分别把该节点的左、右节点压人队列</div><div class="line">3.重复2即可。当队列为空时，也就完成了遍历。</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> List&lt;TreeNode&gt; <span class="title">breadthFirst</span><span class="params">()</span></span>&#123;</div><div class="line">	Queue&lt;TreeNode&gt; queue = <span class="keyword">new</span> ArrayDeque&lt;TreeNode&gt;();</div><div class="line">	List&lt;TreeNode&gt; list = <span class="keyword">new</span> ArrayList&lt;TreeNode&gt;();</div><div class="line">	<span class="keyword">if</span>(root!=<span class="keyword">null</span>)&#123;</div><div class="line">		<span class="comment">//将根元素加入队列</span></div><div class="line">		queue.offer(root);</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">while</span>(!queue.isEmpty())&#123;</div><div class="line">		list.add(queue.peek());</div><div class="line">		TreeNode p = queue.poll();<span class="comment">//弹队列</span></div><div class="line">		<span class="keyword">if</span>(p.left!=<span class="keyword">null</span>)&#123;</div><div class="line">			queue.offer(p.left);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span>(p.right!=<span class="keyword">null</span>)&#123;</div><div class="line">			queue.offer(p.right);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> list;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="排序二叉树"><a href="#排序二叉树" class="headerlink" title="排序二叉树"></a>排序二叉树</h2><h3 id="排序二叉树的定义"><a href="#排序二叉树的定义" class="headerlink" title="排序二叉树的定义"></a>排序二叉树的定义</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">要么是一棵空二叉树，要么具有以下性质：</div><div class="line">- 若它的左子树不空，则左子树上所有节点的值均小于它的根节点的值</div><div class="line">- 若它的右子树不空，则右子树上所有节点的值均大于它的根节点的值</div><div class="line">- 它的左、右子树也分别为排序二叉树</div></pre></td></tr></table></figure>
+<h3 id="添加二叉树节点的步骤"><a href="#添加二叉树节点的步骤" class="headerlink" title="添加二叉树节点的步骤"></a>添加二叉树节点的步骤</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">1.以根节点为当前节点开始搜索</div><div class="line">2.拿新节点的值和当前节点的值比较：</div><div class="line">    - 新节点的值更大，以当前节点的右子节点作为新的当前节点</div><div class="line">    - 新节点的值更小，以当前节点的左子节点作为新的当前节点</div><div class="line">3.重复2，直到找到合适的叶子节点，新节点更大，添加为右子节点，否则，添加为左子节点</div></pre></td></tr></table></figure>
+<h3 id="删除一个节点后，要对排序二叉树进行维护"><a href="#删除一个节点后，要对排序二叉树进行维护" class="headerlink" title="删除一个节点后，要对排序二叉树进行维护"></a>删除一个节点后，要对排序二叉树进行维护</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- 被删除的是叶子节点，直接删除即可</div><div class="line">- 被删除的只有左或只有右子树，只需把左、右子树添加成其父节点的左、右子树即可</div><div class="line">- 被删除的节点既有左子树又有右子树，让左子树最大值代替原来位置，右子树最大值在左子树基础上进行排序插入</div></pre></td></tr></table></figure>
+<h3 id="代码："><a href="#代码：" class="headerlink" title="代码："></a>代码：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.util.ArrayDeque;</div><div class="line"><span class="keyword">import</span> java.util.ArrayList;</div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"><span class="keyword">import</span> java.util.Queue;</div><div class="line">  </div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SortedBinTree</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">Comparable</span>&gt; </span>&#123;</div><div class="line">	<span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span></span>&#123;</div><div class="line">		Object data;</div><div class="line">		Node parent;</div><div class="line">		Node left;</div><div class="line">		Node right;</div><div class="line">		<span class="function"><span class="keyword">public</span> <span class="title">Node</span><span class="params">(Object data,Node parent,Node left,Node right)</span></span>&#123;</div><div class="line">			<span class="keyword">this</span>.data = data;</div><div class="line">			<span class="keyword">this</span>.parent = parent;</div><div class="line">			<span class="keyword">this</span>.left = left;</div><div class="line">			<span class="keyword">this</span>.right = right;</div><div class="line">		&#125;</div><div class="line">		<span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span>&#123;</div><div class="line">			<span class="keyword">return</span> <span class="string">"[data="</span>+data+<span class="string">"]"</span>;</div><div class="line">		&#125;</div><div class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span></span>&#123;</div><div class="line">			<span class="keyword">if</span>(<span class="keyword">this</span>==obj)&#123;</div><div class="line">				<span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">			&#125;</div><div class="line">			<span class="keyword">if</span>(obj.getClass() == Node.class)&#123;</div><div class="line">				Node target = (Node)obj;</div><div class="line">				<span class="keyword">return</span> data.equals(target.data)</div><div class="line">						&amp;&amp; left == target.left</div><div class="line">						&amp;&amp; right == target.right</div><div class="line">						&amp;&amp; parent == target.parent;</div><div class="line">			&#125;</div><div class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	 </div><div class="line">	<span class="keyword">private</span> Node root;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">SortedBinTree</span><span class="params">()</span></span>&#123;</div><div class="line">		root = <span class="keyword">null</span>;</div><div class="line">	&#125;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">SortedBinTree</span><span class="params">(T o)</span></span>&#123;</div><div class="line">		root = <span class="keyword">new</span> Node(o,<span class="keyword">null</span>,<span class="keyword">null</span>,<span class="keyword">null</span>);</div><div class="line">	&#125;</div><div class="line">	 </div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(T ele)</span></span>&#123;</div><div class="line">		<span class="keyword">if</span>(root==<span class="keyword">null</span>)&#123;</div><div class="line">			root = <span class="keyword">new</span> Node(ele,<span class="keyword">null</span>,<span class="keyword">null</span>,<span class="keyword">null</span>);</div><div class="line">		&#125;<span class="keyword">else</span>&#123;</div><div class="line">			Node current = root;</div><div class="line">			Node parent = <span class="keyword">null</span>;</div><div class="line">			<span class="keyword">int</span> cmp = <span class="number">0</span>;</div><div class="line">			<span class="comment">//找到合适的叶子节点，以该叶子节点为父节点添加新节点</span></div><div class="line">			<span class="keyword">do</span>&#123;</div><div class="line">				parent = current;</div><div class="line">				cmp = ele.compareTo(current.data);</div><div class="line">				<span class="comment">//如果新节点的值大于当前节点</span></div><div class="line">				<span class="keyword">if</span>(cmp&gt;<span class="number">0</span>)&#123;</div><div class="line">					<span class="comment">//以右节点作为当前节点</span></div><div class="line">					current = current.right;</div><div class="line">				&#125;<span class="keyword">else</span>&#123;</div><div class="line">					current = current.left;</div><div class="line">				&#125;</div><div class="line">			&#125;<span class="keyword">while</span>(current!=<span class="keyword">null</span>);</div><div class="line">			Node newNode = <span class="keyword">new</span> Node(ele,parent,<span class="keyword">null</span>,<span class="keyword">null</span>);</div><div class="line">			<span class="comment">//如果新节点的值大于父节点</span></div><div class="line">			<span class="keyword">if</span>(cmp&gt;<span class="number">0</span>)&#123;</div><div class="line">				parent.right = newNode;</div><div class="line">			&#125;<span class="keyword">else</span>&#123;</div><div class="line">				parent.left = newNode;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	 </div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(T ele)</span></span>&#123;</div><div class="line">		Node target = getNode(ele);</div><div class="line">		<span class="keyword">if</span>(target==<span class="keyword">null</span>)&#123;</div><div class="line">			<span class="keyword">return</span>;</div><div class="line">		&#125;</div><div class="line">		<span class="comment">//左右子树为空</span></div><div class="line">		<span class="keyword">if</span>(target.left == <span class="keyword">null</span> &amp;&amp; target.right == <span class="keyword">null</span>)&#123;</div><div class="line">			<span class="comment">//被删除的是根节点</span></div><div class="line">			<span class="keyword">if</span>(target == root)&#123;</div><div class="line">				root = <span class="keyword">null</span>;</div><div class="line">			&#125;<span class="keyword">else</span>&#123;</div><div class="line">				<span class="comment">//被删除的是父节点的左子节点</span></div><div class="line">				<span class="keyword">if</span>(target == target.parent.left)&#123;</div><div class="line">					target.parent.left = <span class="keyword">null</span>;</div><div class="line">				&#125;<span class="keyword">else</span>&#123;</div><div class="line">					target.parent.right = <span class="keyword">null</span>;</div><div class="line">				&#125;</div><div class="line">				<span class="comment">//释放被删除节点的父节点指针内存</span></div><div class="line">				target.parent = <span class="keyword">null</span>;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		 </div><div class="line">		<span class="comment">//左子树为空，右子树不为空</span></div><div class="line">		<span class="keyword">else</span> <span class="keyword">if</span>(target.left == <span class="keyword">null</span> &amp;&amp; target.right !=<span class="keyword">null</span>)&#123;</div><div class="line">			<span class="keyword">if</span>(target == root)&#123;</div><div class="line">				root = target.right;</div><div class="line">			&#125;<span class="keyword">else</span>&#123;</div><div class="line">				<span class="comment">//被删除节点是父节点的左子节点</span></div><div class="line">				<span class="keyword">if</span>(target == target.parent.left)&#123;</div><div class="line">					target.parent.left = target.right;</div><div class="line">				&#125;<span class="keyword">else</span>&#123;</div><div class="line">					target.parent.right = target.right;</div><div class="line">				&#125;</div><div class="line">				<span class="comment">//让target的右子树的parent指向target的parent，</span></div><div class="line">                <span class="comment">//因为它现在还指向target</span></div><div class="line">				target.right.parent = target.parent;</div><div class="line">				target.parent = <span class="keyword">null</span>;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		 </div><div class="line">		<span class="comment">//左子树不为空，右子树为空</span></div><div class="line">		<span class="keyword">else</span> <span class="keyword">if</span>(target.left!=<span class="keyword">null</span> &amp;&amp; target.right == <span class="keyword">null</span>)&#123;</div><div class="line">			<span class="keyword">if</span>(target == root)&#123;</div><div class="line">				root = target.left;</div><div class="line">			&#125;<span class="keyword">else</span>&#123;</div><div class="line">				<span class="comment">//被删除的节点是父节点的左子节点</span></div><div class="line">				<span class="keyword">if</span>(target == target.parent.left)&#123;</div><div class="line">					target.parent.left = target.left;</div><div class="line">				&#125;<span class="keyword">else</span>&#123;</div><div class="line">					target.parent.right = target.left;</div><div class="line">				&#125;</div><div class="line">				target.left.parent = target.parent;</div><div class="line">				target.parent = <span class="keyword">null</span>;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		                         </div><div class="line">		<span class="comment">//左右子树都不为空</span></div><div class="line">		<span class="keyword">else</span>&#123;</div><div class="line">			<span class="comment">//leftMaxNode用于保存target节点的左子树的最大的节点</span></div><div class="line">			Node leftMaxNode = target.left;</div><div class="line">			<span class="keyword">while</span>(leftMaxNode.right!=<span class="keyword">null</span>)&#123;</div><div class="line">				leftMaxNode = leftMaxNode.right;</div><div class="line">			&#125;</div><div class="line">			<span class="comment">//删除原来子树的右子树</span></div><div class="line">			leftMaxNode.parent.right = <span class="keyword">null</span>;</div><div class="line">			<span class="comment">//左子树最大值代替被删除节点的位置</span></div><div class="line">			leftMaxNode.parent = target.parent;</div><div class="line">			</div><div class="line">			<span class="comment">//如果删除的是父节点的左子节点</span></div><div class="line">			<span class="keyword">if</span>(target == target.parent.left)&#123;</div><div class="line">				target.parent.left = leftMaxNode;</div><div class="line">			&#125;<span class="keyword">else</span>&#123;</div><div class="line">				target.parent.right = leftMaxNode;</div><div class="line">			&#125;</div><div class="line">			<span class="comment">//注意leftMaxNode是节点，不是子树</span></div><div class="line">			leftMaxNode.left = target.left;</div><div class="line">			leftMaxNode.right = target.right;</div><div class="line">			target.parent = target.left = target.right = <span class="keyword">null</span>;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	                            </div><div class="line">	<span class="comment">//根据给定值搜索节点</span></div><div class="line">	<span class="function"><span class="keyword">private</span> Node <span class="title">getNode</span><span class="params">(T ele)</span> </span>&#123;</div><div class="line">		<span class="comment">//从根节点开始</span></div><div class="line">		Node p = root;</div><div class="line">		<span class="keyword">while</span> (p!=<span class="keyword">null</span>)&#123;</div><div class="line">			<span class="keyword">int</span> cmp = ele.compareTo(p.data);</div><div class="line">			<span class="keyword">if</span>(cmp&lt;<span class="number">0</span>)&#123;</div><div class="line">				p = p.left;</div><div class="line">			&#125;<span class="keyword">else</span> <span class="keyword">if</span>(cmp&gt;<span class="number">0</span>)&#123;</div><div class="line">				p = p.right;</div><div class="line">			&#125;<span class="keyword">else</span>&#123;</div><div class="line">				<span class="keyword">return</span> p;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">	&#125;</div><div class="line">	                             </div><div class="line">	<span class="comment">//广度优先遍历</span></div><div class="line">	<span class="function"><span class="keyword">public</span> List&lt;Node&gt; <span class="title">breadthFirst</span><span class="params">()</span></span>&#123;</div><div class="line">		Queue&lt;Node&gt; queue = <span class="keyword">new</span> ArrayDeque&lt;Node&gt;();</div><div class="line">		List&lt;Node&gt; list = <span class="keyword">new</span> ArrayList&lt;Node&gt;();</div><div class="line">		<span class="keyword">if</span>(root!=<span class="keyword">null</span>)&#123;</div><div class="line">			queue.offer(root);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">while</span>(!queue.isEmpty())&#123;</div><div class="line">			list.add(queue.peek());</div><div class="line">			Node p = queue.poll();</div><div class="line">			<span class="keyword">if</span>(p.left!=<span class="keyword">null</span>)&#123;</div><div class="line">				queue.offer(p.left);</div><div class="line">			&#125;</div><div class="line">			<span class="keyword">if</span>(p.right != <span class="keyword">null</span>)&#123;</div><div class="line">				queue.offer(p.right);</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> list;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">		SortedBinTree&lt;Integer&gt; tree = <span class="keyword">new</span> SortedBinTree&lt;Integer&gt;();</div><div class="line">		                         </div><div class="line">		tree.add(<span class="number">5</span>);</div><div class="line">		tree.add(<span class="number">20</span>);</div><div class="line">		tree.add(<span class="number">10</span>);</div><div class="line">		tree.add(<span class="number">3</span>);</div><div class="line">		tree.add(<span class="number">8</span>);</div><div class="line">		tree.add(<span class="number">15</span>);</div><div class="line">		tree.add(<span class="number">30</span>);</div><div class="line">		System.out.println(tree.breadthFirst());</div><div class="line">		tree.remove(<span class="number">20</span>);</div><div class="line">		System.out.println(tree.breadthFirst());</div><div class="line">	              	</div><div class="line"><span class="comment">//输出：</span></div><div class="line"><span class="comment">//      [[data=5], [data=3], [data=20], [data=10], [data=30], [data=8], [data=15]]</span></div><div class="line"><span class="comment">//      [[data=5], [data=3], [data=15], [data=10], [data=30], [data=8]]</span></div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="红黑树简介"><a href="#红黑树简介" class="headerlink" title="红黑树简介"></a>红黑树简介</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">1.排序二叉树虽然可以快速检索，但如果插入的数据本身就是有序的，它就会变成左斜线，或右斜线状的链表。</div><div class="line">2.红黑树是改进后的排序二叉树，又叫对称二叉B树</div><div class="line">3.红黑树在原有排序二叉树的基础上增加了如下要求：</div><div class="line">    1.每个节点要么是红色，要么是黑色</div><div class="line">    2.根节点永远是黑色的</div><div class="line">    3.所有的叶子节点都是空节点，并且是黑色的</div><div class="line">    4.每个红色节点的两个子节点都是黑色</div><div class="line">    5.从任一节点到其子树中的每个叶子节点的路径都包含相同数量的黑色节点</div></pre></td></tr></table></figure>
+<h2 id="哈夫曼树简介"><a href="#哈夫曼树简介" class="headerlink" title="哈夫曼树简介"></a>哈夫曼树简介</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">哈夫曼树又称最优二叉树，是一类带权路径最短的二叉树，在信息检索中很常用。</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/03/19/Java实现简单树/">Java实现简单树</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">fangminx</a></p>
+        <p><span>发布时间:</span>2017-03-19, 00:17:51</p>
+        <p><span>最后更新:</span>2018-03-04, 11:01:58</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/19/Java实现简单树/" title="Java实现简单树">http://yoursite.com/2017/03/19/Java实现简单树/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/03/19/Java实现简单树/　　作者: fangminx" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/03/19/Java实现简单算法/">
+                    Java实现简单算法
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/03/18/Java实现简单栈和队列/">
+                    Java实现简单栈和队列
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#树的定义"><span class="toc-number">1.</span> <span class="toc-text">树的定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#节点的分类"><span class="toc-number">2.</span> <span class="toc-text">节点的分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二叉树"><span class="toc-number">3.</span> <span class="toc-text">二叉树</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#二叉树的定义"><span class="toc-number">3.1.</span> <span class="toc-text">二叉树的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多叉树向二叉树转换"><span class="toc-number">3.2.</span> <span class="toc-text">多叉树向二叉树转换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二叉树的顺序存储"><span class="toc-number">3.3.</span> <span class="toc-text">二叉树的顺序存储</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二叉树的二叉链表存储"><span class="toc-number">3.4.</span> <span class="toc-text">二叉树的二叉链表存储</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二叉树的三叉链表存储"><span class="toc-number">3.5.</span> <span class="toc-text">二叉树的三叉链表存储</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#排序二叉树"><span class="toc-number">4.</span> <span class="toc-text">排序二叉树</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#排序二叉树的定义"><span class="toc-number">4.1.</span> <span class="toc-text">排序二叉树的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加二叉树节点的步骤"><span class="toc-number">4.2.</span> <span class="toc-text">添加二叉树节点的步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除一个节点后，要对排序二叉树进行维护"><span class="toc-number">4.3.</span> <span class="toc-text">删除一个节点后，要对排序二叉树进行维护</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代码："><span class="toc-number">4.4.</span> <span class="toc-text">代码：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#红黑树简介"><span class="toc-number">5.</span> <span class="toc-text">红黑树简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#哈夫曼树简介"><span class="toc-number">6.</span> <span class="toc-text">哈夫曼树简介</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"Java实现简单树　| Just For Fun！　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+        <section class="youyan" id="comments">
+    <script>
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = 'http://v2.uyan.cc/code/uyan.js?uid=2134263';
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+    <div id="uyan_frame"></div>
+</section>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/03/19/Java实现简单算法/" title="上一篇: Java实现简单算法">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/03/18/Java实现简单栈和队列/" title="下一篇: Java实现简单栈和队列">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/03/04/elasticsearch(四、索引管理)/">elasticsearch(四、索引管理)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/04/elasticsearch(三、内核知识)/">elasticsearch(三、内核知识)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/04/elasticsearch(二、搜索引擎)/">elasticsearch(二、搜索引擎)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/03/elasticsearch(一、核心概念和机制)/">elasticsearch(一、核心概念和机制)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/03/【Java8函数式编程】/">【Java8函数式编程】</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/03/Mysql存储引擎和事务/">Mysql存储引擎和事务</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/Java基础笔试题/">Java基础笔试题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/19/Java实现简单算法/">Java实现简单算法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/19/Java实现简单树/">Java实现简单树</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/18/Java实现简单栈和队列/">Java实现简单栈和队列</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/18/Java实现简单线性表/">Java实现简单线性表</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/12/【深入浅出MySQL】/">【深入浅出MySQL】</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/12/【Java高并发程序设计】/">【Java高并发程序设计】</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/11/Java简单IO流操作/">Java简单IO流操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/Java常用对象/">Java常见对象</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/Java基本概念/">Java基本概念</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2018 fangminx
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
