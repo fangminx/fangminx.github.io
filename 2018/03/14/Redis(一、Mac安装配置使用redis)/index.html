@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="fangminx" />
+
+
+
+<meta name="description" content="redis下载地址1234linux:    http://download.redis.io/releases/windows:    https://github.com/MicrosoftArchive/redis">
+<meta name="keywords" content="Redis,安装配置">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis(一、Mac安装配置使用redis)">
+<meta property="og:url" content="http://yoursite.com/2018/03/14/Redis(一、Mac安装配置使用redis)/index.html">
+<meta property="og:site_name" content="Just For Fun！">
+<meta property="og:description" content="redis下载地址1234linux:    http://download.redis.io/releases/windows:    https://github.com/MicrosoftArchive/redis">
+<meta property="og:updated_time" content="2018-03-14T08:01:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis(一、Mac安装配置使用redis)">
+<meta name="twitter:description" content="redis下载地址1234linux:    http://download.redis.io/releases/windows:    https://github.com/MicrosoftArchive/redis">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="Just For Fun！" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>Redis(一、Mac安装配置使用redis) | Just For Fun！</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">fangminx</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">就是为了好玩！</p>
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="#" title="Email"></a>
+                            
+                                <a class="fa 新浪微博" href="#" title="新浪微博"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/fangminx" title="GitHub"></a>
+                            
+                                <a class="fa V2EX" href="#" title="V2EX"></a>
+                            
+                                <a class="fa 知乎" href="#" title="知乎"></a>
+                            
+                                <a class="fa Facebook" href="#" title="Facebook"></a>
+                            
+                                <a class="fa Google" href="#" title="Google"></a>
+                            
+                                <a class="fa Twitter" href="#" title="Twitter"></a>
+                            
+                                <a class="fa QQ" href="#" title="QQ"></a>
+                            
+                                <a class="fa 微信" href="#" title="微信"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java8/">Java8</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Solr/">Solr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客重构/">博客重构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/安装配置/">安装配置</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发/">并发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/牛客网/">牛客网</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/笔试题/">笔试题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/简单数据结构/">简单数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/简单算法/">简单算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/虚拟机/">虚拟机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">来源</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">就是为了好玩！</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">fangminx</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">fangminx</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">就是为了好玩！</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="#" title="Email"></a>
+                            
+                                <a class="fa 新浪微博" target="_blank" href="#" title="新浪微博"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/fangminx" title="GitHub"></a>
+                            
+                                <a class="fa V2EX" target="_blank" href="#" title="V2EX"></a>
+                            
+                                <a class="fa 知乎" target="_blank" href="#" title="知乎"></a>
+                            
+                                <a class="fa Facebook" target="_blank" href="#" title="Facebook"></a>
+                            
+                                <a class="fa Google" target="_blank" href="#" title="Google"></a>
+                            
+                                <a class="fa Twitter" target="_blank" href="#" title="Twitter"></a>
+                            
+                                <a class="fa QQ" target="_blank" href="#" title="QQ"></a>
+                            
+                                <a class="fa 微信" target="_blank" href="#" title="微信"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-Redis(一、Mac安装配置使用redis)" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/03/14/Redis(一、Mac安装配置使用redis)/" class="article-date">
+      <time datetime="2018-03-14T07:47:16.000Z" itemprop="datePublished">2018-03-14</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Redis(一、Mac安装配置使用redis)
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/">Redis</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/安装配置/">安装配置</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="redis下载地址"><a href="#redis下载地址" class="headerlink" title="redis下载地址"></a>redis下载地址</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">linux:</div><div class="line">    http://download.redis.io/releases/</div><div class="line">windows:</div><div class="line">    https://github.com/MicrosoftArchive/redis</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h2 id="解压后启动"><a href="#解压后启动" class="headerlink" title="解压后启动"></a>解压后启动</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">make</div><div class="line">make test</div><div class="line"> </div><div class="line">cd src/</div><div class="line">ll | grep redis-</div><div class="line"> </div><div class="line">./redis-server  注意查看端口和pid，control + c 关闭服务</div><div class="line"> </div><div class="line">./redis-server &amp; 在后台启动，不占用终端，kill -9 PID值，关闭服务</div></pre></td></tr></table></figure>
+<h2 id="测试redis基本功能"><a href="#测试redis基本功能" class="headerlink" title="测试redis基本功能"></a>测试redis基本功能</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">cd src/</div><div class="line">./redis-cli </div><div class="line">keys *</div><div class="line">set a a</div><div class="line">set b b</div><div class="line">get b</div><div class="line">del a</div><div class="line">exists a</div><div class="line"> </div><div class="line">ttl a 查看key剩余生效时间 返回-1 无过期时间、-2 值不存在</div><div class="line">expire a 10 设置a的剩余生效时间 返回0 值不存在，返回1 设置成功</div><div class="line">setex c 10 c 创建key c的时候指定过期时间,等价于（psetex c 10000 c）</div><div class="line"> </div><div class="line">type a 查看这个key的类型</div><div class="line">hset hash name fangminx，type hash 可以查看是hash类型</div><div class="line"> </div><div class="line">rename a d 重命名key</div><div class="line">renamenx d b 发现key b已经存在，返回0</div><div class="line">set d d 修改key的value</div></pre></td></tr></table></figure>
+<h2 id="启动和持久化"><a href="#启动和持久化" class="headerlink" title="启动和持久化"></a>启动和持久化</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">客户端命令中：save 手动持久化</div><div class="line">非客户端命令：./redis-cli shutdown 关闭服务并会对数据进行持久化</div><div class="line"> </div><div class="line">指定端口启动服务：./redis-server --port 6380</div><div class="line">指定端口启动客户端： ./redis-cli -p 6380</div><div class="line">指定端口退出服务：./redis-cli -p 6380 shutdown</div><div class="line"> </div><div class="line">使用配置文件启动服务：</div><div class="line"> vim redis.conf</div><div class="line"> 输入/port 回车 从上往下搜索port,输入n下一个，N上一个，找到修改为6380，然后:wq保存退出</div><div class="line"> cd src/ &amp;&amp; ./redis-server ../redis.conf</div><div class="line">  </div><div class="line">本地连接远程的服务：</div><div class="line"> ./redis-cli -p 6380 -h 127.0.0.1</div><div class="line">关闭远程服务：</div><div class="line">./redis-cli -p 6380 -h 127.0.0.1 shutdown</div><div class="line"> </div><div class="line">使用密码：</div><div class="line">vim redis.conf</div><div class="line">输入/requirepass 回车 输入n下一个，N上一个，找到后修改密码,保存退出</div><div class="line">使用配置文件启动：cd src/ &amp;&amp; ./redis-server ../redis.conf</div><div class="line">使用密码登录(redis是密码)：./redis-cli -p 6380 -a redis</div><div class="line">使用密码退出服务：./redis-cli -p 6380 -a redis shutdown</div></pre></td></tr></table></figure>
+<h2 id="redis基础命令"><a href="#redis基础命令" class="headerlink" title="redis基础命令"></a>redis基础命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">测试连接：ping  PONG</div><div class="line"> </div><div class="line">redis.conf下有database配置，默认0到16</div><div class="line">客户端命令下：</div><div class="line">    info 可以查看redis基本信息，有Keyspace基本信息，默认是使用db0的</div><div class="line">    select 10 可以使用db10空间</div><div class="line">    flushdb 清除当前db，flushall 清除所有db</div><div class="line">    dbsize 查看当前db大小</div><div class="line">    save 持久化 quit 退出</div></pre></td></tr></table></figure>
+<h2 id="redis常用5种数据类型"><a href="#redis常用5种数据类型" class="headerlink" title="redis常用5种数据类型"></a>redis常用5种数据类型</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">string(字符串)</div><div class="line">list(链表，允许重复元素)</div><div class="line">set(无序集合，无重复元素)</div><div class="line">sorted set(有序集合)</div><div class="line">hash(hash表)</div></pre></td></tr></table></figure>
+<h2 id="string"><a href="#string" class="headerlink" title="string"></a>string</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">set word wordword</div><div class="line">strlen word 返回8，value的长度</div><div class="line">getrange word 0 2 返回&quot;wor&quot;,包左包右</div><div class="line"> </div><div class="line">set a a 返回OK</div><div class="line">getset a aa 先get再set 返回 a</div><div class="line"> </div><div class="line">mset a1 a1 b1 b1 c1 c1 同时设置多个key-value</div><div class="line">mget a1 b1 c1</div><div class="line"> </div><div class="line">setnx a newavalue 返回0</div><div class="line">setnx newkey newvalue 返回1，代表成功，只有key不存在才能设置成功</div><div class="line">msetnx 具有原子性，要么都成功要么都失败</div><div class="line"> </div><div class="line">set count 1</div><div class="line">incrby count 100 返回101</div><div class="line">decrby count 10 返回91</div><div class="line">append count appendstr 返回11</div><div class="line">get count 返回 &quot;91appendstr&quot;</div></pre></td></tr></table></figure>
+<h2 id="hash"><a href="#hash" class="headerlink" title="hash"></a>hash</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">hset map name fangminx</div><div class="line">hexists map name 返回1，如果不存在返回0</div><div class="line">hget map name 返回 &quot;fangminx&quot;</div><div class="line"> </div><div class="line">hset map age 24</div><div class="line">hgetall map 返回所有键值</div><div class="line">hkeys map 返回所有keys</div><div class="line">hvals map 返回所有values</div><div class="line"> </div><div class="line">hlen map 返回键值对的数量</div><div class="line"> </div><div class="line">hmget map name age 批量获取key的value</div><div class="line">hmset map key1 value1 key2 value2</div><div class="line"> </div><div class="line">hdel map key1 key2</div><div class="line"> </div><div class="line">hsetnx map name winner 返回0，修改失败</div></pre></td></tr></table></figure>
+<h2 id="list"><a href="#list" class="headerlink" title="list"></a>list</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">lpush list 1 2 3 4 5 返回5</div><div class="line">llen list 返回5</div><div class="line"> </div><div class="line">lrange list 0 2 返回结果和push相反</div><div class="line"> </div><div class="line">lset list 0 100 把5改成100</div><div class="line"> </div><div class="line">lindex list 0 返回100</div><div class="line">linex list 4 返回1</div><div class="line"> </div><div class="line">lpop list 移除了第一个元素100</div><div class="line">rpop list 移除最后一个元素1</div></pre></td></tr></table></figure>
+<h2 id="set"><a href="#set" class="headerlink" title="set"></a>set</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">sadd set1 a b c d 返回4</div><div class="line">sadd set1 a 返回0 </div><div class="line">scard set1 返回set1的元素数量，为4</div><div class="line">smembers set1 返回set1的元素成员</div><div class="line"> </div><div class="line">sadd set2 c d e f</div><div class="line">sdiff set1 set2 返回set1与set2的差集，为a b</div><div class="line">sinter set1 set2 返回set1与set2的交集，为c d</div><div class="line">sunion set1 set2 返回set1与set2的并集</div><div class="line"> </div><div class="line">随机返回set1的2个元素： srandmember set1 2</div><div class="line">判断某元素在不在集合中：sismember set1 a 返回1代表存在，返回0代表不存在</div><div class="line"> </div><div class="line">移除a b元素：srem set1 a b</div><div class="line">移除并返回某随机元素：spop set1</div></pre></td></tr></table></figure>
+<h2 id="sorted-set"><a href="#sorted-set" class="headerlink" title="sorted set"></a>sorted set</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">zadd sortedset1 100 a 200 b 300 c 按照分数从小到大排序</div><div class="line">zcard sortedset1 返回集合大小，为3</div><div class="line"> </div><div class="line">zscore sortedset1 a 查看a的分数，为100</div><div class="line">zcount sortedset1 100 300 查看分数在[100,300]的元素数量</div><div class="line"> </div><div class="line">zrank sortedset1 a 返回a在集合中的索引，为0</div><div class="line">zincrby sortedset1 1000 a 给a加1000分</div><div class="line"> </div><div class="line">zrange sortedset1 0 100 查看集合中前101个元素</div><div class="line">zrange sortedset1 0 100 withscores 并带上分数</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2018/03/14/Redis(一、Mac安装配置使用redis)/">Redis(一、Mac安装配置使用redis)</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">fangminx</a></p>
+        <p><span>发布时间:</span>2018-03-14, 15:47:16</p>
+        <p><span>最后更新:</span>2018-03-14, 16:01:46</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2018/03/14/Redis(一、Mac安装配置使用redis)/" title="Redis(一、Mac安装配置使用redis)">http://yoursite.com/2018/03/14/Redis(一、Mac安装配置使用redis)/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2018/03/14/Redis(一、Mac安装配置使用redis)/　　作者: fangminx" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2018/03/14/Redis(二、生产环境安装配置)/">
+                    Redis(二、生产环境安装配置)
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2018/03/14/虚拟机安装配置4个节点集群/">
+                    虚拟机安装配置4个节点集群
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#redis下载地址"><span class="toc-number">1.</span> <span class="toc-text">redis下载地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解压后启动"><span class="toc-number">2.</span> <span class="toc-text">解压后启动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#测试redis基本功能"><span class="toc-number">3.</span> <span class="toc-text">测试redis基本功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#启动和持久化"><span class="toc-number">4.</span> <span class="toc-text">启动和持久化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#redis基础命令"><span class="toc-number">5.</span> <span class="toc-text">redis基础命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#redis常用5种数据类型"><span class="toc-number">6.</span> <span class="toc-text">redis常用5种数据类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#string"><span class="toc-number">7.</span> <span class="toc-text">string</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hash"><span class="toc-number">8.</span> <span class="toc-text">hash</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#list"><span class="toc-number">9.</span> <span class="toc-text">list</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#set"><span class="toc-number">10.</span> <span class="toc-text">set</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sorted-set"><span class="toc-number">11.</span> <span class="toc-text">sorted set</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"Redis(一、Mac安装配置使用redis)　| Just For Fun！　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+        <section class="youyan" id="comments">
+    <script>
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = 'http://v2.uyan.cc/code/uyan.js?uid=2134263';
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+    <div id="uyan_frame"></div>
+</section>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2018/03/14/Redis(二、生产环境安装配置)/" title="上一篇: Redis(二、生产环境安装配置)">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2018/03/14/虚拟机安装配置4个节点集群/" title="下一篇: 虚拟机安装配置4个节点集群">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/03/14/Redis(三、RDB和AOF介绍&企业级数据备份恢复方案)/">Redis(三、RDB和AOF介绍&企业级数据备份恢复方案)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/14/Redis(二、生产环境安装配置)/">Redis(二、生产环境安装配置)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/14/Redis(一、Mac安装配置使用redis)/">Redis(一、Mac安装配置使用redis)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/14/虚拟机安装配置4个节点集群/">虚拟机安装配置4个节点集群</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/14/Solr安装配置/">Solr安装配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/04/elasticsearch(四、索引管理)/">elasticsearch(四、索引管理)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/04/elasticsearch(三、内核知识)/">elasticsearch(三、内核知识)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/04/elasticsearch(二、搜索引擎)/">elasticsearch(二、搜索引擎)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/03/elasticsearch(一、核心概念和机制)/">elasticsearch(一、核心概念和机制)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/03/【Java8函数式编程】/">【Java8函数式编程】</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/03/Mysql存储引擎和事务/">Mysql存储引擎和事务</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/Java基础笔试题/">Java基础笔试题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/19/Java实现简单算法/">Java实现简单算法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/19/Java实现简单树/">Java实现简单树</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/18/Java实现简单栈和队列/">Java实现简单栈和队列</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/18/Java实现简单线性表/">Java实现简单线性表</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/12/【深入浅出MySQL】/">【深入浅出MySQL】</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/12/【Java高并发程序设计】/">【Java高并发程序设计】</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/11/Java简单IO流操作/">Java简单IO流操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/Java常用对象/">Java常见对象</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/Java基本概念/">Java基本概念</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2018 fangminx
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

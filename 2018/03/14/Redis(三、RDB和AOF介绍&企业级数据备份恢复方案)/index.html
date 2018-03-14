@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="fangminx" />
+
+
+
+<meta name="description" content="RDB和AOF两种持久化机制的介绍1234567891011-RDB对redis中的数据执行周期性的持久化 -AOF对每条写入命令作为日志，以append-only的模式写入一个日志文件中，在redis重启的时候，可以通过回放AOF日志中的写入指令来重新构建整个数据集 -都可以将redis内存中的数据给持久化到磁盘上,备份到阿里云 -redis挂了,可以从云服务上拷贝回来之前的数据，放到指定的目录">
+<meta name="keywords" content="Redis,安装配置">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis(三、RDB和AOF介绍&amp;企业级数据备份恢复方案)">
+<meta property="og:url" content="http://yoursite.com/2018/03/14/Redis(三、RDB和AOF介绍&企业级数据备份恢复方案)/index.html">
+<meta property="og:site_name" content="Just For Fun！">
+<meta property="og:description" content="RDB和AOF两种持久化机制的介绍1234567891011-RDB对redis中的数据执行周期性的持久化 -AOF对每条写入命令作为日志，以append-only的模式写入一个日志文件中，在redis重启的时候，可以通过回放AOF日志中的写入指令来重新构建整个数据集 -都可以将redis内存中的数据给持久化到磁盘上,备份到阿里云 -redis挂了,可以从云服务上拷贝回来之前的数据，放到指定的目录">
+<meta property="og:updated_time" content="2018-03-14T08:13:47.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis(三、RDB和AOF介绍&amp;企业级数据备份恢复方案)">
+<meta name="twitter:description" content="RDB和AOF两种持久化机制的介绍1234567891011-RDB对redis中的数据执行周期性的持久化 -AOF对每条写入命令作为日志，以append-only的模式写入一个日志文件中，在redis重启的时候，可以通过回放AOF日志中的写入指令来重新构建整个数据集 -都可以将redis内存中的数据给持久化到磁盘上,备份到阿里云 -redis挂了,可以从云服务上拷贝回来之前的数据，放到指定的目录">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="Just For Fun！" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>Redis(三、RDB和AOF介绍&amp;企业级数据备份恢复方案) | Just For Fun！</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">fangminx</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">就是为了好玩！</p>
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="#" title="Email"></a>
+                            
+                                <a class="fa 新浪微博" href="#" title="新浪微博"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/fangminx" title="GitHub"></a>
+                            
+                                <a class="fa V2EX" href="#" title="V2EX"></a>
+                            
+                                <a class="fa 知乎" href="#" title="知乎"></a>
+                            
+                                <a class="fa Facebook" href="#" title="Facebook"></a>
+                            
+                                <a class="fa Google" href="#" title="Google"></a>
+                            
+                                <a class="fa Twitter" href="#" title="Twitter"></a>
+                            
+                                <a class="fa QQ" href="#" title="QQ"></a>
+                            
+                                <a class="fa 微信" href="#" title="微信"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java8/">Java8</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java基础/">Java基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Solr/">Solr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客重构/">博客重构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/安装配置/">安装配置</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发/">并发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/牛客网/">牛客网</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/笔试题/">笔试题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/简单数据结构/">简单数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/简单算法/">简单算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/虚拟机/">虚拟机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">来源</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">就是为了好玩！</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">fangminx</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">fangminx</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">就是为了好玩！</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="#" title="Email"></a>
+                            
+                                <a class="fa 新浪微博" target="_blank" href="#" title="新浪微博"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/fangminx" title="GitHub"></a>
+                            
+                                <a class="fa V2EX" target="_blank" href="#" title="V2EX"></a>
+                            
+                                <a class="fa 知乎" target="_blank" href="#" title="知乎"></a>
+                            
+                                <a class="fa Facebook" target="_blank" href="#" title="Facebook"></a>
+                            
+                                <a class="fa Google" target="_blank" href="#" title="Google"></a>
+                            
+                                <a class="fa Twitter" target="_blank" href="#" title="Twitter"></a>
+                            
+                                <a class="fa QQ" target="_blank" href="#" title="QQ"></a>
+                            
+                                <a class="fa 微信" target="_blank" href="#" title="微信"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-Redis(三、RDB和AOF介绍&amp;企业级数据备份恢复方案)" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/03/14/Redis(三、RDB和AOF介绍&企业级数据备份恢复方案)/" class="article-date">
+      <time datetime="2018-03-14T07:54:16.000Z" itemprop="datePublished">2018-03-14</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Redis(三、RDB和AOF介绍&amp;企业级数据备份恢复方案)
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/">Redis</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/安装配置/">安装配置</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="RDB和AOF两种持久化机制的介绍"><a href="#RDB和AOF两种持久化机制的介绍" class="headerlink" title="RDB和AOF两种持久化机制的介绍"></a>RDB和AOF两种持久化机制的介绍</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">-RDB对redis中的数据执行周期性的持久化</div><div class="line"> </div><div class="line">-AOF对每条写入命令作为日志，以append-only的模式写入一个日志文件中，在redis重启的时候，可以通过回放AOF日志中的</div><div class="line">写入指令来重新构建整个数据集</div><div class="line"> </div><div class="line">-都可以将redis内存中的数据给持久化到磁盘上,备份到阿里云</div><div class="line"> </div><div class="line">-redis挂了,可以从云服务上拷贝回来之前的数据，放到指定的目录中，然后重新启动redis，redis就会自动根据持久化数据文件</div><div class="line">中的数据，去恢复内存中的数据，继续对外提供服务</div><div class="line"> </div><div class="line">-如果同时使用RDB和AOF两种持久化机制,在redis重启的时,会使用AOF来重新构建数据，因为AOF中的数据更加完整</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h2 id="RDB优点"><a href="#RDB优点" class="headerlink" title="RDB优点"></a>RDB优点</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">1.RDB会生成多个数据文件，每个数据文件都代表了某一个时刻中redis的数据,非常适合做冷备,</div><div class="line">每个文件都代表了某一个时刻的完整的数据快照(AOF只有一个文件)</div><div class="line"> </div><div class="line">2.可以让redis保持高性能，因为redis主进程只需要fork一个子进程，让子进程执行磁盘IO操作来进行RDB持久化即可</div><div class="line">(RDB，每次写，都是直接写redis内存，只是在一定的时候，才会将数据写入磁盘中</div><div class="line">AOF，每次都是要写文件的，虽然可以快速写入os cache中，但是还是有一定的时间开销的,速度肯定比RDB略慢一些)</div><div class="line"> </div><div class="line">3.相对于AOF持久化机制来说，直接基于RDB数据文件来重启和恢复redis进程，更加快速</div><div class="line">(AOF，存放的指令日志，做数据恢复的时候，其实是要回放和执行所有的指令日志，来恢复内存中的所有数据</div><div class="line">RDB，就是一份数据文件，恢复的时候，直接加载到内存中即可)</div></pre></td></tr></table></figure>
+<h2 id="RDB缺点"><a href="#RDB缺点" class="headerlink" title="RDB缺点"></a>RDB缺点</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">1.一旦redis进程宕机,会丢失最近5分钟的数据,或者更长时间(不适合做第一优先的恢复方案)</div><div class="line"> </div><div class="line">2.RDB每次在fork子进程来执行RDB快照数据文件生成的时候，如果数据文件特别大，可能会导致对客户端提供的服务暂停数毫秒，</div><div class="line">或者甚至数秒(一般不要让RDB的间隔太长，否则每次生成的RDB文件太大了，对redis本身的性能可能会有影响的)</div></pre></td></tr></table></figure>
+<h2 id="AOF优点"><a href="#AOF优点" class="headerlink" title="AOF优点"></a>AOF优点</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">1.一般AOF会每隔1秒，通过一个后台线程执行一次fsync操作，最多丢失1秒钟的数据</div><div class="line">(每隔1秒，就执行一次fsync操作，保证os cache中的数据写入磁盘中)</div><div class="line">2.AOF日志文件以append-only模式写入，所以没有任何磁盘寻址的开销，写入性能非常高，而且文件不容易破损，即使文件尾部破损，也很容易修复</div><div class="line">  </div><div class="line">-AOF日志文件即使过大的时候，出现后台重写操作，也不会影响客户端的读写。因为在rewrite log的时候，会对其中的指导进行压缩，</div><div class="line">创建出一份需要恢复数据的最小日志出来。再创建新日志文件的时候，老的日志文件还是照常写入。当新的merge后的日志文件ready的时候，</div><div class="line">再交换新老日志文件即可。</div><div class="line">-AOF日志文件的命令通过非常可读的方式进行记录，这个特性非常适合做灾难性的误删除的紧急恢复。比如某人不小心用flushall命令清空了所有数据，</div><div class="line">只要这个时候后台rewrite还没有发生，那么就可以立即拷贝AOF文件，将最后一条flushall命令给删了，然后再将该AOF文件放回去，就可以通过恢复机制，</div><div class="line">自动恢复所有数据</div></pre></td></tr></table></figure>
+<h2 id="AOF缺点"><a href="#AOF缺点" class="headerlink" title="AOF缺点"></a>AOF缺点</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1.AOF日志文件通常比RDB数据快照文件更大</div><div class="line">2.AOF开启后，支持的写QPS会比RDB支持的写QPS低，因为AOF一般会配置成每秒fsync一次日志文件，当然，每秒一次fsync，性能也还是很高的</div><div class="line">3.较为复杂的基于命令日志/merge/回放的方式，比基于RDB每次持久化一份完整的数据快照文件的方式，更加脆弱一些，容易有bug。</div></pre></td></tr></table></figure>
+<h2 id="如何选择"><a href="#如何选择" class="headerlink" title="如何选择"></a>如何选择</h2><ul>
+<li>不要仅仅使用RDB，因为那样会导致你丢失很多数据</li>
+<li>RDB每次简单粗暴生成数据快照，更加健壮，可以避免AOF这种复杂的备份和恢复机制的bug</li>
+<li>AOF来保证数据不丢失，作为数据恢复的第一选择; 用RDB来做不同程度的冷备，在AOF文件都丢失或损坏不可用的时候，还可以使用RDB来进行快速的数据恢复</li>
+</ul>
+<h2 id="配置RDB持久化机制"><a href="#配置RDB持久化机制" class="headerlink" title="配置RDB持久化机制"></a>配置RDB持久化机制</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">redis.conf文件，也就是/etc/redis/6379.conf下 :</div><div class="line"> </div><div class="line">save 60 1000</div><div class="line"> </div><div class="line">每隔60s,如果有超过1000个key发生了变更，就生成一个新的dump.rdb文件(当前redis内存中完整的数据快照)，</div><div class="line">这个操作也被称之为snapshotting</div><div class="line"> </div><div class="line">也可以手动调用save或者bgsave命令，同步或异步执行rdb快照生成</div><div class="line"> </div><div class="line">save可以设置多个，多个snapshotting检查点，每到一个检查点，就会去check一下，如果有指定的key数量发生了变更，就生成一个新的dump.rdb文件</div></pre></td></tr></table></figure>
+<h2 id="RDB持久化机制的工作流程"><a href="#RDB持久化机制的工作流程" class="headerlink" title="RDB持久化机制的工作流程"></a>RDB持久化机制的工作流程</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">（1）redis根据配置自己尝试去生成rdb快照文件</div><div class="line">（2）fork一个子进程出来</div><div class="line">（3）子进程尝试将数据dump到临时的rdb快照文件中</div><div class="line">（4）完成rdb快照文件的生成之后，就替换之前的旧的快照文件dump.rdb</div></pre></td></tr></table></figure>
+<h2 id="基于RDB持久化机制的数据恢复实验"><a href="#基于RDB持久化机制的数据恢复实验" class="headerlink" title="基于RDB持久化机制的数据恢复实验"></a>基于RDB持久化机制的数据恢复实验</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">通过redis-cli SHUTDOWN这种方式去停掉redis，是一种安全退出的模式，redis在退出的时候会将内存中的数据立即生成一份完整的rdb快照</div><div class="line"> </div><div class="line">(1)在redis中保存几条数据，用kill -9粗暴杀死redis进程，模拟redis故障异常退出，导致内存数据丢失的场景</div><div class="line">(2)发现数据没有进dump文件，几条最新的数据丢失了</div><div class="line">(3)手动设置一个save检查点，save 5 1</div><div class="line">(4)写入几条数据，等待5秒钟，会发现自动进行了一次dump rdb快照，在dump.rdb中发现了数据</div></pre></td></tr></table></figure>
+<h2 id="配置AOF持久化配置"><a href="#配置AOF持久化配置" class="headerlink" title="配置AOF持久化配置"></a>配置AOF持久化配置</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">redis默认配置：关闭AOF持久化，打开RDB持久化</div><div class="line"> </div><div class="line">生产环境里面，AOF都是要打开(除非丢几分钟数据无所谓)：</div><div class="line"><span class="function">appendonly <span class="title">yes</span> <span class="params">(默认no)</span></span></div><div class="line"><span class="params">(当然是先写入os cache的，然后每隔一定时间再fsync一下，redis重启的时候，优先通过AOF进行数据恢复,AOF数据完整)</span></div><div class="line"> </div><div class="line">可以配置AOF的fsync策略：</div><div class="line">always: 每次写入一条数据，立即将这个数据对应的写日志fsync到磁盘上去，QPS极低</div><div class="line">everysec: 每秒将os cache中的数据fsync到磁盘，默认配置</div><div class="line">no:仅仅redis负责将数据写入os cache,os有自己的策略将数据刷入磁盘<span class="params">(不可控)</span></div></pre></td></tr></table></figure>
+<h2 id="AOF持久化的数据恢复实验"><a href="#AOF持久化的数据恢复实验" class="headerlink" title="AOF持久化的数据恢复实验"></a>AOF持久化的数据恢复实验</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">（1）先仅仅打开RDB，写入一些数据，然后kill -9杀掉redis进程，接着重启redis，发现数据没了，因为RDB快照还没生成</div><div class="line">（2）打开AOF的开关，启用AOF持久化</div><div class="line">（3）写入一些数据，观察AOF文件中的日志内容</div><div class="line">（4）kill -9杀掉redis进程，重新启动redis进程，发现数据被恢复回来了，就是从AOF文件中恢复回来的</div><div class="line">(redis进程启动的时候，直接就会从appendonly.aof中加载所有的日志，把内存中的数据恢复回来)</div></pre></td></tr></table></figure>
+<h2 id="AOF-rewrite"><a href="#AOF-rewrite" class="headerlink" title="AOF rewrite"></a>AOF rewrite</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">-redis中的数据是有限的，很多数据可能会自动过期，可能会被用户删除，可能会被redis用缓存清除的算法清理掉</div><div class="line"> </div><div class="line">-可能很多之前的已经被清理掉的数据，对应的写日志还停留在AOF中，AOF日志文件就一个，会不断的膨胀</div><div class="line"> </div><div class="line">-rewrite确保AOF日志文件不会过大，保持跟当前redis内存数据量一致</div><div class="line"> </div><div class="line">-redis 2.4之前，需要开发一些脚本，手动crontab，通过BGREWRITEAOF命令去执行，redis 2.4之后，会自动进行rewrite操作</div><div class="line"> </div><div class="line">-redis.conf中，可以配置rewrite策略（展示部分）：</div><div class="line">auto-aof-rewrite-percentage 100</div><div class="line">auto-aof-rewrite-min-size 64mb</div><div class="line">（举例：上一次AOF rewrite之后，是128mb，然后接着128mb继续写AOF的日志，</div><div class="line">如果发现增长的比例超过了之前的100%，256mb，并且256mb &gt; 64mb，才会去触发rewrite）</div><div class="line"></div><div class="line">-rewrite步骤：</div><div class="line">（1）redis fork一个子进程</div><div class="line">（2）子进程基于当前内存中的数据，构建日志，开始往一个新的临时的AOF文件中写入日志</div><div class="line">（3）redis主进程，接收到client新的写操作之后，在内存中写入日志，同时新的日志也继续写入旧的AOF文件</div><div class="line">（4）子进程写完新的日志文件之后，redis主进程将内存中的新日志再次追加到新的AOF文件中</div><div class="line">（5）用新的日志文件替换掉旧的日志文件</div></pre></td></tr></table></figure>
+<h2 id="AOF破损文件的修复"><a href="#AOF破损文件的修复" class="headerlink" title="AOF破损文件的修复"></a>AOF破损文件的修复</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">用redis-check-aof --fix命令来修复破损的AOF文件</div></pre></td></tr></table></figure>
+<h2 id="AOF和RDB同时启动时："><a href="#AOF和RDB同时启动时：" class="headerlink" title="AOF和RDB同时启动时："></a>AOF和RDB同时启动时：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">（1）如果RDB在执行snapshotting操作，redis不会执行AOF rewrite，反之亦然（太消耗IO）</div><div class="line">（2）如果RDB在执行snapshotting，此时用户执行BGREWRITEAOF命令，那么等RDB快照生成之后，才会去执行AOF rewrite</div><div class="line">（3）同时有RDB snapshot文件和AOF日志文件，redis重启的时候，会优先使用AOF进行数据恢复，因为其中的日志更完整</div><div class="line"> </div><div class="line">数据恢复完全是依赖于底层的磁盘的持久化的，主要rdb和aof上都没有数据，那就没了</div></pre></td></tr></table></figure>
+<h2 id="企业级数据备份方案"><a href="#企业级数据备份方案" class="headerlink" title="企业级数据备份方案"></a>企业级数据备份方案</h2><ul>
+<li>备份方案</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">（1）每小时都copy一份rdb的备份，到一个目录中去，仅仅保留最近48小时的备份</div><div class="line">（2）每天都保留一份当日的rdb的备份，到一个目录中去，仅仅保留最近1个月的 备份</div><div class="line">（3）使用云服务备份</div><div class="line">...</div></pre></td></tr></table></figure>
+<ul>
+<li>操作步骤</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">1.备份相关都放到redis/这个目录下：cd /usr/local &amp;&amp; mkdir redis &amp;&amp; cd redis/</div><div class="line">2.脚本放到redis/copy/目录下：mkdir copy &amp;&amp; cd copy</div><div class="line">3.创建定时脚本：vi redis_rdb_copy_hourly.sh 内容见下方</div><div class="line">4.创建快照存放目录：cd .. &amp;&amp; mkdir snapshotting</div><div class="line"> </div><div class="line">5. crontab -e 输入如下内容保存退出：</div><div class="line">0 * * * * sh /usr/local/redis/copy/redis-rdb-copy-hourly.sh</div></pre></td></tr></table></figure>
+<ul>
+<li>redis_rdb_copy_hourly.sh</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">#!/bin/sh </div><div class="line"> </div><div class="line">cur_date=`date +%Y%m%d%k`</div><div class="line">rm -rf /usr/local/redis/snapshotting/$cur_date</div><div class="line">mkdir /usr/local/redis/snapshotting/$cur_date</div><div class="line">cp /var/redis/6379/dump.rdb /usr/local/redis/snapshotting/$cur_date</div><div class="line"> </div><div class="line">del_date=`date -d -48hour +%Y%m%d%k`</div><div class="line">rm -rf /usr/local/redis/snapshotting/$del_date</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">crontab -e 追加：</div><div class="line">0 * * * * sh /usr/local/redis/copy/redis-rdb-copy-hourly.sh</div></pre></td></tr></table></figure>
+<ul>
+<li>redis_rdb_copy_daily.sh</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">#!/bin/sh </div><div class="line"> </div><div class="line">cur_date=`date +%Y%m%d`</div><div class="line">rm -rf /usr/local/redis/snapshotting/$cur_date</div><div class="line">mkdir /usr/local/redis/snapshotting/$cur_date</div><div class="line">cp /var/redis/6379/dump.rdb /usr/local/redis/snapshotting/$cur_date</div><div class="line"> </div><div class="line">del_date=`date -d -1month +%Y%m%d`</div><div class="line">rm -rf /usr/local/redis/snapshotting/$del_date</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">crontab -e 追加：</div><div class="line">0 0 * * * sh /usr/local/redis/copy/redis_rdb_copy_daily.sh</div></pre></td></tr></table></figure>
+<ul>
+<li>测试是否生效</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">1.输入命令 date +%Y%m%d%k 和 date -d -48hour ++%Y%m%d%k 记录返回结果</div><div class="line">(或date -d -1month +%Y%m%d  同样操作)</div><div class="line">2.在snapshotting目录下创建与48小时的返回结果同名的文件夹</div><div class="line">3.在该文件夹中 touch dump.rdb 相当于老的备份</div><div class="line">4.手动执行命令：sh redis_dba_copy_hourly.sh</div><div class="line">5.发现老的快照文件夹没了，出现当前时间的文件夹，新文件夹中有真实的dump.rdb</div></pre></td></tr></table></figure>
+<h2 id="基于备份的rdb文件进行数据恢复"><a href="#基于备份的rdb文件进行数据恢复" class="headerlink" title="基于备份的rdb文件进行数据恢复"></a>基于备份的rdb文件进行数据恢复</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">场景：人为等原因导致最新的AOF和RDB文件都出现了丢失/损坏到无法恢复</div></pre></td></tr></table></figure>
+<ul>
+<li>最佳实践</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">1.停止redis: redis-cli SHUTDOWN</div><div class="line">2.关闭配置文件里的aof</div><div class="line">2.删除所有持久化文件：cd /var/redis/6379 然后 rm -rf *</div><div class="line">3.拷贝rdb备份：cp /usr/local/redis/snapshotting/2018031213/dump.rdb .</div><div class="line">4.重启redis：cd /etc/init.d/  ./redis_6379 start </div><div class="line">5.热修改redis配置，打开aof：redis-cli 然后 config get appendonly 然后 config set appendonly yes</div><div class="line">6.停止redis，手动打开配置文件里的aof，再重启redis</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2018/03/14/Redis(三、RDB和AOF介绍&企业级数据备份恢复方案)/">Redis(三、RDB和AOF介绍&amp;企业级数据备份恢复方案)</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">fangminx</a></p>
+        <p><span>发布时间:</span>2018-03-14, 15:54:16</p>
+        <p><span>最后更新:</span>2018-03-14, 16:13:47</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2018/03/14/Redis(三、RDB和AOF介绍&企业级数据备份恢复方案)/" title="Redis(三、RDB和AOF介绍&amp;企业级数据备份恢复方案)">http://yoursite.com/2018/03/14/Redis(三、RDB和AOF介绍&amp;企业级数据备份恢复方案)/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2018/03/14/Redis(三、RDB和AOF介绍&amp;企业级数据备份恢复方案)/　　作者: fangminx" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2018/03/14/Redis(二、生产环境安装配置)/">
+                    Redis(二、生产环境安装配置)
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#RDB和AOF两种持久化机制的介绍"><span class="toc-number">1.</span> <span class="toc-text">RDB和AOF两种持久化机制的介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RDB优点"><span class="toc-number">2.</span> <span class="toc-text">RDB优点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RDB缺点"><span class="toc-number">3.</span> <span class="toc-text">RDB缺点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AOF优点"><span class="toc-number">4.</span> <span class="toc-text">AOF优点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AOF缺点"><span class="toc-number">5.</span> <span class="toc-text">AOF缺点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如何选择"><span class="toc-number">6.</span> <span class="toc-text">如何选择</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置RDB持久化机制"><span class="toc-number">7.</span> <span class="toc-text">配置RDB持久化机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RDB持久化机制的工作流程"><span class="toc-number">8.</span> <span class="toc-text">RDB持久化机制的工作流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基于RDB持久化机制的数据恢复实验"><span class="toc-number">9.</span> <span class="toc-text">基于RDB持久化机制的数据恢复实验</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置AOF持久化配置"><span class="toc-number">10.</span> <span class="toc-text">配置AOF持久化配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AOF持久化的数据恢复实验"><span class="toc-number">11.</span> <span class="toc-text">AOF持久化的数据恢复实验</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AOF-rewrite"><span class="toc-number">12.</span> <span class="toc-text">AOF rewrite</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AOF破损文件的修复"><span class="toc-number">13.</span> <span class="toc-text">AOF破损文件的修复</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AOF和RDB同时启动时："><span class="toc-number">14.</span> <span class="toc-text">AOF和RDB同时启动时：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#企业级数据备份方案"><span class="toc-number">15.</span> <span class="toc-text">企业级数据备份方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基于备份的rdb文件进行数据恢复"><span class="toc-number">16.</span> <span class="toc-text">基于备份的rdb文件进行数据恢复</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"Redis(三、RDB和AOF介绍&企业级数据备份恢复方案)　| Just For Fun！　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+        <section class="youyan" id="comments">
+    <script>
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = 'http://v2.uyan.cc/code/uyan.js?uid=2134263';
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+    <div id="uyan_frame"></div>
+</section>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2018/03/14/Redis(二、生产环境安装配置)/" title="下一篇: Redis(二、生产环境安装配置)">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/03/14/Redis(三、RDB和AOF介绍&企业级数据备份恢复方案)/">Redis(三、RDB和AOF介绍&企业级数据备份恢复方案)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/14/Redis(二、生产环境安装配置)/">Redis(二、生产环境安装配置)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/14/Redis(一、Mac安装配置使用redis)/">Redis(一、Mac安装配置使用redis)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/14/虚拟机安装配置4个节点集群/">虚拟机安装配置4个节点集群</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/14/Solr安装配置/">Solr安装配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/04/elasticsearch(四、索引管理)/">elasticsearch(四、索引管理)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/04/elasticsearch(三、内核知识)/">elasticsearch(三、内核知识)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/04/elasticsearch(二、搜索引擎)/">elasticsearch(二、搜索引擎)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/03/elasticsearch(一、核心概念和机制)/">elasticsearch(一、核心概念和机制)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/03/【Java8函数式编程】/">【Java8函数式编程】</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/03/Mysql存储引擎和事务/">Mysql存储引擎和事务</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/Java基础笔试题/">Java基础笔试题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/19/Java实现简单算法/">Java实现简单算法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/19/Java实现简单树/">Java实现简单树</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/18/Java实现简单栈和队列/">Java实现简单栈和队列</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/18/Java实现简单线性表/">Java实现简单线性表</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/12/【深入浅出MySQL】/">【深入浅出MySQL】</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/12/【Java高并发程序设计】/">【Java高并发程序设计】</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/11/Java简单IO流操作/">Java简单IO流操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/Java常用对象/">Java常见对象</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/Java基本概念/">Java基本概念</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2018 fangminx
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
